@@ -2,7 +2,7 @@
 
 ## Overview
 
-Frontend MVP for LasoTuVi: Next.js App Router app that calls LasoTuVi API v2 directly
+Frontend MVP for LasoTuVi: Next.js App Router app that calls LasoTuVi API directly
 from the browser. No frontend backend, no auth, local IndexedDB persistence only.
 
 ## Stack

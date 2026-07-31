@@ -1,6 +1,6 @@
 # LasoTuVi Web
 
-Ứng dụng web tiếng Việt để lập và xem lá số Tử Vi Đẩu Số qua [LasoTuVi API v2](https://github.com/quytttb/lasotuvi).
+Ứng dụng web tiếng Việt để lập và xem lá số Tử Vi Đẩu Số qua [LasoTuVi API](https://github.com/quytttb/lasotuvi).
 
 ## Mục tiêu sản phẩm
 

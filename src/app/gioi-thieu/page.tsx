@@ -21,7 +21,7 @@ export default function GioiThieuPage() {
       <section className="mt-8 space-y-3">
         <h2 className="font-serif text-xl">Nguồn dữ liệu</h2>
         <p className="text-[var(--ink-soft)] leading-relaxed">
-          Ứng dụng gọi trực tiếp LasoTuVi API v2 ({apiUrl}) để lập lá số. Không có proxy hay Server
+          Ứng dụng gọi trực tiếp LasoTuVi API ({apiUrl}) để lập lá số. Không có proxy hay Server
           Actions trung gian. Endpoint chính của MVP: <code className="text-sm">POST /chart/generate</code>.
         </p>
         {backendRepo ? (

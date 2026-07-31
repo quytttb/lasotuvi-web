@@ -4,7 +4,7 @@ import { LapLaSoClient } from "@/components/chart/LapLaSoClient";
 
 export const metadata: Metadata = {
   title: "Lập lá số",
-  description: "Nhập ngày giờ sinh và lập lá số Tử Vi Đẩu Số qua LasoTuVi API v2.",
+  description: "Nhập ngày giờ sinh và lập lá số Tử Vi Đẩu Số qua LasoTuVi API.",
   robots: { index: true, follow: true },
   alternates: { canonical: "/lap-la-so" },
 };
