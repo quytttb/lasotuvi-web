@@ -11,13 +11,18 @@ type PalaceCellProps = {
 };
 
 export function PalaceCell({ palace, className, style }: PalaceCellProps) {
-  const majorStars = palace.stars.filter((s) => s.category === 1);
-  const otherStars = palace.stars.filter((s) => s.category !== 1);
+  const majorStars = palace.stars.filter(
+    (s) => s.category === 1 || s.category_label === "major_star",
+  );
+  const otherStars = palace.stars.filter(
+    (s) => !(s.category === 1 || s.category_label === "major_star"),
+  );
 
   return (
     <article
       className={cn(
-        "palace-cell flex min-h-0 flex-col border border-[var(--line)] bg-[var(--paper-raised)] p-1.5 text-[0.7rem] leading-tight",
+        "palace-cell flex min-h-0 flex-col bg-[var(--paper-raised)] p-2 text-[0.7rem] leading-tight",
+        "border border-[var(--line)]",
         "break-inside-avoid",
         className,
       )}
@@ -25,53 +30,61 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
       data-palace-index={palace.index}
       aria-label={`Cung ${palace.palace_name ?? palace.index} — ${palace.branch_name}`}
     >
-      <header className="mb-1 flex flex-wrap items-start justify-between gap-1 border-b border-[var(--line-soft)] pb-1">
-        <div>
-          <p className="font-serif text-[0.8rem] font-semibold text-[var(--ink)]">
+      <header className="mb-1.5 flex items-start justify-between gap-1 border-b border-[var(--line-soft)] pb-1.5">
+        <div className="min-w-0">
+          <p className="font-serif text-[0.85rem] font-semibold leading-none text-[var(--ink)]">
             {palace.palace_name ?? `Cung ${palace.index}`}
           </p>
-          <p className="text-[var(--ink-muted)]">
+          <p className="mt-0.5 text-[0.68rem] text-[var(--ink-muted)]">
             {palace.stem_name ? `${palace.stem_name} ` : ""}
             {palace.branch_name}
+            {palace.palace_element ? ` · ${palace.palace_element}` : ""}
           </p>
         </div>
-        <div className="flex flex-wrap gap-1">
+        <div className="flex shrink-0 flex-wrap justify-end gap-0.5">
           {palace.is_body_palace ? (
-            <span className="rounded-sm bg-[var(--earth-soft)] px-1 text-[0.65rem] text-[var(--earth)]">
+            <span className="rounded-sm bg-[var(--earth-soft)] px-1 py-0.5 text-[0.6rem] font-medium text-[var(--earth)]">
               Thân
             </span>
           ) : null}
           {palace.is_xun ? (
-            <span className="rounded-sm border border-[var(--line)] px-1 text-[0.65rem]" title="Tuần">
+            <span className="rounded-sm border border-[var(--line)] px-1 py-0.5 text-[0.6rem] text-[var(--ink-muted)]">
               Tuần
             </span>
           ) : null}
           {palace.is_triet ? (
-            <span className="rounded-sm border border-[var(--line)] px-1 text-[0.65rem]" title="Triệt">
+            <span className="rounded-sm border border-[var(--line)] px-1 py-0.5 text-[0.6rem] text-[var(--ink-muted)]">
               Triệt
             </span>
           ) : null}
         </div>
       </header>
 
-      <div className="mb-1 space-y-0.5 text-[0.65rem] text-[var(--ink-muted)]">
-        {palace.da_xian_age != null ? <p>Đại hạn: {palace.da_xian_age}</p> : null}
-        {palace.xiao_xian_branch ? <p>Tiểu hạn: {palace.xiao_xian_branch}</p> : null}
-        {palace.yue_xian != null ? <p>Nguyệt hạn: {palace.yue_xian}</p> : null}
+      <div className="flex flex-1 flex-col gap-1.5">
+        {majorStars.length > 0 ? (
+          <div className="flex flex-col gap-0.5">
+            {majorStars.map((star) => (
+              <StarBadge key={`m-${star.id}-${star.name}`} star={star} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-[0.65rem] italic text-[var(--ink-muted)]">Vô chính diệu</p>
+        )}
+
+        {otherStars.length > 0 ? (
+          <div className="flex flex-wrap gap-x-2 gap-y-0.5 border-t border-dashed border-[var(--line-soft)] pt-1.5">
+            {otherStars.map((star) => (
+              <StarBadge key={`o-${star.id}-${star.name}`} star={star} />
+            ))}
+          </div>
+        ) : null}
       </div>
 
-      <div className="flex flex-wrap gap-x-1.5 gap-y-0.5">
-        {majorStars.map((star) => (
-          <StarBadge key={`m-${star.id}-${star.name}`} star={star} />
-        ))}
-      </div>
-      {otherStars.length > 0 ? (
-        <div className="mt-1 flex flex-wrap gap-x-1 gap-y-0.5">
-          {otherStars.map((star) => (
-            <StarBadge key={`o-${star.id}-${star.name}`} star={star} />
-          ))}
-        </div>
-      ) : null}
+      <footer className="mt-auto flex flex-wrap gap-x-2 gap-y-0.5 border-t border-[var(--line-soft)] pt-1.5 text-[0.62rem] text-[var(--ink-muted)]">
+        {palace.da_xian_age != null ? <span>Đại hạn {palace.da_xian_age}</span> : null}
+        {palace.xiao_xian_branch ? <span>Tiểu {palace.xiao_xian_branch}</span> : null}
+        {palace.yue_xian != null ? <span>Nguyệt {palace.yue_xian}</span> : null}
+      </footer>
     </article>
   );
 }

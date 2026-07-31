@@ -14,7 +14,7 @@ async function mockGenerate(
 }
 
 test.describe("LasoTuVi MVP flows", () => {
-  test("valid form generates 12-palace board", async ({ page }, testInfo) => {
+  test("valid form generates 12-palace board", async ({ page }) => {
     await mockGenerate(page, async (route) => {
       await route.fulfill({
         status: 200,
@@ -27,12 +27,8 @@ test.describe("LasoTuVi MVP flows", () => {
     await page.goto("/lap-la-so");
     await page.getByTestId("submit-chart").click();
     await expect(page.getByRole("heading", { name: "Kết quả lá số" })).toBeVisible();
-    if (testInfo.project.name === "mobile") {
-      await expect(page.locator("[data-palace-index]:visible")).toHaveCount(12);
-    } else {
-      await expect(page.getByTestId("chart-board")).toBeVisible();
-      await expect(page.getByTestId("chart-board").locator("[data-palace-index]")).toHaveCount(12);
-    }
+    await expect(page.getByTestId("chart-board")).toBeVisible();
+    await expect(page.getByTestId("chart-board").locator("[data-palace-index]")).toHaveCount(12);
   });
 
   test("invalid solar date shows validation", async ({ page }) => {
@@ -139,7 +135,7 @@ test.describe("LasoTuVi MVP flows", () => {
     await expect(page.getByTestId("api-error")).toContainText(/thử lại thủ công/i);
   });
 
-  test("mobile viewport has no unexpected page overflow", async ({ page }, testInfo) => {
+  test("mobile viewport shows board without page-level overflow", async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "mobile", "mobile project only");
     await mockGenerate(page, async (route) => {
       await route.fulfill({
@@ -151,11 +147,21 @@ test.describe("LasoTuVi MVP flows", () => {
     await page.goto("/lap-la-so");
     await page.getByTestId("submit-chart").click();
     await expect(page.getByRole("heading", { name: "Kết quả lá số" })).toBeVisible();
-    const overflow = await page.evaluate(() => {
+    await expect(page.getByTestId("chart-board")).toBeVisible();
+    await expect(page.getByTestId("chart-board").locator("[data-palace-index]")).toHaveCount(12);
+
+    const metrics = await page.evaluate(() => {
       const doc = document.documentElement;
-      return doc.scrollWidth > doc.clientWidth + 2;
+      const scroller = document.querySelector("[data-testid=chart-board]")?.parentElement;
+      return {
+        pageOverflow: doc.scrollWidth > doc.clientWidth + 2,
+        boardScrollable: Boolean(
+          scroller && scroller.scrollWidth > scroller.clientWidth + 2,
+        ),
+      };
     });
-    expect(overflow).toBe(false);
+    expect(metrics.pageOverflow).toBe(false);
+    expect(metrics.boardScrollable).toBe(true);
   });
 
   test("print button calls window.print", async ({ page }) => {

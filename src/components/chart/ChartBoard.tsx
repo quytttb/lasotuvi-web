@@ -23,8 +23,8 @@ export function ChartBoard({ chart, className }: ChartBoardProps) {
   return (
     <div
       className={cn(
-        "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-auto border border-[var(--line)] bg-[var(--paper-muted)]",
-        "min-h-[36rem] w-full max-w-5xl",
+        "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden border-2 border-[var(--line)] bg-[var(--paper-muted)] shadow-[0_1px_0_rgba(28,25,20,0.04)]",
+        "min-h-[40rem] w-full max-w-6xl",
         className,
       )}
       role="region"

@@ -8,6 +8,15 @@ import { birthInfoToFormValues, type BirthInfoRequest } from "@/lib/form/birth-s
 import type { ChartResponse } from "@/lib/chart/validate";
 import { getChart } from "@/lib/storage/repository";
 
+/** Survive React Strict Mode double-mount in dev (consume is one-shot). */
+let openChartIdForMount: string | null | undefined;
+
+function takeOpenChartIdOnce(): string | null {
+  if (openChartIdForMount !== undefined) return openChartIdForMount;
+  openChartIdForMount = consumeOpenChartId();
+  return openChartIdForMount;
+}
+
 export function LapLaSoClient() {
   const [initial, setInitial] = useState<{
     birthInput: BirthInfoRequest;
@@ -17,7 +26,7 @@ export function LapLaSoClient() {
 
   useEffect(() => {
     let cancelled = false;
-    const id = consumeOpenChartId();
+    const id = takeOpenChartIdOnce();
     if (!id) {
       queueMicrotask(() => {
         if (!cancelled) setReady(true);
@@ -32,7 +41,10 @@ export function LapLaSoClient() {
         setInitial({ birthInput: saved.birthInput, chart: saved.chart });
       })
       .finally(() => {
-        if (!cancelled) setReady(true);
+        if (!cancelled) {
+          openChartIdForMount = undefined;
+          setReady(true);
+        }
       });
     return () => {
       cancelled = true;

@@ -17,6 +17,14 @@
   --earth-soft: #f3ead4;
   --metal: #5c6570;
   --water: #1e4d6b;
+  --star-lu: #2f6b3a;
+  --star-quan: #8a6a2f;
+  --star-ke: #1e4d6b;
+  --star-ji: #a33b2b;
+  --star-malefic: #8b3a4a;
+  --star-blessing: #2f6b3a;
+  --star-noble: #1e4d6b;
+  --star-peach: #9a4d6e;
   --background: var(--paper);
   --foreground: var(--ink);
 }

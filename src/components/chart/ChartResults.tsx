@@ -1,10 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { Accordion } from "@/components/ui/Accordion";
 import { ChartBoard } from "@/components/chart/ChartBoard";
-import { PalaceCell } from "@/components/chart/PalaceCell";
+import {
+  formatBranchPinyinLabel,
+  formatStarCodeLabel,
+} from "@/lib/chart/labels";
 import type { ChartResponse } from "@/lib/chart/validate";
 import { cn } from "@/lib/utils/cn";
 
@@ -13,7 +16,6 @@ type ChartResultsProps = {
 };
 
 export function ChartResults({ chart }: ChartResultsProps) {
-  const [showBoardOnMobile, setShowBoardOnMobile] = useState(false);
   const palaces = useMemo(
     () => [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index),
     [chart.earth_plate.palaces],
@@ -24,56 +26,17 @@ export function ChartResults({ chart }: ChartResultsProps) {
 
   return (
     <section className="space-y-8" aria-labelledby="chart-results-heading">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 id="chart-results-heading" className="font-serif text-2xl text-[var(--ink)]">
-            Kết quả lá số
-          </h2>
-          <p className="mt-1 text-sm text-[var(--ink-muted)]">
-            Lập lúc {new Date(chart.generated_at).toLocaleString("vi-VN")}
-          </p>
-        </div>
-        <button
-          type="button"
-          className="print:hidden inline-flex min-h-11 items-center rounded-sm border border-[var(--line)] px-3 text-sm lg:hidden"
-          onClick={() => setShowBoardOnMobile((v) => !v)}
-        >
-          {showBoardOnMobile ? "Ẩn dạng bàn" : "Xem dạng bàn"}
-        </button>
+      <div>
+        <h2 id="chart-results-heading" className="font-serif text-2xl text-[var(--ink)]">
+          Kết quả lá số
+        </h2>
+        <p className="mt-1 text-sm text-[var(--ink-muted)]">
+          Lập lúc {new Date(chart.generated_at).toLocaleString("vi-VN")}
+        </p>
       </div>
 
-      {/* Desktop / print board */}
-      <div className="hidden lg:block print:block">
-        <ChartBoard chart={chart} />
-      </div>
-
-      {/* Optional mobile horizontal board */}
-      {showBoardOnMobile ? (
-        <div className="lg:hidden print:hidden overflow-x-auto">
-          <ChartBoard chart={chart} className="min-w-[52rem]" />
-        </div>
-      ) : null}
-
-      {/* Mobile palace cards */}
-      <div className="lg:hidden print:hidden space-y-4">
-        <nav aria-label="Chuyển nhanh cung" className="flex flex-wrap gap-2">
-          {palaces.map((p) => (
-            <a
-              key={p.index}
-              href={`#cung-${p.index}`}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm border border-[var(--line)] px-2 text-sm"
-            >
-              {p.palace_name ?? p.index}
-            </a>
-          ))}
-        </nav>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {palaces.map((palace) => (
-            <div key={palace.index} id={`cung-${palace.index}`}>
-              <PalaceCell palace={palace} className="min-h-[12rem]" />
-            </div>
-          ))}
-        </div>
+      <div className="w-full max-w-full overflow-x-auto overscroll-x-contain print:overflow-visible">
+        <ChartBoard chart={chart} className="min-w-[52rem] lg:min-w-0 lg:max-w-6xl" />
       </div>
 
       <section aria-labelledby="formations-heading" className="space-y-3">
@@ -108,7 +71,7 @@ export function ChartResults({ chart }: ChartResultsProps) {
           </p>
           <ul className="list-disc space-y-1 pl-5 text-sm">
             {taboo.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>{formatBranchPinyinLabel(item)}</li>
             ))}
           </ul>
         </section>
@@ -129,7 +92,9 @@ export function ChartResults({ chart }: ChartResultsProps) {
                 ) : (
                   palace.interpretations.map((item) => (
                     <div key={`${palace.index}-${item.star}`}>
-                      <p className={cn("font-medium text-[var(--ink)]")}>{item.star}</p>
+                      <p className={cn("font-medium text-[var(--ink)]")}>
+                        {formatStarCodeLabel(item.star)}
+                      </p>
                       <p className="mt-1 whitespace-pre-wrap text-[var(--ink-soft)]">
                         {item.interpretation}
                       </p>
