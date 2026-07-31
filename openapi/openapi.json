@@ -1,0 +1,2286 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LasoTuVi API",
+    "description": "\n## Zi Wei Dou Shu (Purple Star Astrology) Chart API\n\nBreaking v2 schema: English field names throughout.\n\n### Features\n* Solar \u2194 lunar calendar conversion\n* Full stem\u2013branch (year / month / day / hour)\n* Complete earth plate with structured stars (miao_wang, category)\n* Chart formations (c\u00e1ch c\u1ee5c) and palace star interpretations\n* Chart meta: natal element, life/body masters, generation/control\n* Monthly luck via `view_year`\n* Star reference catalog\n\n### Usage\n`POST /chart/generate` with birth info. Optional `view_year` for monthly luck.\n    ",
+    "contact": {
+      "name": "LasoTuVi Project",
+      "url": "https://github.com/quytttb/lasotuvi"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/quytttb/lasotuvi/blob/master/LICENSE"
+    },
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Readiness Check",
+        "operationId": "readiness_check_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/solar-to-lunar": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Solar To Lunar",
+        "operationId": "solar_to_lunar_calendar_solar_to_lunar_post",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Month"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 7,
+              "title": "Timezone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LunarDateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/lunar-to-solar": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Lunar To Solar",
+        "operationId": "lunar_to_solar_calendar_lunar_to_solar_post",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Month"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "is_leap_month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Is Leap Month"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 7,
+              "title": "Timezone"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolarDateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/stem-branch": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Get Stem Branch",
+        "operationId": "get_stem_branch_calendar_stem_branch_post",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Day"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Month"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Year"
+            }
+          },
+          {
+            "name": "is_solar",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Is Solar"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 7,
+              "title": "Timezone"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hour"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StemBranchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/can-chi": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Get Can Chi Alias",
+        "description": "Deprecated: use `/calendar/stem-branch`.",
+        "operationId": "get_can_chi_alias_calendar_can_chi_post",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Day"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Month"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          },
+          {
+            "name": "ngay",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ngay"
+            }
+          },
+          {
+            "name": "thang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Thang"
+            }
+          },
+          {
+            "name": "nam",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Nam"
+            }
+          },
+          {
+            "name": "is_solar",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Is Solar"
+            }
+          },
+          {
+            "name": "duong_lich",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Duong Lich"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 7,
+              "title": "Timezone"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hour"
+            }
+          },
+          {
+            "name": "gio",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Gio"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StemBranchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chart/earth-plate": {
+      "post": {
+        "tags": [
+          "Chart"
+        ],
+        "summary": "Generate Earth Plate",
+        "operationId": "generate_earth_plate_chart_earth_plate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BirthInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EarthPlateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chart/dia-ban": {
+      "post": {
+        "tags": [
+          "Chart"
+        ],
+        "summary": "Generate Dia Ban Alias",
+        "description": "Deprecated: use `/chart/earth-plate`.",
+        "operationId": "generate_dia_ban_alias_chart_dia_ban_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BirthInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EarthPlateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/chart/generate": {
+      "post": {
+        "tags": [
+          "Chart"
+        ],
+        "summary": "Generate Chart",
+        "operationId": "generate_chart_chart_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BirthInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChartResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chart/analyze": {
+      "post": {
+        "tags": [
+          "Chart",
+          "Analysis"
+        ],
+        "summary": "Analyze Chart",
+        "operationId": "analyze_chart_chart_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BirthInfoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChartAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chart/batch": {
+      "post": {
+        "tags": [
+          "Chart",
+          "Batch"
+        ],
+        "summary": "Generate Batch Charts",
+        "operationId": "generate_batch_charts_chart_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchChartRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchChartResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/hour-branches": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Hour Branches",
+        "operationId": "get_hour_branches_info_hour_branches_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/gio-chi": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Gio Chi Alias",
+        "description": "Deprecated: use `/info/hour-branches`.",
+        "operationId": "get_gio_chi_alias_info_gio_chi_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/info/stars": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Star Catalog",
+        "operationId": "get_star_catalog_info_stars_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StarCatalogResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/sao": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Sao Alias",
+        "description": "Deprecated: use `/info/stars`.",
+        "operationId": "get_sao_alias_info_sao_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StarCatalogResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/info/elements": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Elements Info",
+        "operationId": "get_elements_info_info_elements_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/stem-branch": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Stem Branch Info",
+        "operationId": "get_stem_branch_info_info_stem_branch_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info/can-chi": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Can Chi Info Alias",
+        "operationId": "get_can_chi_info_alias_info_can_chi_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/stats": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Stats",
+        "operationId": "get_stats_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BatchChartRequest": {
+        "properties": {
+          "charts": {
+            "items": {
+              "$ref": "#/components/schemas/BirthInfoRequest"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Charts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "charts"
+        ],
+        "title": "BatchChartRequest"
+      },
+      "BatchChartResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "successful": {
+            "type": "integer",
+            "title": "Successful"
+          },
+          "failed": {
+            "type": "integer",
+            "title": "Failed"
+          },
+          "results": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ChartResponse"
+                },
+                {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "successful",
+          "failed",
+          "results"
+        ],
+        "title": "BatchChartResponse"
+      },
+      "BirthInfoRequest": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "maximum": 31.0,
+            "minimum": 1.0,
+            "title": "Day",
+            "description": "Birth day (1-31)"
+          },
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month",
+            "description": "Birth month (1-12)"
+          },
+          "year": {
+            "type": "integer",
+            "maximum": 2100.0,
+            "minimum": 1900.0,
+            "title": "Year",
+            "description": "Birth year"
+          },
+          "hour": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Hour",
+            "description": "Birth hour branch index (1=Zi ... 12=Hai)"
+          },
+          "gender": {
+            "type": "integer",
+            "enum": [
+              1,
+              -1
+            ],
+            "title": "Gender",
+            "description": "1=male, -1=female"
+          },
+          "is_solar": {
+            "type": "boolean",
+            "title": "Is Solar",
+            "description": "True if Gregorian date, False if lunar",
+            "default": true
+          },
+          "timezone": {
+            "type": "integer",
+            "maximum": 14.0,
+            "minimum": -12.0,
+            "title": "Timezone",
+            "description": "Timezone offset (default +7 VN)",
+            "default": 7
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "Optional display name"
+          },
+          "view_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2200.0,
+                "minimum": 1900.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "View Year",
+            "description": "Year used for monthly luck overlay (Gregorian)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "month",
+          "year",
+          "hour",
+          "gender"
+        ],
+        "title": "BirthInfoRequest",
+        "description": "Birth data used to generate a chart.",
+        "example": {
+          "day": 15,
+          "gender": 1,
+          "hour": 7,
+          "is_solar": true,
+          "month": 8,
+          "name": "Nguy\u1ec5n V\u0103n A",
+          "timezone": 7,
+          "view_year": 2026,
+          "year": 1990
+        }
+      },
+      "ChartAnalysisResponse": {
+        "properties": {
+          "birth_info": {
+            "$ref": "#/components/schemas/BirthInfoRequest"
+          },
+          "life_palace_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PalaceAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "career_palace_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PalaceAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "wealth_palace_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PalaceAnalysis"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "overall_strength": {
+            "type": "string",
+            "title": "Overall Strength"
+          },
+          "lucky_elements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Lucky Elements"
+          },
+          "unlucky_elements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unlucky Elements"
+          },
+          "major_life_events": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Major Life Events"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "birth_info",
+          "overall_strength",
+          "lucky_elements",
+          "unlucky_elements",
+          "major_life_events"
+        ],
+        "title": "ChartAnalysisResponse"
+      },
+      "ChartFormation": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "description"
+        ],
+        "title": "ChartFormation",
+        "description": "Detected chart formation / pattern (c\u00e1ch c\u1ee5c)."
+      },
+      "ChartMeta": {
+        "properties": {
+          "ben_ming_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ben Ming Name"
+          },
+          "nayin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nayin"
+          },
+          "year_yin_yang": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year Yin Yang"
+          },
+          "life_yin_yang_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Life Yin Yang Status"
+          },
+          "ming_zhu": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ming Zhu"
+          },
+          "shen_zhu": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shen Zhu"
+          },
+          "sheng_ke_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sheng Ke Status"
+          },
+          "wu_xing_ju_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wu Xing Ju Name"
+          },
+          "wu_xing_ju": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wu Xing Ju"
+          },
+          "view_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "View Year"
+          },
+          "view_year_branch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "View Year Branch"
+          }
+        },
+        "type": "object",
+        "title": "ChartMeta"
+      },
+      "ChartResponse": {
+        "properties": {
+          "birth_info": {
+            "$ref": "#/components/schemas/BirthInfoRequest"
+          },
+          "lunar_date": {
+            "$ref": "#/components/schemas/LunarDateResponse"
+          },
+          "stem_branch": {
+            "$ref": "#/components/schemas/StemBranchResponse"
+          },
+          "earth_plate": {
+            "$ref": "#/components/schemas/EarthPlateResponse"
+          },
+          "formations": {
+            "items": {
+              "$ref": "#/components/schemas/ChartFormation"
+            },
+            "type": "array",
+            "title": "Formations"
+          },
+          "chart_meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChartMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "birth_info",
+          "lunar_date",
+          "stem_branch",
+          "earth_plate"
+        ],
+        "title": "ChartResponse"
+      },
+      "EarthPlateResponse": {
+        "properties": {
+          "lunar_birth_month": {
+            "type": "integer",
+            "title": "Lunar Birth Month"
+          },
+          "lunar_birth_hour": {
+            "type": "integer",
+            "title": "Lunar Birth Hour"
+          },
+          "life_palace": {
+            "type": "integer",
+            "title": "Life Palace"
+          },
+          "body_palace": {
+            "type": "integer",
+            "title": "Body Palace"
+          },
+          "wu_xing_ju": {
+            "type": "integer",
+            "title": "Wu Xing Ju"
+          },
+          "wu_xing_ju_name": {
+            "type": "string",
+            "title": "Wu Xing Ju Name"
+          },
+          "palaces": {
+            "items": {
+              "$ref": "#/components/schemas/PalaceInfo"
+            },
+            "type": "array",
+            "title": "Palaces"
+          },
+          "formations": {
+            "items": {
+              "$ref": "#/components/schemas/ChartFormation"
+            },
+            "type": "array",
+            "title": "Formations"
+          },
+          "taboo_palaces": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Taboo Palaces"
+          },
+          "chart_meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChartMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "lunar_birth_month",
+          "lunar_birth_hour",
+          "life_palace",
+          "body_palace",
+          "wu_xing_ju",
+          "wu_xing_ju_name",
+          "palaces"
+        ],
+        "title": "EarthPlateResponse"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version"
+        ],
+        "title": "HealthResponse"
+      },
+      "LunarDateResponse": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "is_leap_month": {
+            "type": "boolean",
+            "title": "Is Leap Month",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "month",
+          "year"
+        ],
+        "title": "LunarDateResponse"
+      },
+      "PalaceAnalysis": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "palace_name": {
+            "type": "string",
+            "title": "Palace Name"
+          },
+          "major_stars": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Major Stars"
+          },
+          "support_stars": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Support Stars"
+          },
+          "element": {
+            "type": "string",
+            "title": "Element"
+          },
+          "strength": {
+            "type": "string",
+            "title": "Strength"
+          },
+          "positive_aspects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Positive Aspects"
+          },
+          "negative_aspects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Negative Aspects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "index",
+          "branch_name",
+          "palace_name",
+          "major_stars",
+          "support_stars",
+          "element",
+          "strength",
+          "positive_aspects",
+          "negative_aspects"
+        ],
+        "title": "PalaceAnalysis"
+      },
+      "PalaceInfo": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Index"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "palace_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Palace Name"
+          },
+          "palace_element": {
+            "type": "string",
+            "title": "Palace Element"
+          },
+          "yin_yang": {
+            "type": "integer",
+            "title": "Yin Yang"
+          },
+          "stem": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stem"
+          },
+          "stem_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stem Name"
+          },
+          "stars": {
+            "items": {
+              "$ref": "#/components/schemas/StarInfo"
+            },
+            "type": "array",
+            "title": "Stars"
+          },
+          "interpretations": {
+            "items": {
+              "$ref": "#/components/schemas/StarInterpretation"
+            },
+            "type": "array",
+            "title": "Interpretations"
+          },
+          "da_xian_age": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Da Xian Age"
+          },
+          "xiao_xian_branch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Xiao Xian Branch"
+          },
+          "yue_xian": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Yue Xian"
+          },
+          "is_body_palace": {
+            "type": "boolean",
+            "title": "Is Body Palace",
+            "default": false
+          },
+          "is_xun": {
+            "type": "boolean",
+            "title": "Is Xun",
+            "default": false
+          },
+          "is_triet": {
+            "type": "boolean",
+            "title": "Is Triet",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "index",
+          "branch_name",
+          "palace_element",
+          "yin_yang"
+        ],
+        "title": "PalaceInfo"
+      },
+      "SolarDateResponse": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "month",
+          "year"
+        ],
+        "title": "SolarDateResponse"
+      },
+      "StarCatalogItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "element": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Element"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "category_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Label"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "yin_yang": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Yin Yang"
+          },
+          "is_chang_sheng": {
+            "type": "boolean",
+            "title": "Is Chang Sheng",
+            "default": false
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "meaning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meaning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "StarCatalogItem"
+      },
+      "StarCatalogResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StarCatalogItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "miao_wang": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Miao Wang",
+            "default": {
+              "M": "Mi\u1ebfu",
+              "V": "V\u01b0\u1ee3ng",
+              "\u0110": "\u0110\u1eafc",
+              "D": "\u0110\u1eafc",
+              "B": "B\u00ecnh",
+              "H": "H\u00e3m"
+            }
+          },
+          "category_labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Category Labels",
+            "default": {
+              "1": "major_star",
+              "2": "minor_star",
+              "3": "noble_star",
+              "4": "authority_star",
+              "5": "blessing_star",
+              "6": "literary_star",
+              "7": "pavilion_star",
+              "8": "peach_blossom_star",
+              "11": "malefic_star",
+              "12": "defeat_star",
+              "13": "obscure_star",
+              "14": "lust_star",
+              "15": "punishment_star",
+              "16": "minor_star"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "items"
+        ],
+        "title": "StarCatalogResponse"
+      },
+      "StarInfo": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "element": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Element"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "category_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Label"
+          },
+          "miao_wang": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Miao Wang"
+          },
+          "miao_wang_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Miao Wang Label"
+          },
+          "mutagen": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mutagen"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "yin_yang": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Yin Yang"
+          },
+          "is_chang_sheng": {
+            "type": "boolean",
+            "title": "Is Chang Sheng",
+            "default": false
+          },
+          "is_auspicious": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Auspicious"
+          },
+          "palace_position": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Palace Position"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "StarInfo"
+      },
+      "StarInterpretation": {
+        "properties": {
+          "star": {
+            "type": "string",
+            "title": "Star"
+          },
+          "interpretation": {
+            "type": "string",
+            "title": "Interpretation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "star",
+          "interpretation"
+        ],
+        "title": "StarInterpretation",
+        "description": "Reading for one star in a palace (from the interpretation knowledge base)."
+      },
+      "StemBranchPair": {
+        "properties": {
+          "stem": {
+            "type": "integer",
+            "title": "Stem"
+          },
+          "branch": {
+            "type": "integer",
+            "title": "Branch"
+          },
+          "stem_name": {
+            "type": "string",
+            "title": "Stem Name"
+          },
+          "branch_name": {
+            "type": "string",
+            "title": "Branch Name"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stem",
+          "branch",
+          "stem_name",
+          "branch_name",
+          "label"
+        ],
+        "title": "StemBranchPair"
+      },
+      "StemBranchResponse": {
+        "properties": {
+          "year_stem": {
+            "type": "integer",
+            "title": "Year Stem"
+          },
+          "year_branch": {
+            "type": "integer",
+            "title": "Year Branch"
+          },
+          "month_stem": {
+            "type": "integer",
+            "title": "Month Stem"
+          },
+          "year_stem_name": {
+            "type": "string",
+            "title": "Year Stem Name"
+          },
+          "year_branch_name": {
+            "type": "string",
+            "title": "Year Branch Name"
+          },
+          "month_branch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month Branch"
+          },
+          "month_stem_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month Stem Name"
+          },
+          "month_branch_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month Branch Name"
+          },
+          "day_stem": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Day Stem"
+          },
+          "day_branch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Day Branch"
+          },
+          "day_stem_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Day Stem Name"
+          },
+          "day_branch_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Day Branch Name"
+          },
+          "hour_stem": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Stem"
+          },
+          "hour_branch": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Branch"
+          },
+          "hour_stem_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Stem Name"
+          },
+          "hour_branch_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Branch Name"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StemBranchPair"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "month": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StemBranchPair"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "day": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StemBranchPair"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hour": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StemBranchPair"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "year_stem",
+          "year_branch",
+          "month_stem",
+          "year_stem_name",
+          "year_branch_name"
+        ],
+        "title": "StemBranchResponse",
+        "description": "Full stem\u2013branch for year/month/day/hour."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
