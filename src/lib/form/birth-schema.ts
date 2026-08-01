@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+import {
+  birthContextSchema,
+  birthCountrySchema,
+  childrenStatusSchema,
+  defaultBirthContext,
+  deriveTimezone,
+  maritalStatusSchema,
+  normalizeBirthContext,
+  type BirthContext,
+} from "@/lib/form/birth-context";
+import { getBirthPlace, toApiBirthPlace } from "@/lib/form/birth-places";
+
 export const genderSchema = z.union([z.literal(1), z.literal(-1)]);
 export const hourSchema = z.union([
   z.literal(1),
@@ -15,6 +27,20 @@ export const hourSchema = z.union([
   z.literal(11),
   z.literal(12),
 ]);
+
+const apiBirthPlaceSchema = z.object({
+  label: z.string().max(200).nullable().optional(),
+  longitude: z.number().min(-180).max(180),
+  latitude: z.number().min(-90).max(90).nullable().optional(),
+});
+
+const apiLifeContextSchema = z.object({
+  marital_status: z
+    .enum(["single", "married", "divorced", "remarried"])
+    .nullable()
+    .optional(),
+  children_status: z.enum(["has_children", "no_children"]).nullable().optional(),
+});
 
 function isValidGregorianDate(year: number, month: number, day: number): boolean {
   const d = new Date(Date.UTC(year, month - 1, day));
@@ -60,6 +86,9 @@ export const birthInfoSchema = z
       .nullable()
       .transform((v) => (v && v.length > 0 ? v : null)),
     view_year: z.number().int().min(1900).max(2200),
+    birth_place: apiBirthPlaceSchema.nullable().optional(),
+    clock_time: z.string().nullable().optional(),
+    life_context: apiLifeContextSchema.nullable().optional(),
   })
   .superRefine((data, ctx) => {
     refineBirthDate(
@@ -81,7 +110,11 @@ export const birthFormSchema = z
     year: z.number().int().min(1900).max(2100),
     hour: z.number().int().min(1).max(12),
     view_year: z.number().int().min(1900).max(2200),
-    timezone: z.number().int().min(-12).max(14),
+    birth_country: birthCountrySchema,
+    /** Empty string = not selected (optional). */
+    birth_place: z.string(),
+    marital_status: maritalStatusSchema,
+    children_status: childrenStatusSchema,
   })
   .superRefine((data, ctx) => {
     refineBirthDate(
@@ -100,9 +133,26 @@ export const birthFormSchema = z
         message: "Giờ sinh phải là một trong 12 giờ địa chi.",
       });
     }
+    if (data.birth_place) {
+      const place = getBirthPlace(data.birth_place);
+      if (!place) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["birth_place"],
+          message: "Khu vực sinh không hợp lệ.",
+        });
+      } else if (data.birth_country && place.country !== data.birth_country) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["birth_place"],
+          message: "Khu vực sinh không thuộc quốc gia đã chọn.",
+        });
+      }
+    }
   });
 
 export type BirthFormValues = z.infer<typeof birthFormSchema>;
+export type { BirthContext };
 
 export function mapGenderToApi(value: "1" | "-1"): 1 | -1 {
   return value === "1" ? 1 : -1;
@@ -112,7 +162,26 @@ export function mapGenderToLabel(gender: 1 | -1): string {
   return gender === 1 ? "Nam" : "Nữ";
 }
 
+function buildLifeContext(
+  values: BirthFormValues,
+): BirthInfoRequest["life_context"] | undefined {
+  const marital = values.marital_status || null;
+  const children = values.children_status || null;
+  if (!marital && !children) return undefined;
+  return {
+    marital_status: marital || null,
+    children_status: children || null,
+  };
+}
+
 export function formValuesToBirthInfo(values: BirthFormValues): BirthInfoRequest {
+  const place = getBirthPlace(values.birth_place);
+  const timezone = deriveTimezone({
+    birthPlaceId: values.birth_place,
+    birthCountry: values.birth_country,
+  });
+  const lifeContext = buildLifeContext(values);
+
   return birthInfoSchema.parse({
     day: values.day,
     month: values.month,
@@ -120,13 +189,28 @@ export function formValuesToBirthInfo(values: BirthFormValues): BirthInfoRequest
     hour: values.hour,
     gender: mapGenderToApi(values.gender),
     is_solar: values.is_solar === "true",
-    timezone: values.timezone,
+    timezone,
     name: values.name?.trim() ? values.name.trim() : null,
     view_year: values.view_year,
+    birth_place: place ? toApiBirthPlace(place) : undefined,
+    life_context: lifeContext,
   });
 }
 
-export function birthInfoToFormValues(info: BirthInfoRequest): BirthFormValues {
+export function formValuesToBirthContext(values: BirthFormValues): BirthContext {
+  return birthContextSchema.parse({
+    birthCountry: values.birth_country || "vn",
+    birthPlaceId: values.birth_place.trim() ? values.birth_place : null,
+    maritalStatus: values.marital_status,
+    childrenStatus: values.children_status,
+  });
+}
+
+export function birthInfoToFormValues(
+  info: BirthInfoRequest,
+  context?: BirthContext | null,
+): BirthFormValues {
+  const ctx = normalizeBirthContext(context ?? defaultBirthContext());
   return {
     name: info.name ?? "",
     gender: info.gender === 1 ? "1" : "-1",
@@ -136,12 +220,16 @@ export function birthInfoToFormValues(info: BirthInfoRequest): BirthFormValues {
     year: info.year,
     hour: info.hour,
     view_year: info.view_year ?? new Date().getFullYear(),
-    timezone: info.timezone ?? 7,
+    birth_country: ctx.birthCountry || "vn",
+    birth_place: ctx.birthPlaceId ?? "",
+    marital_status: ctx.maritalStatus,
+    children_status: ctx.childrenStatus,
   };
 }
 
 export function defaultBirthFormValues(): BirthFormValues {
   const now = new Date();
+  const ctx = defaultBirthContext();
   return {
     name: "",
     gender: "1",
@@ -151,6 +239,9 @@ export function defaultBirthFormValues(): BirthFormValues {
     year: 1990,
     hour: 7,
     view_year: now.getFullYear(),
-    timezone: 7,
+    birth_country: ctx.birthCountry || "vn",
+    birth_place: ctx.birthPlaceId ?? "",
+    marital_status: ctx.maritalStatus,
+    children_status: ctx.childrenStatus,
   };
 }

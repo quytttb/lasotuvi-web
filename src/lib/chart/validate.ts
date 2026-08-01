@@ -95,6 +95,14 @@ const chartMetaSchema = z
     wu_xing_ju: z.number().nullable().optional(),
     view_year: z.number().nullable().optional(),
     view_year_branch: z.string().nullable().optional(),
+    hour_input: z.number().nullable().optional(),
+    hour_applied: z.number().nullable().optional(),
+    true_solar_offset_minutes: z.number().nullable().optional(),
+    true_solar_applied: z.boolean().optional(),
+    clock_time: z.string().nullable().optional(),
+    birth_place_label: z.string().nullable().optional(),
+    longitude_offset_minutes: z.number().nullable().optional(),
+    equation_of_time_minutes: z.number().nullable().optional(),
   })
   .passthrough()
   .nullable()

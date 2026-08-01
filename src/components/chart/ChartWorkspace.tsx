@@ -6,6 +6,7 @@ import { BirthForm } from "@/components/form/BirthForm";
 import { ChartResults } from "@/components/chart/ChartResults";
 import { Button } from "@/components/ui/Button";
 import type { ChartResponse } from "@/lib/chart/validate";
+import type { BirthContext } from "@/lib/form/birth-context";
 import {
   birthInfoToFormValues,
   type BirthFormValues,
@@ -21,6 +22,7 @@ import { defaultTitleFromBirth } from "@/lib/storage/schema";
 type WorkspaceState = {
   birthInput: BirthInfoRequest;
   chart: ChartResponse;
+  birthContext: BirthContext | null;
 } | null;
 
 type ChartWorkspaceProps = {
@@ -69,6 +71,7 @@ export function ChartWorkspace({
         id: savedId ?? undefined,
         birthInput: result.birthInput,
         chart: result.chart,
+        birthContext: result.birthContext,
         title: defaultTitleFromBirth(result.birthInput),
       });
       setSavedId(saved.id);
@@ -91,7 +94,10 @@ export function ChartWorkspace({
       <BirthForm
         onSuccess={onSuccess}
         initialValues={
-          initialFormValues ?? (initial ? birthInfoToFormValues(initial.birthInput) : undefined)
+          initialFormValues ??
+          (initial
+            ? birthInfoToFormValues(initial.birthInput, initial.birthContext)
+            : undefined)
         }
         disabledSaveHint={
           storageDisabled
@@ -140,7 +146,7 @@ export function ChartWorkspace({
           ) : null}
 
           <div className="chart-print-sheet">
-            <ChartResults chart={result.chart} />
+            <ChartResults chart={result.chart} birthContext={result.birthContext} />
           </div>
         </div>
       ) : null}

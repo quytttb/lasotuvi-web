@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "LasoTuVi API",
-    "description": "\n## Zi Wei Dou Shu (Purple Star Astrology) Chart API\n\nBreaking v2 schema: English field names throughout.\n\n### Features\n* Solar \u2194 lunar calendar conversion\n* Full stem\u2013branch (year / month / day / hour)\n* Complete earth plate with structured stars (miao_wang, category)\n* Chart formations (c\u00e1ch c\u1ee5c) and palace star interpretations\n* Chart meta: natal element, life/body masters, generation/control\n* Monthly luck via `view_year`\n* Star reference catalog\n\n### Usage\n`POST /chart/generate` with birth info. Optional `view_year` for monthly luck.\n    ",
+    "description": "\n## Zi Wei Dou Shu (Purple Star Astrology) Chart API\n\nBreaking v2 schema: English field names throughout.\n\n### Features\n* Solar ↔ lunar calendar conversion\n* Full stem–branch (year / month / day / hour)\n* Complete earth plate with structured stars (miao_wang, category)\n* Chart formations (cách cục) and palace star interpretations\n* Chart meta: natal element, life/body masters, generation/control\n* Monthly luck via `view_year`\n* Star reference catalog\n\n### Usage\n`POST /chart/generate` with birth info. Optional `view_year` for monthly luck.\n    ",
     "contact": {
       "name": "LasoTuVi Project",
       "url": "https://github.com/quytttb/lasotuvi"
@@ -1033,6 +1033,40 @@
             ],
             "title": "View Year",
             "description": "Year used for monthly luck overlay (Gregorian)"
+          },
+          "birth_place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BirthPlace"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional birth location for true solar time longitude correction"
+          },
+          "clock_time": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clock Time",
+            "description": "Optional civil clock time HH:mm."
+          },
+          "life_context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LifeContext"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional marital/children context for Phu thê / Tử tức readings only"
           }
         },
         "type": "object",
@@ -1047,14 +1081,24 @@
         "description": "Birth data used to generate a chart.",
         "example": {
           "day": 15,
-          "gender": 1,
-          "hour": 7,
-          "is_solar": true,
           "month": 8,
-          "name": "Nguy\u1ec5n V\u0103n A",
+          "year": 1990,
+          "hour": 7,
+          "gender": 1,
+          "is_solar": true,
           "timezone": 7,
+          "name": "Nguyễn Văn A",
           "view_year": 2026,
-          "year": 1990
+          "birth_place": {
+            "label": "Hà Nội",
+            "longitude": 105.85,
+            "latitude": 21.03
+          },
+          "clock_time": null,
+          "life_context": {
+            "marital_status": "married",
+            "children_status": "has_children"
+          }
         }
       },
       "ChartAnalysisResponse": {
@@ -1155,7 +1199,7 @@
           "description"
         ],
         "title": "ChartFormation",
-        "description": "Detected chart formation / pattern (c\u00e1ch c\u1ee5c)."
+        "description": "Detected chart formation / pattern (cách cục)."
       },
       "ChartMeta": {
         "properties": {
@@ -1279,6 +1323,88 @@
               }
             ],
             "title": "View Year Branch"
+          },
+          "hour_input": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Input"
+          },
+          "hour_applied": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hour Applied"
+          },
+          "true_solar_offset_minutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "True Solar Offset Minutes"
+          },
+          "true_solar_applied": {
+            "type": "boolean",
+            "title": "True Solar Applied",
+            "default": false
+          },
+          "clock_time": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clock Time"
+          },
+          "birth_place_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Birth Place Label"
+          },
+          "longitude_offset_minutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude Offset Minutes"
+          },
+          "equation_of_time_minutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equation Of Time Minutes"
           }
         },
         "type": "object",
@@ -1824,12 +1950,12 @@
             "type": "object",
             "title": "Miao Wang",
             "default": {
-              "M": "Mi\u1ebfu",
-              "V": "V\u01b0\u1ee3ng",
-              "\u0110": "\u0110\u1eafc",
-              "D": "\u0110\u1eafc",
-              "B": "B\u00ecnh",
-              "H": "H\u00e3m"
+              "M": "Miếu",
+              "V": "Vượng",
+              "Đ": "Đắc",
+              "D": "Đắc",
+              "B": "Bình",
+              "H": "Hãm"
             }
           },
           "category_labels": {
@@ -2239,7 +2365,7 @@
           "year_branch_name"
         ],
         "title": "StemBranchResponse",
-        "description": "Full stem\u2013branch for year/month/day/hour."
+        "description": "Full stem–branch for year/month/day/hour."
       },
       "ValidationError": {
         "properties": {
@@ -2280,6 +2406,91 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "BirthPlace": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label",
+            "description": "Display label (e.g. Hà Nội)"
+          },
+          "longitude": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "description": "Geographic longitude in degrees (required when birth_place is set)"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude",
+            "description": "Geographic latitude in degrees (optional)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "longitude"
+        ],
+        "title": "BirthPlace",
+        "description": "Birth location for true-solar-time longitude correction."
+      },
+      "LifeContext": {
+        "properties": {
+          "marital_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "single",
+                  "married",
+                  "divorced",
+                  "remarried"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Marital Status",
+            "description": "single | married | divorced | remarried; omit/null = undisclosed"
+          },
+          "children_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "has_children",
+                  "no_children"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Children Status",
+            "description": "has_children | no_children; omit/null = undisclosed"
+          }
+        },
+        "type": "object",
+        "title": "LifeContext",
+        "description": "Optional life-context hints for spouse/children palace readings only."
       }
     }
   }

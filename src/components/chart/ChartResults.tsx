@@ -20,13 +20,23 @@ import {
   supportEffectToneClass,
 } from "@/lib/chart/palace-tone";
 import type { ChartResponse, PalaceInfo, PeriodReading } from "@/lib/chart/validate";
+import {
+  childrenStatusLabel,
+  hasBirthContextDetails,
+  maritalStatusLabel,
+  summarizeBirthContext,
+  type BirthContext,
+} from "@/lib/form/birth-context";
+import { birthPlaceLabel } from "@/lib/form/birth-places";
+import { HOUR_BRANCHES } from "@/lib/form/hours";
 import { cn } from "@/lib/utils/cn";
 
 type ChartResultsProps = {
   chart: ChartResponse;
+  birthContext?: BirthContext | null;
 };
 
-const SPECIAL_INTERP_STARS = new Set(["palace_tone", "mutagen_note"]);
+const SPECIAL_INTERP_STARS = new Set(["palace_tone", "mutagen_note", "life_context_note"]);
 
 function findStarForCode(palace: PalaceInfo, starCode: string) {
   const label = formatStarCodeLabel(starCode).trim().toLowerCase();
@@ -117,9 +127,54 @@ function MutagenNoteBlock({ text }: { text: string }) {
   );
 }
 
-function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
+function LifeContextNoteBlock({ text }: { text: string }) {
+  return (
+    <article
+      className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/40 px-2.5 py-2.5"
+      data-testid="life-context-note"
+    >
+      <p className="font-medium text-[var(--ink)]">Ngữ cảnh người xem</p>
+      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-[var(--ink-soft)]">
+        {text}
+      </p>
+    </article>
+  );
+}
+
+function palaceContextHint(
+  palace: PalaceInfo,
+  birthContext: BirthContext | null | undefined,
+): string | null {
+  if (!birthContext) return null;
+  const name = (palace.palace_name ?? "").trim().toLowerCase();
+  if (name === "phu thê") {
+    const label = maritalStatusLabel(birthContext.maritalStatus);
+    return label
+      ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Phu thê.`
+      : null;
+  }
+  if (name === "tử tức") {
+    const label = childrenStatusLabel(birthContext.childrenStatus);
+    return label
+      ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Tử tức.`
+      : null;
+  }
+  return null;
+}
+
+function PalaceInterpretations({
+  palace,
+  birthContext,
+}: {
+  palace: PalaceInfo;
+  birthContext?: BirthContext | null;
+}) {
   const tone = getPalaceTonePresentation(palace);
   const mutagenNote = palace.interpretations?.find((item) => item.star === "mutagen_note");
+  const lifeContextNote = palace.interpretations?.find(
+    (item) => item.star === "life_context_note",
+  );
+  const contextHint = palaceContextHint(palace, birthContext);
 
   const { majorInterps, minorInterps } = useMemo(() => {
     const seen = new Set<string>();
@@ -153,6 +208,16 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
 
   return (
     <div className="space-y-3">
+      {lifeContextNote?.interpretation ? (
+        <LifeContextNoteBlock text={lifeContextNote.interpretation} />
+      ) : contextHint ? (
+        <p
+          className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/50 px-2.5 py-2 text-sm text-[var(--ink-soft)]"
+          data-testid="palace-context-hint"
+        >
+          {contextHint}
+        </p>
+      ) : null}
       <div
         className="rounded-sm border border-[var(--line)] bg-[var(--paper)] px-2.5 py-2.5"
         data-testid="palace-tone"
@@ -284,11 +349,21 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
   );
 }
 
-export function ChartResults({ chart }: ChartResultsProps) {
+export function ChartResults({ chart, birthContext = null }: ChartResultsProps) {
   const palaces = useMemo(
     () => [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index),
     [chart.earth_plate.palaces],
   );
+  const contextSummary = summarizeBirthContext(birthContext);
+  const placeName = birthPlaceLabel(birthContext?.birthPlaceId);
+  const meta = chart.chart_meta ?? chart.earth_plate.chart_meta;
+  const trueSolarApplied = meta?.true_solar_applied === true;
+  const trueSolarOffset = meta?.true_solar_offset_minutes;
+  const hourApplied = meta?.hour_applied;
+  const hourBranchLabel =
+    hourApplied != null
+      ? HOUR_BRANCHES.find((h) => h.value === hourApplied)?.label ?? `Giờ ${hourApplied}`
+      : null;
   const formations = chart.formations.length > 0 ? chart.formations : chart.earth_plate.formations;
   const overview =
     chart.overview.length > 0 ? chart.overview : (chart.earth_plate.overview ?? []);
@@ -307,6 +382,32 @@ export function ChartResults({ chart }: ChartResultsProps) {
         <p className="mt-1 text-sm text-[var(--ink-muted)]">
           Lập lúc {new Date(chart.generated_at).toLocaleString("vi-VN")}
         </p>
+        {hasBirthContextDetails(birthContext) && contextSummary.length > 0 ? (
+          <p
+            className="mt-3 rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/40 px-3 py-2 text-sm text-[var(--ink-soft)]"
+            data-testid="birth-context-summary"
+          >
+            Ngữ cảnh: {contextSummary.join(" · ")}
+            {placeName && !trueSolarApplied ? (
+              <span className="mt-1 block text-[0.75rem] text-[var(--ink-muted)]">
+                Khu vực sinh gửi kèm kinh độ để chỉnh giờ nếu cần; giờ địa chi chỉ đổi khi có giờ
+                đồng hồ chi tiết.
+              </span>
+            ) : null}
+          </p>
+        ) : null}
+        {trueSolarApplied || (trueSolarOffset != null && Math.abs(trueSolarOffset) >= 1) ? (
+          <p
+            className="mt-2 rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/40 px-3 py-2 text-sm text-[var(--ink-soft)]"
+            data-testid="true-solar-meta"
+          >
+            {trueSolarApplied
+              ? `Đã chỉnh giờ theo kinh độ ${Math.round(trueSolarOffset ?? 0)} phút`
+              : `Ước tính chỉnh giờ theo kinh độ ~${Math.round(trueSolarOffset ?? 0)} phút`}
+            {hourBranchLabel ? ` — giờ áp dụng: ${hourBranchLabel}` : null}
+            {meta?.birth_place_label ? ` (${meta.birth_place_label})` : null}.
+          </p>
+        ) : null}
       </div>
 
       {overview.length > 0 ? (
@@ -433,7 +534,9 @@ export function ChartResults({ chart }: ChartResultsProps) {
         <PalaceInterpTabs
           key={chart.generated_at}
           palaces={palaces}
-          renderPanel={(palace) => <PalaceInterpretations palace={palace} />}
+          renderPanel={(palace) => (
+            <PalaceInterpretations palace={palace} birthContext={birthContext} />
+          )}
         />
       </section>
     </section>

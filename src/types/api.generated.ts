@@ -393,14 +393,24 @@ export interface components {
          * @description Birth data used to generate a chart.
          * @example {
          *       "day": 15,
-         *       "gender": 1,
-         *       "hour": 7,
-         *       "is_solar": true,
          *       "month": 8,
-         *       "name": "Nguyễn Văn A",
+         *       "year": 1990,
+         *       "hour": 7,
+         *       "gender": 1,
+         *       "is_solar": true,
          *       "timezone": 7,
+         *       "name": "Nguyễn Văn A",
          *       "view_year": 2026,
-         *       "year": 1990
+         *       "birth_place": {
+         *         "label": "Hà Nội",
+         *         "longitude": 105.85,
+         *         "latitude": 21.03
+         *       },
+         *       "clock_time": null,
+         *       "life_context": {
+         *         "marital_status": "married",
+         *         "children_status": "has_children"
+         *       }
          *     }
          */
         BirthInfoRequest: {
@@ -452,6 +462,15 @@ export interface components {
              * @description Year used for monthly luck overlay (Gregorian)
              */
             view_year?: number | null;
+            /** @description Optional birth location for true solar time longitude correction */
+            birth_place?: components["schemas"]["BirthPlace"] | null;
+            /**
+             * Clock Time
+             * @description Optional civil clock time HH:mm.
+             */
+            clock_time?: string | null;
+            /** @description Optional marital/children context for Phu thê / Tử tức readings only */
+            life_context?: components["schemas"]["LifeContext"] | null;
         };
         /** ChartAnalysisResponse */
         ChartAnalysisResponse: {
@@ -509,6 +528,25 @@ export interface components {
             view_year?: number | null;
             /** View Year Branch */
             view_year_branch?: string | null;
+            /** Hour Input */
+            hour_input?: number | null;
+            /** Hour Applied */
+            hour_applied?: number | null;
+            /** True Solar Offset Minutes */
+            true_solar_offset_minutes?: number | null;
+            /**
+             * True Solar Applied
+             * @default false
+             */
+            true_solar_applied: boolean;
+            /** Clock Time */
+            clock_time?: string | null;
+            /** Birth Place Label */
+            birth_place_label?: string | null;
+            /** Longitude Offset Minutes */
+            longitude_offset_minutes?: number | null;
+            /** Equation Of Time Minutes */
+            equation_of_time_minutes?: number | null;
         };
         /** ChartResponse */
         ChartResponse: {
@@ -840,6 +878,43 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /**
+         * BirthPlace
+         * @description Birth location for true-solar-time longitude correction.
+         */
+        BirthPlace: {
+            /**
+             * Label
+             * @description Display label (e.g. Hà Nội)
+             */
+            label?: string | null;
+            /**
+             * Longitude
+             * @description Geographic longitude in degrees (required when birth_place is set)
+             */
+            longitude: number;
+            /**
+             * Latitude
+             * @description Geographic latitude in degrees (optional)
+             */
+            latitude?: number | null;
+        };
+        /**
+         * LifeContext
+         * @description Optional life-context hints for spouse/children palace readings only.
+         */
+        LifeContext: {
+            /**
+             * Marital Status
+             * @description single | married | divorced | remarried; omit/null = undisclosed
+             */
+            marital_status?: ("single" | "married" | "divorced" | "remarried") | null;
+            /**
+             * Children Status
+             * @description has_children | no_children; omit/null = undisclosed
+             */
+            children_status?: ("has_children" | "no_children") | null;
         };
     };
     responses: never;

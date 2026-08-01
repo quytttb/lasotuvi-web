@@ -1,10 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/Button";
+import { SearchableSelect } from "@/components/ui/SearchableSelect";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import {
   COLD_START_HINT_MS,
   STILL_PROCESSING_HINT_MS,
@@ -14,8 +16,16 @@ import {
 import type { ApiError } from "@/lib/api/errors";
 import type { ChartResponse } from "@/lib/chart/validate";
 import {
+  CHILDREN_STATUS_OPTIONS,
+  MARITAL_STATUS_OPTIONS,
+  formatTrueSolarHint,
+  type BirthContext,
+} from "@/lib/form/birth-context";
+import { BIRTH_COUNTRIES, placesForCountry } from "@/lib/form/birth-places";
+import {
   birthFormSchema,
   defaultBirthFormValues,
+  formValuesToBirthContext,
   formValuesToBirthInfo,
   type BirthFormValues,
   type BirthInfoRequest,
@@ -23,10 +33,34 @@ import {
 import { HOUR_BRANCHES } from "@/lib/form/hours";
 
 type BirthFormProps = {
-  onSuccess: (payload: { birthInput: BirthInfoRequest; chart: ChartResponse }) => void;
+  onSuccess: (payload: {
+    birthInput: BirthInfoRequest;
+    chart: ChartResponse;
+    birthContext: BirthContext;
+  }) => void;
   initialValues?: BirthFormValues;
   disabledSaveHint?: string;
 };
+
+const GENDER_OPTIONS = [
+  { value: "1" as const, label: "Nam" },
+  { value: "-1" as const, label: "Nữ" },
+];
+
+const CALENDAR_OPTIONS = [
+  { value: "true" as const, label: "Dương lịch" },
+  { value: "false" as const, label: "Âm lịch" },
+];
+
+const MARITAL_OPTIONS = MARITAL_STATUS_OPTIONS.map((o) => ({
+  value: o.value,
+  label: o.label,
+}));
+
+const CHILDREN_OPTIONS = CHILDREN_STATUS_OPTIONS.map((o) => ({
+  value: o.value,
+  label: o.label,
+}));
 
 function loadingHint(elapsedMs: number): string {
   if (elapsedMs >= STILL_PROCESSING_HINT_MS) {
@@ -54,8 +88,24 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
   });
 
   const isSolarValue = useWatch({ control: form.control, name: "is_solar" });
+  const birthCountry = useWatch({ control: form.control, name: "birth_country" });
+  const birthPlaceValue = useWatch({ control: form.control, name: "birth_place" });
   const isSolar = isSolarValue === "true";
   const dayMax = isSolar ? 31 : 30;
+  const regionOptions = useMemo(() => placesForCountry(birthCountry), [birthCountry]);
+  const placeSelectOptions = useMemo(
+    () => regionOptions.map((p) => ({ value: p.id, label: p.label })),
+    [regionOptions],
+  );
+  const trueSolarHint = formatTrueSolarHint(birthPlaceValue || null);
+
+  useEffect(() => {
+    if (!birthPlaceValue) return;
+    const stillValid = regionOptions.some((p) => p.id === birthPlaceValue);
+    if (!stillValid) {
+      form.setValue("birth_place", "", { shouldDirty: true });
+    }
+  }, [birthCountry, birthPlaceValue, form, regionOptions]);
 
   useEffect(() => {
     if (apiError?.code !== "rate_limited" || apiError.retryAfterSeconds == null) {
@@ -86,6 +136,7 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
     async (values: BirthFormValues) => {
       setApiError(null);
       const birthInput = formValuesToBirthInfo(values);
+      const birthContext = formValuesToBirthContext(values);
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -98,7 +149,7 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
 
       try {
         const { chart } = await generateChart(birthInput, { signal: controller.signal });
-        onSuccess({ birthInput, chart });
+        onSuccess({ birthInput, chart, birthContext });
       } catch (error) {
         const normalized = toApiError(error);
         setApiError(normalized);
@@ -127,6 +178,7 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
   const fieldClass =
     "min-h-11 w-full rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-[var(--ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]";
   const labelClass = "mb-1 block text-sm font-medium text-[var(--ink)]";
+  const hintClass = "mt-1 text-sm font-normal text-[var(--ink-muted)]";
   const errorClass = "mt-1 text-sm text-[var(--fire)]";
 
   return (
@@ -153,25 +205,33 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
           ) : null}
         </div>
 
-        <div>
-          <label htmlFor="gender" className={labelClass}>
-            Giới tính
-          </label>
-          <select id="gender" className={fieldClass} {...form.register("gender")}>
-            <option value="1">Nam</option>
-            <option value="-1">Nữ</option>
-          </select>
-        </div>
+        <Controller
+          name="gender"
+          control={form.control}
+          render={({ field }) => (
+            <SegmentedControl
+              id="gender"
+              label="Giới tính"
+              value={field.value}
+              options={GENDER_OPTIONS}
+              onChange={field.onChange}
+            />
+          )}
+        />
 
-        <div>
-          <label htmlFor="is_solar" className={labelClass}>
-            Lịch
-          </label>
-          <select id="is_solar" className={fieldClass} {...form.register("is_solar")}>
-            <option value="true">Dương lịch</option>
-            <option value="false">Âm lịch</option>
-          </select>
-        </div>
+        <Controller
+          name="is_solar"
+          control={form.control}
+          render={({ field }) => (
+            <SegmentedControl
+              id="is_solar"
+              label="Lịch"
+              value={field.value}
+              options={CALENDAR_OPTIONS}
+              onChange={field.onChange}
+            />
+          )}
+        />
 
         <div>
           <label htmlFor="day" className={labelClass}>
@@ -230,6 +290,24 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
         </div>
 
         <div>
+          <label htmlFor="view_year" className={labelClass}>
+            Năm xem
+          </label>
+          <input
+            id="view_year"
+            type="number"
+            inputMode="numeric"
+            min={1900}
+            max={2200}
+            className={fieldClass}
+            {...form.register("view_year", { valueAsNumber: true })}
+          />
+          {form.formState.errors.view_year ? (
+            <p className={errorClass}>{form.formState.errors.view_year.message}</p>
+          ) : null}
+        </div>
+
+        <div>
           <label htmlFor="hour" className={labelClass}>
             Giờ sinh (địa chi)
           </label>
@@ -250,22 +328,75 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
         </div>
 
         <div>
-          <label htmlFor="view_year" className={labelClass}>
-            Năm xem
+          <label htmlFor="birth_country" className={labelClass}>
+            Quốc gia
           </label>
-          <input
-            id="view_year"
-            type="number"
-            inputMode="numeric"
-            min={1900}
-            max={2200}
-            className={fieldClass}
-            {...form.register("view_year", { valueAsNumber: true })}
-          />
-          {form.formState.errors.view_year ? (
-            <p className={errorClass}>{form.formState.errors.view_year.message}</p>
-          ) : null}
+          <select id="birth_country" className={fieldClass} {...form.register("birth_country")}>
+            {BIRTH_COUNTRIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </select>
         </div>
+
+        <Controller
+          name="birth_place"
+          control={form.control}
+          render={({ field }) => (
+            <div className="sm:col-span-2">
+              <SearchableSelect
+                id="birth_place"
+                label="Khu vực sinh"
+                hint="(để chỉnh giờ theo kinh độ, nếu cần)"
+                value={field.value}
+                options={placeSelectOptions}
+                onChange={field.onChange}
+                placeholder="Chọn khu vực (không bắt buộc)"
+                emptyOptionLabel="Không chọn"
+                data-testid="birth-place"
+              />
+              {trueSolarHint ? <p className={hintClass}>{trueSolarHint}</p> : null}
+              {form.formState.errors.birth_place ? (
+                <p className={errorClass}>{form.formState.errors.birth_place.message}</p>
+              ) : null}
+            </div>
+          )}
+        />
+
+        <Controller
+          name="marital_status"
+          control={form.control}
+          render={({ field }) => (
+            <SegmentedControl
+              id="marital_status"
+              label="Tình trạng hôn nhân"
+              hint="(tùy chọn, hỗ trợ luận cung Phu thê)"
+              value={field.value}
+              options={MARITAL_OPTIONS}
+              onChange={field.onChange}
+              wrap
+              className="sm:col-span-2"
+            />
+          )}
+        />
+
+        <Controller
+          name="children_status"
+          control={form.control}
+          render={({ field }) => (
+            <SegmentedControl
+              id="children_status"
+              label="Tình trạng con cái"
+              hint="(tùy chọn, hỗ trợ luận cung Tử tức)"
+              value={field.value}
+              options={CHILDREN_OPTIONS}
+              onChange={field.onChange}
+              wrap
+              className="sm:col-span-2"
+            />
+          )}
+        />
       </div>
 
       {!isSolar ? (
@@ -274,27 +405,6 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
           thường gần nhất hoặc dùng lịch dương.
         </p>
       ) : null}
-
-      <details className="rounded-sm border border-[var(--line-soft)] p-3">
-        <summary className="cursor-pointer text-sm font-medium">Tùy chọn nâng cao</summary>
-        <div className="mt-3 max-w-xs">
-          <label htmlFor="timezone" className={labelClass}>
-            Múi giờ (mặc định +7)
-          </label>
-          <input
-            id="timezone"
-            type="number"
-            inputMode="numeric"
-            min={-12}
-            max={14}
-            className={fieldClass}
-            {...form.register("timezone", { valueAsNumber: true })}
-          />
-          {form.formState.errors.timezone ? (
-            <p className={errorClass}>{form.formState.errors.timezone.message}</p>
-          ) : null}
-        </div>
-      </details>
 
       {disabledSaveHint ? (
         <p className="text-sm text-[var(--ink-muted)]">{disabledSaveHint}</p>

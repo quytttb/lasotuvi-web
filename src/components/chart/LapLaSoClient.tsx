@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ChartWorkspace } from "@/components/chart/ChartWorkspace";
 import { consumeOpenChartId } from "@/components/saved/SavedChartsList";
+import type { BirthContext } from "@/lib/form/birth-context";
 import { birthInfoToFormValues, type BirthInfoRequest } from "@/lib/form/birth-schema";
 import type { ChartResponse } from "@/lib/chart/validate";
 import { getChart } from "@/lib/storage/repository";
@@ -21,6 +22,7 @@ export function LapLaSoClient() {
   const [initial, setInitial] = useState<{
     birthInput: BirthInfoRequest;
     chart: ChartResponse;
+    birthContext: BirthContext | null;
   } | null>(null);
   const [initialSavedId, setInitialSavedId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -39,7 +41,11 @@ export function LapLaSoClient() {
     void getChart(id)
       .then((saved) => {
         if (cancelled || !saved) return;
-        setInitial({ birthInput: saved.birthInput, chart: saved.chart });
+        setInitial({
+          birthInput: saved.birthInput,
+          chart: saved.chart,
+          birthContext: saved.birthContext ?? null,
+        });
         setInitialSavedId(saved.id);
       })
       .finally(() => {
@@ -61,7 +67,11 @@ export function LapLaSoClient() {
     <ChartWorkspace
       initial={initial}
       initialSavedId={initialSavedId}
-      initialFormValues={initial ? birthInfoToFormValues(initial.birthInput) : undefined}
+      initialFormValues={
+        initial
+          ? birthInfoToFormValues(initial.birthInput, initial.birthContext)
+          : undefined
+      }
     />
   );
 }

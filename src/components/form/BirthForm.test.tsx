@@ -26,8 +26,14 @@ describe("BirthForm", () => {
     render(<BirthForm onSuccess={() => undefined} />);
 
     expect(screen.getByLabelText(/Họ tên/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Giới tính/i)).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: /Giới tính/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/Giờ sinh/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^Quốc gia$/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Khu vực sinh/i)).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: /Tình trạng hôn nhân/i })).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: /Tình trạng con cái/i })).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Múi giờ/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Tùy chọn nâng cao/i)).not.toBeInTheDocument();
 
     await user.clear(screen.getByLabelText(/^Ngày$/i));
     await user.type(screen.getByLabelText(/^Ngày$/i), "31");
@@ -66,6 +72,53 @@ describe("BirthForm", () => {
       timezone: 7,
       name: "Test",
       view_year: expect.any(Number),
+    });
+    expect(body).not.toHaveProperty("birth_place");
+    expect(body).not.toHaveProperty("life_context");
+  });
+
+  it("submits birth_place and life_context when selected", async () => {
+    const user = userEvent.setup();
+    let body: Record<string, unknown> | undefined;
+    server.use(
+      http.post("http://localhost:8000/chart/generate", async ({ request }) => {
+        body = (await request.json()) as Record<string, unknown>;
+        return HttpResponse.json(sampleChart);
+      }),
+    );
+    render(<BirthForm onSuccess={() => undefined} />);
+
+    await user.selectOptions(screen.getByLabelText(/^Quốc gia$/i), "vn");
+    await user.click(screen.getByLabelText(/Khu vực sinh/i));
+    const placeRoot = screen.getByTestId("birth-place");
+    await user.type(within(placeRoot).getByRole("combobox"), "Hà Nội");
+    await user.click(within(placeRoot).getByRole("option", { name: "Hà Nội" }));
+    await user.click(
+      within(screen.getByRole("radiogroup", { name: /Tình trạng hôn nhân/i })).getByRole(
+        "radio",
+        { name: "Đã kết hôn" },
+      ),
+    );
+    await user.click(
+      within(screen.getByRole("radiogroup", { name: /Tình trạng con cái/i })).getByRole(
+        "radio",
+        { name: "Có con" },
+      ),
+    );
+    await user.click(screen.getByTestId("submit-chart"));
+
+    await waitFor(() => expect(body).toBeTruthy());
+    expect(body).toMatchObject({
+      timezone: 7,
+      birth_place: {
+        label: "Hà Nội",
+        longitude: 105.85,
+        latitude: 21.03,
+      },
+      life_context: {
+        marital_status: "married",
+        children_status: "has_children",
+      },
     });
   });
 
@@ -300,12 +353,13 @@ describe("ChartWorkspace save", () => {
     vi.spyOn(repo, "checkStorageAvailability").mockResolvedValue({ available: true });
     vi.spyOn(repo, "saveChart").mockResolvedValue({
       id: "1",
-      schemaVersion: 1,
+      schemaVersion: 2,
       title: "Nguyễn Văn A",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       birthInput: validateChartResponse(sampleChart).birth_info,
       chart: validateChartResponse(sampleChart),
+      birthContext: null,
     });
 
     render(<ChartWorkspace />);
@@ -339,18 +393,19 @@ describe("ChartWorkspace save", () => {
     const chart = validateChartResponse(sampleChart);
     const saveSpy = vi.spyOn(repo, "saveChart").mockResolvedValue({
       id: "existing-id",
-      schemaVersion: 1,
+      schemaVersion: 2,
       title: "Đã lưu",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       birthInput: chart.birth_info,
       chart,
+      birthContext: null,
     });
     vi.spyOn(repo, "checkStorageAvailability").mockResolvedValue({ available: true });
 
     render(
       <ChartWorkspace
-        initial={{ birthInput: chart.birth_info, chart }}
+        initial={{ birthInput: chart.birth_info, chart, birthContext: null }}
         initialSavedId="existing-id"
       />,
     );

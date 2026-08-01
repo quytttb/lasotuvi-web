@@ -1,13 +1,14 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 
+import type { BirthContext } from "@/lib/form/birth-context";
+import type { BirthInfoRequest } from "@/lib/form/birth-schema";
+import type { ChartResponse } from "@/lib/chart/validate";
 import {
   defaultTitleFromBirth,
   migrateSavedChart,
   SAVED_CHART_SCHEMA_VERSION,
   type SavedChart,
 } from "@/lib/storage/schema";
-import type { BirthInfoRequest } from "@/lib/form/birth-schema";
-import type { ChartResponse } from "@/lib/chart/validate";
 
 const DB_NAME = "lasotuvi-web";
 const DB_VERSION = 1;
@@ -81,6 +82,7 @@ function isQuotaError(error: unknown): boolean {
 export async function saveChart(params: {
   birthInput: BirthInfoRequest;
   chart: ChartResponse;
+  birthContext?: BirthContext | null;
   title?: string;
   id?: string;
 }): Promise<SavedChart> {
@@ -98,6 +100,7 @@ export async function saveChart(params: {
     updatedAt: now,
     birthInput: params.birthInput,
     chart: params.chart,
+    birthContext: params.birthContext ?? existing?.birthContext ?? null,
   };
 
   try {

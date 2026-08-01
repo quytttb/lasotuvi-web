@@ -41,7 +41,7 @@ describe("IndexedDB repository", () => {
     expect(await listCharts()).toHaveLength(0);
   });
 
-  it("rejects unsupported schemaVersion", () => {
+  it("rejects unsupported schemaVersion including legacy v1", () => {
     expect(() =>
       migrateSavedChart({
         id: "1",
@@ -53,6 +53,38 @@ describe("IndexedDB repository", () => {
         chart,
       }),
     ).toThrow(/chưa được hỗ trợ/);
+
+    expect(() =>
+      migrateSavedChart({
+        id: "legacy",
+        schemaVersion: 1,
+        title: "Legacy",
+        createdAt: "2026-01-01T00:00:00.000Z",
+        updatedAt: "2026-01-01T00:00:00.000Z",
+        birthInput,
+        chart,
+      }),
+    ).toThrow(/chưa được hỗ trợ/);
+  });
+
+  it("persists birthContext on save", async () => {
+    const saved = await saveChart({
+      birthInput,
+      chart,
+      title: "With context",
+      birthContext: {
+        birthCountry: "vn",
+        birthPlaceId: "vn-ha-noi",
+        maritalStatus: "married",
+        childrenStatus: "has_children",
+      },
+    });
+    expect((await getChart(saved.id))?.birthContext).toMatchObject({
+      birthCountry: "vn",
+      birthPlaceId: "vn-ha-noi",
+      maritalStatus: "married",
+      childrenStatus: "has_children",
+    });
   });
 
   it("does not silently overwrite on import", async () => {

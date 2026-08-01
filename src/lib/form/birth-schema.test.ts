@@ -37,7 +37,10 @@ describe("birth schemas", () => {
       year: 1990,
       hour: 7,
       view_year: 2026,
-      timezone: 7,
+      birth_country: "vn",
+      birth_place: "",
+      marital_status: "",
+      children_status: "",
     });
     expect(result.success).toBe(false);
   });
@@ -68,11 +71,63 @@ describe("birth schemas", () => {
       year: 1995,
       hour: 3,
       view_year: 2026,
-      timezone: 7,
+      birth_country: "vn",
+      birth_place: "",
+      marital_status: "",
+      children_status: "",
     });
     expect(info.gender).toBe(-1);
     expect(info.is_solar).toBe(false);
     expect(info.hour).toBe(3);
+    expect(info.timezone).toBe(7);
+    expect(info.birth_place).toBeUndefined();
+    expect(info.life_context).toBeUndefined();
+  });
+
+  it("sends birth_place, timezone and life_context from form", () => {
+    const info = formValuesToBirthInfo({
+      name: "",
+      gender: "1",
+      is_solar: "true",
+      day: 15,
+      month: 8,
+      year: 1990,
+      hour: 7,
+      view_year: 2026,
+      birth_country: "tw",
+      birth_place: "tw-taipei",
+      marital_status: "married",
+      children_status: "has_children",
+    });
+    expect(info.timezone).toBe(8);
+    expect(info.birth_place).toMatchObject({
+      label: "Đài Bắc",
+      longitude: 121.57,
+      latitude: 25.03,
+    });
+    expect(info.life_context).toEqual({
+      marital_status: "married",
+      children_status: "has_children",
+    });
+  });
+
+  it("derives timezone from country when place omitted", () => {
+    const info = formValuesToBirthInfo({
+      name: "",
+      gender: "1",
+      is_solar: "true",
+      day: 1,
+      month: 1,
+      year: 2000,
+      hour: 1,
+      view_year: 2026,
+      birth_country: "hk",
+      birth_place: "",
+      marital_status: "",
+      children_status: "",
+    });
+    expect(info.timezone).toBe(8);
+    expect(info.birth_place).toBeUndefined();
   });
 });
 
