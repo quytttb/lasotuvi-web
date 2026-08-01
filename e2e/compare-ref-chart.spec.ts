@@ -31,8 +31,6 @@ test("reference chart 2008-08-08 matches major an sao", async ({ page }) => {
   await expect(board).toContainText(/nghịch lý/i);
 
   // Life palace Mão + Thiên tướng; body at Thê
-  const menh = board.locator("[data-palace-index]").filter({ hasText: /^Mệnh/ });
-  // Use aria-label / palace cells
   const menhCell = board.locator('[data-palace-index="4"]');
   await expect(menhCell).toContainText("Mệnh");
   await expect(menhCell).toContainText("Mão");

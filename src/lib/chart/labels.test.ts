@@ -39,6 +39,8 @@ describe("chart labels", () => {
     expect(formatStarCodeLabel("wu_qu")).toBe("Vũ khúc");
     expect(formatStarCodeLabel("Tử vi")).toBe("Tử vi");
     expect(formatStarCodeLabel("palace_tone")).toBe("Luận cung");
+    expect(formatStarCodeLabel("fei_lian")).toBe("Phi liêm");
+    expect(formatStarCodeLabel("unknown_star_xyz")).toBe("unknown star xyz");
   });
 
   it("maps miao_wang codes and prefers label", () => {

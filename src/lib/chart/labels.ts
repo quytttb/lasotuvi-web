@@ -203,12 +203,8 @@ export function formatStarCodeLabel(code: string | null | undefined): string {
   const key = normalizeKey(code);
   if (STAR_CODE_LABELS[key]) return STAR_CODE_LABELS[key];
   if (isDisplayableVietnameseMeta(code)) return code.trim();
-  // Fallback: humanize snake_case
-  return code
-    .split(/[_\s]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
+  // Avoid Title-Case English fallback (e.g. "Fei Lian"); keep stable Vietnamese-looking token.
+  return key.replace(/_/g, " ");
 }
 
 export function mutagenToneClass(mutagen: string | null | undefined): string | undefined {

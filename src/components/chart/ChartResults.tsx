@@ -18,9 +18,18 @@ type ChartResultsProps = {
 
 function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
   const tone = getPalaceTonePresentation(palace);
-  const otherInterps = (palace.interpretations ?? []).filter(
-    (item) => item.star !== "palace_tone",
-  );
+  const otherInterps = useMemo(() => {
+    const seen = new Set<string>();
+    const items: NonNullable<PalaceInfo["interpretations"]> = [];
+    for (const item of palace.interpretations ?? []) {
+      if (item.star === "palace_tone") continue;
+      const key = item.star.trim().toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      items.push(item);
+    }
+    return items;
+  }, [palace.interpretations]);
   const hasMajorStars = palace.stars.some(
     (s) => s.category === 1 || s.category_label === "major_star",
   );
@@ -57,8 +66,8 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
             : "Cung vô chính diệu — chưa có chính tinh đóng cung; xem Luận cung ở trên và mượn chính tinh cung xung chiếu để tham khảo."}
         </p>
       ) : (
-        otherInterps.map((item) => (
-          <div key={`${palace.index}-${item.star}`}>
+        otherInterps.map((item, index) => (
+          <div key={`${palace.index}-${item.star}-${index}`}>
             <p className={cn("font-medium text-[var(--ink)]")}>
               {formatStarCodeLabel(item.star)}
             </p>
