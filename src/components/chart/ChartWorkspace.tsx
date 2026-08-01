@@ -95,9 +95,7 @@ export function ChartWorkspace({
         onSuccess={onSuccess}
         initialValues={
           initialFormValues ??
-          (initial
-            ? birthInfoToFormValues(initial.birthInput, initial.birthContext)
-            : undefined)
+          (initial ? birthInfoToFormValues(initial.birthInput, initial.birthContext) : undefined)
         }
         disabledSaveHint={
           storageDisabled

@@ -149,15 +149,11 @@ function palaceContextHint(
   const name = (palace.palace_name ?? "").trim().toLowerCase();
   if (name === "phu thê") {
     const label = maritalStatusLabel(birthContext.maritalStatus);
-    return label
-      ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Phu thê.`
-      : null;
+    return label ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Phu thê.` : null;
   }
   if (name === "tử tức") {
     const label = childrenStatusLabel(birthContext.childrenStatus);
-    return label
-      ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Tử tức.`
-      : null;
+    return label ? `Ngữ cảnh người xem: ${label} — cân nhắc khi luận cung Tử tức.` : null;
   }
   return null;
 }
@@ -171,9 +167,7 @@ function PalaceInterpretations({
 }) {
   const tone = getPalaceTonePresentation(palace);
   const mutagenNote = palace.interpretations?.find((item) => item.star === "mutagen_note");
-  const lifeContextNote = palace.interpretations?.find(
-    (item) => item.star === "life_context_note",
-  );
+  const lifeContextNote = palace.interpretations?.find((item) => item.star === "life_context_note");
   const contextHint = palaceContextHint(palace, birthContext);
 
   const { majorInterps, minorInterps } = useMemo(() => {
@@ -243,9 +237,7 @@ function PalaceInterpretations({
         </p>
       </div>
 
-      {mutagenNote?.interpretation ? (
-        <MutagenNoteBlock text={mutagenNote.interpretation} />
-      ) : null}
+      {mutagenNote?.interpretation ? <MutagenNoteBlock text={mutagenNote.interpretation} /> : null}
 
       {!hasAnyInterp ? (
         <p className="text-sm text-[var(--ink-muted)]">
@@ -341,7 +333,10 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
       </div>
       <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">{reading.text}</p>
       {reading.disclaimer ? (
-        <p className="mt-2 text-[0.7rem] leading-snug text-[var(--ink-muted)]" data-testid="period-disclaimer">
+        <p
+          className="mt-2 text-[0.7rem] leading-snug text-[var(--ink-muted)]"
+          data-testid="period-disclaimer"
+        >
           {reading.disclaimer}
         </p>
       ) : null}
@@ -362,11 +357,10 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
   const hourApplied = meta?.hour_applied;
   const hourBranchLabel =
     hourApplied != null
-      ? HOUR_BRANCHES.find((h) => h.value === hourApplied)?.label ?? `Giờ ${hourApplied}`
+      ? (HOUR_BRANCHES.find((h) => h.value === hourApplied)?.label ?? `Giờ ${hourApplied}`)
       : null;
   const formations = chart.formations.length > 0 ? chart.formations : chart.earth_plate.formations;
-  const overview =
-    chart.overview.length > 0 ? chart.overview : (chart.earth_plate.overview ?? []);
+  const overview = chart.overview.length > 0 ? chart.overview : (chart.earth_plate.overview ?? []);
   const periodReadings =
     chart.period_readings.length > 0
       ? chart.period_readings

@@ -35,10 +35,7 @@ const apiBirthPlaceSchema = z.object({
 });
 
 const apiLifeContextSchema = z.object({
-  marital_status: z
-    .enum(["single", "married", "divorced", "remarried"])
-    .nullable()
-    .optional(),
+  marital_status: z.enum(["single", "married", "divorced", "remarried"]).nullable().optional(),
   children_status: z.enum(["has_children", "no_children"]).nullable().optional(),
 });
 
@@ -162,9 +159,7 @@ export function mapGenderToLabel(gender: 1 | -1): string {
   return gender === 1 ? "Nam" : "Nữ";
 }
 
-function buildLifeContext(
-  values: BirthFormValues,
-): BirthInfoRequest["life_context"] | undefined {
+function buildLifeContext(values: BirthFormValues): BirthInfoRequest["life_context"] | undefined {
   const marital = values.marital_status || null;
   const children = values.children_status || null;
   if (!marital && !children) return undefined;

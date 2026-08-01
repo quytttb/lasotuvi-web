@@ -39,9 +39,7 @@ export function SegmentedControl<T extends string>({
     <div className={cn("min-w-0", className)}>
       <p id={labelId} className="mb-1 text-sm font-medium text-[var(--ink)]">
         {label}
-        {hint ? (
-          <span className="font-normal text-[var(--ink-muted)]"> {hint}</span>
-        ) : null}
+        {hint ? <span className="font-normal text-[var(--ink-muted)]"> {hint}</span> : null}
       </p>
       <div
         role="radiogroup"

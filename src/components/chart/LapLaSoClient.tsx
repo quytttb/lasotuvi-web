@@ -68,9 +68,7 @@ export function LapLaSoClient() {
       initial={initial}
       initialSavedId={initialSavedId}
       initialFormValues={
-        initial
-          ? birthInfoToFormValues(initial.birthInput, initial.birthContext)
-          : undefined
+        initial ? birthInfoToFormValues(initial.birthInput, initial.birthContext) : undefined
       }
     />
   );

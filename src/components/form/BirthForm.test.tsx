@@ -94,16 +94,14 @@ describe("BirthForm", () => {
     await user.type(within(placeRoot).getByRole("combobox"), "Hà Nội");
     await user.click(within(placeRoot).getByRole("option", { name: "Hà Nội" }));
     await user.click(
-      within(screen.getByRole("radiogroup", { name: /Tình trạng hôn nhân/i })).getByRole(
-        "radio",
-        { name: "Đã kết hôn" },
-      ),
+      within(screen.getByRole("radiogroup", { name: /Tình trạng hôn nhân/i })).getByRole("radio", {
+        name: "Đã kết hôn",
+      }),
     );
     await user.click(
-      within(screen.getByRole("radiogroup", { name: /Tình trạng con cái/i })).getByRole(
-        "radio",
-        { name: "Có con" },
-      ),
+      within(screen.getByRole("radiogroup", { name: /Tình trạng con cái/i })).getByRole("radio", {
+        name: "Có con",
+      }),
     );
     await user.click(screen.getByTestId("submit-chart"));
 

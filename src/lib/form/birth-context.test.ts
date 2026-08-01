@@ -6,11 +6,7 @@ import {
   longitudeCorrectionMinutes,
   summarizeBirthContext,
 } from "@/lib/form/birth-context";
-import {
-  BIRTH_PLACES,
-  getBirthPlace,
-  placesForCountry,
-} from "@/lib/form/birth-places";
+import { BIRTH_PLACES, getBirthPlace, placesForCountry } from "@/lib/form/birth-places";
 
 describe("birth places catalog", () => {
   it("covers all VN provinces/cities", () => {
