@@ -77,6 +77,7 @@ const CATEGORY_LABELS: Record<string, string> = {
  * Aligned with backend `iztro_adapter._STAR_ROWS`.
  */
 const STAR_CODE_LABELS: Record<string, string> = {
+  palace_tone: "Luận cung",
   zi_wei: "Tử vi",
   lian_zhen: "Liêm trinh",
   tian_tong: "Thiên đồng",

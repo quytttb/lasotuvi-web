@@ -63,8 +63,8 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
       <div className="flex flex-1 flex-col gap-1.5">
         {majorStars.length > 0 ? (
           <div className="flex flex-col gap-0.5">
-            {majorStars.map((star) => (
-              <StarBadge key={`m-${star.id}-${star.name}`} star={star} />
+            {majorStars.map((star, index) => (
+              <StarBadge key={`m-${palace.index}-${star.id}-${index}`} star={star} />
             ))}
           </div>
         ) : (
@@ -73,8 +73,8 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
 
         {otherStars.length > 0 ? (
           <div className="flex flex-wrap gap-x-2 gap-y-0.5 border-t border-dashed border-[var(--line-soft)] pt-1.5">
-            {otherStars.map((star) => (
-              <StarBadge key={`o-${star.id}-${star.name}`} star={star} />
+            {otherStars.map((star, index) => (
+              <StarBadge key={`o-${palace.index}-${star.id}-${index}`} star={star} />
             ))}
           </div>
         ) : null}

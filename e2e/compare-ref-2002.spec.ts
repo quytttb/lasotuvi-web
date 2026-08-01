@@ -50,6 +50,12 @@ test("reference chart 2002-02-24 matches major an sao", async ({ page }) => {
   await expect(board).toContainText("Hóa Khoa");
   await expect(board).toContainText("Hóa Kỵ");
 
+  // Palace tone / support effect from generate (no /chart/analyze)
+  await page.getByRole("button", { name: /Mệnh/i }).first().click();
+  await expect(page.getByTestId("palace-tone").first()).toBeVisible();
+  await expect(page.getByTestId("palace-tone").first()).toContainText("Luận cung");
+  await expect(page.getByTestId("support-effect").first()).toBeVisible();
+
   await page.screenshot({
     path: "/tmp/lasotuvi-test/compare-2002-our-board.png",
     fullPage: false,

@@ -8,12 +8,69 @@ import {
   formatBranchPinyinLabel,
   formatStarCodeLabel,
 } from "@/lib/chart/labels";
-import type { ChartResponse } from "@/lib/chart/validate";
+import { getPalaceTonePresentation, supportEffectToneClass } from "@/lib/chart/palace-tone";
+import type { ChartResponse, PalaceInfo } from "@/lib/chart/validate";
 import { cn } from "@/lib/utils/cn";
 
 type ChartResultsProps = {
   chart: ChartResponse;
 };
+
+function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
+  const tone = getPalaceTonePresentation(palace);
+  const otherInterps = (palace.interpretations ?? []).filter(
+    (item) => item.star !== "palace_tone",
+  );
+  const hasMajorStars = palace.stars.some(
+    (s) => s.category === 1 || s.category_label === "major_star",
+  );
+
+  return (
+    <div className="space-y-3">
+      <div
+        className="rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 py-3"
+        data-testid="palace-tone"
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="font-medium text-[var(--ink)]">Luận cung</p>
+          <span
+            className={cn(
+              "inline-flex rounded-sm border px-1.5 py-0.5 text-[0.7rem] font-medium",
+              supportEffectToneClass(tone.effect),
+            )}
+            data-testid="support-effect"
+            data-effect={tone.effect}
+          >
+            {tone.effectLabel}
+          </span>
+        </div>
+        <p className="mt-2 whitespace-pre-wrap text-sm text-[var(--ink-soft)]">{tone.note}</p>
+        <p className="mt-2 text-[0.7rem] text-[var(--ink-muted)]">
+          Không tuyệt đối hóa Miếu/Hãm — độ sáng chính tinh xét cùng phụ tinh trong cung.
+        </p>
+      </div>
+
+      {otherInterps.length === 0 ? (
+        <p className="text-sm text-[var(--ink-muted)]">
+          {hasMajorStars
+            ? "Chưa có luận giải sao riêng cho cung này."
+            : "Cung vô chính diệu — chưa có chính tinh đóng cung; xem Luận cung ở trên và mượn chính tinh cung xung chiếu để tham khảo."}
+        </p>
+      ) : (
+        otherInterps.map((item) => (
+          <div key={`${palace.index}-${item.star}`}>
+            <p className={cn("font-medium text-[var(--ink)]")}>
+              {formatStarCodeLabel(item.star)}
+            </p>
+            <p className="mt-1 whitespace-pre-wrap text-[var(--ink-soft)]">
+              {item.interpretation}
+            </p>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
 
 export function ChartResults({ chart }: ChartResultsProps) {
   const palaces = useMemo(
@@ -82,28 +139,14 @@ export function ChartResults({ chart }: ChartResultsProps) {
           Luận giải từng cung
         </h3>
         <Accordion
-          items={palaces.map((palace) => ({
-            id: String(palace.index),
-            title: `${palace.palace_name ?? `Cung ${palace.index}`} — ${palace.branch_name}`,
-            content: (
-              <div className="space-y-3">
-                {(palace.interpretations?.length ?? 0) === 0 ? (
-                  <p className="text-[var(--ink-muted)]">Chưa có luận giải cho cung này.</p>
-                ) : (
-                  palace.interpretations.map((item) => (
-                    <div key={`${palace.index}-${item.star}`}>
-                      <p className={cn("font-medium text-[var(--ink)]")}>
-                        {formatStarCodeLabel(item.star)}
-                      </p>
-                      <p className="mt-1 whitespace-pre-wrap text-[var(--ink-soft)]">
-                        {item.interpretation}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div>
-            ),
-          }))}
+          items={palaces.map((palace) => {
+            const tone = getPalaceTonePresentation(palace);
+            return {
+              id: String(palace.index),
+              title: `${palace.palace_name ?? `Cung ${palace.index}`} — ${palace.branch_name} · ${tone.effectLabel}`,
+              content: <PalaceInterpretations palace={palace} />,
+            };
+          })}
         />
       </section>
     </section>
