@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { birthFormSchema, birthInfoSchema, formValuesToBirthInfo, mapGenderToApi } from "@/lib/form/birth-schema";
+import {
+  birthFormSchema,
+  birthInfoSchema,
+  formValuesToBirthInfo,
+  mapGenderToApi,
+} from "@/lib/form/birth-schema";
 import { HOUR_BRANCHES } from "@/lib/form/hours";
 import { getPalaceGridStyle, PALACE_GRID_POSITION } from "@/lib/chart/palace-grid";
 import { safeValidateChartResponse } from "@/lib/chart/validate";
@@ -96,7 +101,9 @@ describe("chart validation", () => {
 
   it("rejects missing palace", () => {
     const bad = structuredClone(sampleChart);
-    bad.earth_plate.palaces = bad.earth_plate.palaces.filter((p: { index: number }) => p.index !== 5);
+    bad.earth_plate.palaces = bad.earth_plate.palaces.filter(
+      (p: { index: number }) => p.index !== 5,
+    );
     const result = safeValidateChartResponse(bad);
     expect(result.ok).toBe(false);
   });

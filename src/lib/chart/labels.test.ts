@@ -56,6 +56,10 @@ describe("chart labels", () => {
 
   it("rejects engine placeholder meta", () => {
     expect(isDisplayableVietnameseMeta("O")).toBe(false);
+    expect(isDisplayableVietnameseMeta("K")).toBe(false);
+    expect(isDisplayableVietnameseMeta("M")).toBe(false);
+    expect(isDisplayableVietnameseMeta("kim")).toBe(false);
     expect(isDisplayableVietnameseMeta("LỘ BÀN THỔ")).toBe(true);
+    expect(isDisplayableVietnameseMeta("BẠCH LẠP KIM")).toBe(true);
   });
 });

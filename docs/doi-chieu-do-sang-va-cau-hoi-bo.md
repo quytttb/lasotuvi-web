@@ -1,29 +1,23 @@
-# Đối chiếu độ sáng (Miếu/Vượng/Đắc/Hãm) 
+# Đối chiếu độ sáng (Miếu/Vượng/Đắc/Hãm)
 
 ---
 
-
-
 ## Bảng lệch (iztro mẫu tuvivietnam)
 
-
-| Chính tinh  | Đóng tại | Mẫu iztro   | Mẫu tuvivietnam | Ghi chú                             |
-| ----------- | -------- | ----------- | --------------- | ----------------------------------- |
-| Thiên cơ    | Ngọ      | **Miếu**    | Đắc             | Mẫu “xuống” 1 bậc                   |
-| Tử vi       | Mùi      | **Miếu**    | Đắc             | Mẫu “xuống” 1 bậc                   |
-| Thiên phủ   | Dậu      | **Vượng**   | Bình            | Lệch rõ                             |
-| Thái âm     | Tuất     | **Vượng**   | Miếu            | Mẫu “lên” 1 bậc                     |
-| Thiên tướng | Sửu      | **Miếu**    | Đắc             | Mẫu “xuống” 1 bậc                   |
+| Chính tinh  | Đóng tại | Mẫu iztro    | Mẫu tuvivietnam | Ghi chú                             |
+| ----------- | -------- | ------------ | --------------- | ----------------------------------- |
+| Thiên cơ    | Ngọ      | **Miếu**     | Đắc             | Mẫu “xuống” 1 bậc                   |
+| Tử vi       | Mùi      | **Miếu**     | Đắc             | Mẫu “xuống” 1 bậc                   |
+| Thiên phủ   | Dậu      | **Vượng**    | Bình            | Lệch rõ                             |
+| Thái âm     | Tuất     | **Vượng**    | Miếu            | Mẫu “lên” 1 bậc                     |
+| Thiên tướng | Sửu      | **Miếu**     | Đắc             | Mẫu “xuống” 1 bậc                   |
 | Thiên đồng  | Dần      | **Đắc** (利) | Miếu            | Mẫu “lên”                           |
-| Thiên lương | Dần      | **Miếu**    | Vượng           | Mẫu “xuống”                         |
-| Thất sát    | Mão      | **Vượng**   | **Hãm**         | Lệch mạnh nhất — nghi mẫu/phái khác |
-
+| Thiên lương | Dần      | **Miếu**     | Vượng           | Mẫu “xuống”                         |
+| Thất sát    | Mão      | **Vượng**    | **Hãm**         | Lệch mạnh nhất — nghi mẫu/phái khác |
 
 6 chỗ còn lại trên lá số mẫu **khớp** iztro (ví dụ Phá quân @ Mùi = Vượng, Liêm trinh/Tham lang @ Hợi = Hãm, Cự môn @ Tý = Vượng, Vũ khúc @ Mão = Đắc, Thái Dương @ Thìn = Vượng).
 
 ---
-
-
 
 ## Câu hỏi xin bố chỉ giáo
 
@@ -41,13 +35,12 @@
 
 **Phép luận chính–phụ (cộng hưởng / phản lực):**
 
-| Chính | Phụ | Hệ quả |
-|---|---|---|
-| Sáng | Sáng | Càng sáng (cộng hưởng) |
-| Sáng | Tối | Càng tối (phản lực / biến chất) |
-| Tối | Sáng | Cứu / sáng dần (hãm + phụ tốt) |
-| Cực sáng | — | Dễ tối dần (cực tắc phản) |
-| Cực tối | — | Dễ sáng dần (cực tắc phản) |
+| Chính    | Phụ  | Hệ quả                          |
+| -------- | ---- | ------------------------------- |
+| Sáng     | Sáng | Càng sáng (cộng hưởng)          |
+| Sáng     | Tối  | Càng tối (phản lực / biến chất) |
+| Tối      | Sáng | Cứu / sáng dần (hãm + phụ tốt)  |
+| Cực sáng | —    | Dễ tối dần (cực tắc phản)       |
+| Cực tối  | —    | Dễ sáng dần (cực tắc phản)      |
 
 Chữ độ sáng trên từng sao là **điểm xuất phát**; kết luận nằm ở **tổ hợp chính–phụ** và nguyên tắc **cực đoan đảo chiều**. App nên nhấn **Luận cung**, không tuyệt đối hóa một chữ Miếu/Hãm.
-

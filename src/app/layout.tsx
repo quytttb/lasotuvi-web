@@ -35,8 +35,7 @@ export const metadata: Metadata = {
     locale: "vi_VN",
     siteName: "LasoTuVi",
     title: "LasoTuVi — Lập lá số Tử Vi trực tuyến",
-    description:
-      "Lập và xem lá số 12 cung. Dữ liệu chỉ lưu trên trình duyệt khi bạn chọn lưu.",
+    description: "Lập và xem lá số 12 cung. Dữ liệu chỉ lưu trên trình duyệt khi bạn chọn lưu.",
   },
   robots: {
     index: true,

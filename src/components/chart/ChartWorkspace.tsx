@@ -26,10 +26,17 @@ type WorkspaceState = {
 type ChartWorkspaceProps = {
   initial?: WorkspaceState;
   initialFormValues?: BirthFormValues;
+  /** When opening a saved chart, pass its id so "Lưu" updates instead of inserting a duplicate. */
+  initialSavedId?: string | null;
 };
 
-export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorkspaceProps) {
+export function ChartWorkspace({
+  initial = null,
+  initialFormValues,
+  initialSavedId = null,
+}: ChartWorkspaceProps) {
   const [result, setResult] = useState<WorkspaceState>(initial);
+  const [savedId, setSavedId] = useState<string | null>(initialSavedId);
   const [storage, setStorage] = useState<StorageAvailability | null>(null);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -41,11 +48,14 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
 
   const onSuccess = useCallback((payload: NonNullable<WorkspaceState>) => {
     setResult(payload);
+    setSavedId(null);
     setSaveMessage(null);
     setSaveError(null);
     // Scroll results into view without putting birth info in URL.
     requestAnimationFrame(() => {
-      document.getElementById("chart-results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document
+        .getElementById("chart-results")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }, []);
 
@@ -56,10 +66,12 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
     setSaveMessage(null);
     try {
       const saved = await saveChart({
+        id: savedId ?? undefined,
         birthInput: result.birthInput,
         chart: result.chart,
         title: defaultTitleFromBirth(result.birthInput),
       });
+      setSavedId(saved.id);
       setSaveMessage(`Đã lưu “${saved.title}” trên thiết bị này.`);
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : "Không thể lưu lá số.");
@@ -79,8 +91,7 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
       <BirthForm
         onSuccess={onSuccess}
         initialValues={
-          initialFormValues ??
-          (initial ? birthInfoToFormValues(initial.birthInput) : undefined)
+          initialFormValues ?? (initial ? birthInfoToFormValues(initial.birthInput) : undefined)
         }
         disabledSaveHint={
           storageDisabled
@@ -100,17 +111,30 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
             >
               {saving ? "Đang lưu…" : "Lưu lá số"}
             </Button>
-            <Button type="button" variant="secondary" onClick={handlePrint} data-testid="print-chart">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handlePrint}
+              data-testid="print-chart"
+            >
               In / Lưu PDF
             </Button>
           </div>
           {saveMessage ? (
-            <p className="print:hidden text-sm text-[var(--wood)]" role="status" data-testid="save-success">
+            <p
+              className="print:hidden text-sm text-[var(--wood)]"
+              role="status"
+              data-testid="save-success"
+            >
               {saveMessage}
             </p>
           ) : null}
           {saveError ? (
-            <p className="print:hidden text-sm text-[var(--fire)]" role="alert" data-testid="save-error">
+            <p
+              className="print:hidden text-sm text-[var(--fire)]"
+              role="alert"
+              data-testid="save-error"
+            >
               {saveError}
             </p>
           ) : null}

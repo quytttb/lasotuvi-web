@@ -22,7 +22,8 @@ export default function GioiThieuPage() {
         <h2 className="font-serif text-xl">Nguồn dữ liệu</h2>
         <p className="text-[var(--ink-soft)] leading-relaxed">
           Ứng dụng gọi trực tiếp LasoTuVi API ({apiUrl}) để lập lá số. Không có proxy hay Server
-          Actions trung gian. Endpoint chính của MVP: <code className="text-sm">POST /chart/generate</code>.
+          Actions trung gian. Endpoint chính của MVP:{" "}
+          <code className="text-sm">POST /chart/generate</code>.
         </p>
         {backendRepo ? (
           <p>
@@ -42,9 +43,9 @@ export default function GioiThieuPage() {
       <section className="mt-8 space-y-3">
         <h2 className="font-serif text-xl">Quyền riêng tư</h2>
         <p className="text-[var(--ink-soft)] leading-relaxed">
-          Khi bạn lập lá số, thông tin ngày giờ sinh được gửi tới API công khai để tính toán. Frontend
-          không lưu dữ liệu người dùng trên server riêng. Chỉ khi bạn nhấn “Lưu lá số”, bản ghi mới
-          được ghi vào IndexedDB trên trình duyệt hiện tại.
+          Khi bạn lập lá số, thông tin ngày giờ sinh được gửi tới API công khai để tính toán.
+          Frontend không lưu dữ liệu người dùng trên server riêng. Chỉ khi bạn nhấn “Lưu lá số”, bản
+          ghi mới được ghi vào IndexedDB trên trình duyệt hiện tại.
         </p>
         <p className="text-[var(--ink-soft)] leading-relaxed">
           Không analytics trong MVP. Không đưa dữ liệu sinh vào URL hay nhật ký phía client ở chế độ

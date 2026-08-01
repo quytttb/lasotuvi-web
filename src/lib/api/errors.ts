@@ -138,8 +138,7 @@ export function normalizeApiError(params: {
   }
 
   if (status === 400) {
-    const message =
-      safeString(detail) ?? errorField ?? fallbackMessage ?? "Yêu cầu không hợp lệ.";
+    const message = safeString(detail) ?? errorField ?? fallbackMessage ?? "Yêu cầu không hợp lệ.";
     return {
       status,
       code: "bad_request",
@@ -150,9 +149,7 @@ export function normalizeApiError(params: {
 
   if (status === 429) {
     const message =
-      safeString(detail) ??
-      errorField ??
-      "Bạn đã gửi quá nhiều yêu cầu. Vui lòng chờ rồi thử lại.";
+      safeString(detail) ?? errorField ?? "Bạn đã gửi quá nhiều yêu cầu. Vui lòng chờ rồi thử lại.";
     return {
       status,
       code: "rate_limited",
@@ -179,8 +176,7 @@ export function normalizeApiError(params: {
     return {
       status,
       code: "server_error",
-      message:
-        (safeString(detail) ?? errorField ?? "Máy chủ gặp lỗi khi lập lá số.") + idNote,
+      message: (safeString(detail) ?? errorField ?? "Máy chủ gặp lỗi khi lập lá số.") + idNote,
       requestId: bodyRequestId,
     };
   }

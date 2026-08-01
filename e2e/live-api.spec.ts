@@ -6,9 +6,7 @@ import { expect, test } from "@playwright/test";
  *   pnpm exec playwright test e2e/live-api.spec.ts --project=chromium
  */
 test.describe("Live API integration", () => {
-  test("form submit calls real /chart/generate and renders board", async ({
-    page,
-  }) => {
+  test("form submit calls real /chart/generate and renders board", async ({ page }) => {
     test.skip(!!process.env.CI, "Requires live LasoTuVi API; not in mocked CI suite");
     const apiCalls: { url: string; status: number }[] = [];
     page.on("response", (response) => {
@@ -29,9 +27,7 @@ test.describe("Live API integration", () => {
       timeout: 60_000,
     });
     await expect(page.getByTestId("chart-board")).toBeVisible();
-    await expect(
-      page.getByTestId("chart-board").locator("[data-palace-index]"),
-    ).toHaveCount(12);
+    await expect(page.getByTestId("chart-board").locator("[data-palace-index]")).toHaveCount(12);
 
     expect(apiCalls.length).toBeGreaterThanOrEqual(1);
     expect(apiCalls[0]?.url).toContain("/chart/generate");

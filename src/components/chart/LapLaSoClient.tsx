@@ -22,6 +22,7 @@ export function LapLaSoClient() {
     birthInput: BirthInfoRequest;
     chart: ChartResponse;
   } | null>(null);
+  const [initialSavedId, setInitialSavedId] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export function LapLaSoClient() {
       .then((saved) => {
         if (cancelled || !saved) return;
         setInitial({ birthInput: saved.birthInput, chart: saved.chart });
+        setInitialSavedId(saved.id);
       })
       .finally(() => {
         if (!cancelled) {
@@ -58,6 +60,7 @@ export function LapLaSoClient() {
   return (
     <ChartWorkspace
       initial={initial}
+      initialSavedId={initialSavedId}
       initialFormValues={initial ? birthInfoToFormValues(initial.birthInput) : undefined}
     />
   );

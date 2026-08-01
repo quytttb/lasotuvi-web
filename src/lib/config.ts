@@ -22,6 +22,16 @@ export function getBackendRepoUrl(): string | null {
   return raw ? raw : "https://github.com/quytttb/lasotuvi";
 }
 
+export function getFrontendRepoUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_FRONTEND_REPO_URL?.trim();
+  return raw ? raw : "https://github.com/quytttb/lasotuvi-web";
+}
+
+export function getContactEmail(): string {
+  const raw = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
+  return raw ? raw : "quyquaquyet02tx@gmail.com";
+}
+
 export function joinApiUrl(path: string): string {
   const base = getApiBaseUrl();
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;

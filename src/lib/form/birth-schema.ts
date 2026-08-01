@@ -18,9 +18,29 @@ export const hourSchema = z.union([
 
 function isValidGregorianDate(year: number, month: number, day: number): boolean {
   const d = new Date(Date.UTC(year, month - 1, day));
-  return (
-    d.getUTCFullYear() === year && d.getUTCMonth() === month - 1 && d.getUTCDate() === day
-  );
+  return d.getUTCFullYear() === year && d.getUTCMonth() === month - 1 && d.getUTCDate() === day;
+}
+
+/** Shared Gregorian/lunar day checks for birthInfo and birthForm schemas. */
+function refineBirthDate(
+  data: { year: number; month: number; day: number; isSolar: boolean },
+  ctx: z.RefinementCtx,
+) {
+  if (data.isSolar) {
+    if (!isValidGregorianDate(data.year, data.month, data.day)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["day"],
+        message: "Ngày dương lịch không hợp lệ (kiểm tra tháng và năm nhuận).",
+      });
+    }
+  } else if (data.day > 30) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["day"],
+      message: "Ngày âm lịch phải từ 1 đến 30.",
+    });
+  }
 }
 
 export const birthInfoSchema = z
@@ -42,21 +62,10 @@ export const birthInfoSchema = z
     view_year: z.number().int().min(1900).max(2200),
   })
   .superRefine((data, ctx) => {
-    if (data.is_solar) {
-      if (!isValidGregorianDate(data.year, data.month, data.day)) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["day"],
-          message: "Ngày dương lịch không hợp lệ (kiểm tra tháng và năm nhuận).",
-        });
-      }
-    } else if (data.day > 30) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["day"],
-        message: "Ngày âm lịch phải từ 1 đến 30.",
-      });
-    }
+    refineBirthDate(
+      { year: data.year, month: data.month, day: data.day, isSolar: data.is_solar },
+      ctx,
+    );
   });
 
 export type BirthInfoRequest = z.infer<typeof birthInfoSchema>;
@@ -75,22 +84,15 @@ export const birthFormSchema = z
     timezone: z.number().int().min(-12).max(14),
   })
   .superRefine((data, ctx) => {
-    const isSolar = data.is_solar === "true";
-    if (isSolar) {
-      if (!isValidGregorianDate(data.year, data.month, data.day)) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["day"],
-          message: "Ngày dương lịch không hợp lệ (kiểm tra tháng và năm nhuận).",
-        });
-      }
-    } else if (data.day > 30) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["day"],
-        message: "Ngày âm lịch phải từ 1 đến 30.",
-      });
-    }
+    refineBirthDate(
+      {
+        year: data.year,
+        month: data.month,
+        day: data.day,
+        isSolar: data.is_solar === "true",
+      },
+      ctx,
+    );
     if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(data.hour)) {
       ctx.addIssue({
         code: "custom",

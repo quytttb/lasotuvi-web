@@ -136,11 +136,11 @@ Máy chủ miễn phí có thể ngủ. UI hiện gợi ý sau ~8s và ~30s; tim
 
 ## Scripts
 
-| Script | Mô tả |
-|---|---|
-| `dev` | Dev server |
-| `build` / `start` | Production |
-| `lint` / `typecheck` | Chất lượng mã |
-| `test` / `test:watch` | Unit + component |
-| `test:e2e` | Playwright |
-| `api:types` | Cập nhật OpenAPI snapshot |
+| Script                | Mô tả                     |
+| --------------------- | ------------------------- |
+| `dev`                 | Dev server                |
+| `build` / `start`     | Production                |
+| `lint` / `typecheck`  | Chất lượng mã             |
+| `test` / `test:watch` | Unit + component          |
+| `test:e2e`            | Playwright                |
+| `api:types`           | Cập nhật OpenAPI snapshot |

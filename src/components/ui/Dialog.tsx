@@ -12,21 +12,66 @@ type DialogProps = {
   onClose: () => void;
   children: React.ReactNode;
   className?: string;
+  /** Hide the default footer "Đóng" when children already provide actions. */
+  hideCloseButton?: boolean;
 };
 
-export function Dialog({ open, title, description, onClose, children, className }: DialogProps) {
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+export function Dialog({
+  open,
+  title,
+  description,
+  onClose,
+  children,
+  className,
+  hideCloseButton = false,
+}: DialogProps) {
   const titleId = useId();
   const descId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
+
+    const panel = panelRef.current;
     const previous = document.activeElement as HTMLElement | null;
-    panelRef.current?.focus();
+    panel?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panel) return;
+
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+        (el) => !el.hasAttribute("disabled") && el.tabIndex !== -1,
+      );
+
+      if (focusable.length === 0) {
+        e.preventDefault();
+        panel.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (e.shiftKey) {
+        if (active === first || active === panel) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       previous?.focus?.();
@@ -65,11 +110,13 @@ export function Dialog({ open, title, description, onClose, children, className 
           </p>
         ) : null}
         <div className="mt-4">{children}</div>
-        <div className="mt-4 flex justify-end">
-          <Button variant="ghost" onClick={onClose}>
-            Đóng
-          </Button>
-        </div>
+        {hideCloseButton ? null : (
+          <div className="mt-4 flex justify-end">
+            <Button variant="ghost" onClick={onClose}>
+              Đóng
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

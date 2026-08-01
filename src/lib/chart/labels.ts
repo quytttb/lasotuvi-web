@@ -10,20 +10,20 @@ const MUTAGEN_LABELS: Record<string, string> = {
 const ELEMENT_LABELS: Record<string, string> = {
   moc: "Mộc",
   mộc: "Mộc",
-  "木": "Mộc",
+  木: "Mộc",
   hoa: "Hỏa",
   hỏa: "Hỏa",
   hoả: "Hỏa",
-  "火": "Hỏa",
+  火: "Hỏa",
   tho: "Thổ",
   thổ: "Thổ",
-  "土": "Thổ",
+  土: "Thổ",
   kim: "Kim",
-  "金": "Kim",
+  金: "Kim",
   thuy: "Thủy",
   thủy: "Thủy",
   thuỷ: "Thủy",
-  "水": "Thủy",
+  水: "Thủy",
 };
 
 /** Địa chi pinyin (taboo_palaces, …) → Hán Việt. */
@@ -155,11 +155,10 @@ export function isDisplayableVietnameseMeta(value: string | null | undefined): b
   if (value == null) return false;
   const trimmed = value.trim();
   if (!trimmed) return false;
-  if (/^[Oo0\-–—]+$/.test(trimmed)) return false;
-  if (/^[a-z][a-z0-9_]*$/.test(trimmed) && !/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(trimmed)) {
-    // ASCII snake / single latin token without Vietnamese letters — treat as code
-    if (trimmed.includes("_") || trimmed.length <= 2) return false;
-  }
+  // Placeholders / dashes only.
+  if (/^[0\-–—]+$/.test(trimmed)) return false;
+  // Pure ASCII tokens (O, K, kim, hua_lu, …) are engine codes — not UI copy.
+  if (/^[a-z0-9_]+$/i.test(trimmed)) return false;
   return true;
 }
 

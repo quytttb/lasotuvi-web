@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 
 import type { PalaceInfo } from "@/lib/chart/validate";
+import { isMajorStar } from "@/lib/chart/palace-tone";
 import { StarBadge } from "@/components/chart/StarBadge";
 import { cn } from "@/lib/utils/cn";
 
@@ -11,12 +12,8 @@ type PalaceCellProps = {
 };
 
 export function PalaceCell({ palace, className, style }: PalaceCellProps) {
-  const majorStars = palace.stars.filter(
-    (s) => s.category === 1 || s.category_label === "major_star",
-  );
-  const otherStars = palace.stars.filter(
-    (s) => !(s.category === 1 || s.category_label === "major_star"),
-  );
+  const majorStars = palace.stars.filter(isMajorStar);
+  const otherStars = palace.stars.filter((s) => !isMajorStar(s));
 
   return (
     <article

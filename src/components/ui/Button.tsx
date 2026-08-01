@@ -13,8 +13,7 @@ const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
   secondary:
     "bg-[var(--paper-raised)] text-[var(--ink)] border border-[var(--line)] hover:bg-[var(--paper-muted)]",
   ghost: "bg-transparent text-[var(--ink)] hover:bg-[var(--paper-muted)]",
-  danger:
-    "bg-[var(--fire)] text-white hover:opacity-90 focus-visible:outline-[var(--fire)]",
+  danger: "bg-[var(--fire)] text-white hover:opacity-90 focus-visible:outline-[var(--fire)]",
 };
 
 const sizes: Record<NonNullable<ButtonProps["size"]>, string> = {

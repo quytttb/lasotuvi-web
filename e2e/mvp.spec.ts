@@ -155,9 +155,7 @@ test.describe("LasoTuVi MVP flows", () => {
       const scroller = document.querySelector("[data-testid=chart-board]")?.parentElement;
       return {
         pageOverflow: doc.scrollWidth > doc.clientWidth + 2,
-        boardScrollable: Boolean(
-          scroller && scroller.scrollWidth > scroller.clientWidth + 2,
-        ),
+        boardScrollable: Boolean(scroller && scroller.scrollWidth > scroller.clientWidth + 2),
       };
     });
     expect(metrics.pageOverflow).toBe(false);
@@ -204,9 +202,40 @@ test.describe("LasoTuVi MVP flows", () => {
     const secondTab = page.getByTestId("palace-tab-2");
     await secondTab.click();
     await expect(secondTab).toHaveAttribute("aria-selected", "true");
-    await expect(page.getByTestId("palace-interp-panel")).toHaveAttribute(
-      "data-palace-index",
-      "2",
-    );
+    await expect(page.getByTestId("palace-interp-panel")).toHaveAttribute("data-palace-index", "2");
+  });
+
+  test("export and import JSON round-trip", async ({ page }) => {
+    await mockGenerate(page, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(sample),
+      });
+    });
+
+    await page.goto("/lap-la-so");
+    await page.getByLabel(/Họ tên/i).fill("E2E Export");
+    await page.getByTestId("submit-chart").click();
+    await page.getByTestId("save-chart").click();
+    await expect(page.getByTestId("save-success")).toBeVisible();
+
+    await page.goto("/da-luu");
+    await expect(page.getByTestId("saved-list")).toBeVisible();
+    await expect(page.getByText("E2E Export")).toBeVisible();
+
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Xuất JSON" }).click();
+    const download = await downloadPromise;
+    const downloadPath = await download.path();
+    expect(downloadPath).toBeTruthy();
+
+    await page.getByRole("button", { name: "Xóa" }).click();
+    await page.getByTestId("confirm-delete").click();
+    await expect(page.getByTestId("empty-saved")).toBeVisible();
+
+    await page.getByTestId("import-json").setInputFiles(downloadPath!);
+    await expect(page.getByTestId("saved-list")).toBeVisible();
+    await expect(page.getByText("E2E Export")).toBeVisible();
   });
 });

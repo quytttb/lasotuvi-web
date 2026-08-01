@@ -1,12 +1,7 @@
 import type { PalaceInfo, StarInfo } from "@/lib/chart/validate";
 
 /** Matches backend `evaluate_palace_tone` effect codes. */
-export type SupportEffect =
-  | "rescued"
-  | "burdened"
-  | "reinforced"
-  | "pressed"
-  | "neutral";
+export type SupportEffect = "rescued" | "burdened" | "reinforced" | "pressed" | "neutral";
 
 const BRIGHT_CODES = new Set(["M", "V", "Đ", "D"]);
 const DARK_CODES = new Set(["H"]);
@@ -19,17 +14,13 @@ const SUPPORT_EFFECT_LABELS: Record<SupportEffect, string> = {
   neutral: "Cần xét thêm",
 };
 
-export function formatSupportEffectLabel(
-  effect: string | null | undefined,
-): string | null {
+export function formatSupportEffectLabel(effect: string | null | undefined): string | null {
   if (!effect) return null;
   const key = effect.trim().toLowerCase() as SupportEffect;
   return SUPPORT_EFFECT_LABELS[key] ?? null;
 }
 
-export function supportEffectToneClass(
-  effect: string | null | undefined,
-): string {
+export function supportEffectToneClass(effect: string | null | undefined): string {
   switch ((effect ?? "").toLowerCase()) {
     case "rescued":
     case "reinforced":
@@ -42,7 +33,7 @@ export function supportEffectToneClass(
   }
 }
 
-function isMajorStar(star: StarInfo): boolean {
+export function isMajorStar(star: StarInfo): boolean {
   return star.category === 1 || star.category_label === "major_star";
 }
 
@@ -58,9 +49,7 @@ function brightnessCode(star: StarInfo): string | null {
  * Infer support effect from palace_tone note text (generate payload).
  * Prefer exact phrases emitted by backend `evaluate_palace_tone`.
  */
-export function inferSupportEffectFromNote(
-  note: string | null | undefined,
-): SupportEffect | null {
+export function inferSupportEffectFromNote(note: string | null | undefined): SupportEffect | null {
   if (!note) return null;
   const text = note.toLowerCase();
   if (text.includes("cứu/nâng") || text.includes("được cứu")) return "rescued";

@@ -1,0 +1,10 @@
+node_modules
+.next
+coverage
+dist
+pnpm-lock.yaml
+openapi
+src/types/api.generated.ts
+src/test/fixtures
+playwright-report
+test-results

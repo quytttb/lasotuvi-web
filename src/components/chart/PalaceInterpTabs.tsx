@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type ReactNode,
-} from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { getPalaceTonePresentation } from "@/lib/chart/palace-tone";
 import type { PalaceInfo } from "@/lib/chart/validate";
@@ -30,8 +23,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const moveFocusRef = useRef(false);
 
-  const selected =
-    palaces.find((p) => String(p.index) === selectedId) ?? palaces[0] ?? null;
+  const selected = palaces.find((p) => String(p.index) === selectedId) ?? palaces[0] ?? null;
 
   useEffect(() => {
     if (!moveFocusRef.current) return;

@@ -4,11 +4,12 @@ import {
   formatMutagenLabel,
   mutagenToneClass,
 } from "@/lib/chart/labels";
+import { isMajorStar } from "@/lib/chart/palace-tone";
 import type { StarInfo } from "@/lib/chart/validate";
 import { cn } from "@/lib/utils/cn";
 
 export function StarBadge({ star }: { star: StarInfo }) {
-  const isMajor = star.category === 1 || star.category_label === "major_star";
+  const isMajor = isMajorStar(star);
   const brightness = formatMiaoWangLabel(star.miao_wang, star.miao_wang_label);
   const mutagen = formatMutagenLabel(star.mutagen);
   const categoryClass = categoryToneClass(star.category_label ?? null);

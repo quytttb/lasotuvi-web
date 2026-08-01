@@ -136,11 +136,11 @@ Free hosts may sleep. The UI shows hints after ~8s and ~30s; timeout is 90s; the
 
 ## Scripts
 
-| Script | Description |
-|---|---|
-| `dev` | Dev server |
-| `build` / `start` | Production |
-| `lint` / `typecheck` | Code quality |
-| `test` / `test:watch` | Unit + component |
-| `test:e2e` | Playwright |
-| `api:types` | Refresh OpenAPI snapshot |
+| Script                | Description              |
+| --------------------- | ------------------------ |
+| `dev`                 | Dev server               |
+| `build` / `start`     | Production               |
+| `lint` / `typecheck`  | Code quality             |
+| `test` / `test:watch` | Unit + component         |
+| `test:e2e`            | Playwright               |
+| `api:types`           | Refresh OpenAPI snapshot |

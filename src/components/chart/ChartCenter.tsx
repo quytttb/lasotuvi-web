@@ -1,6 +1,4 @@
-import {
-  isDisplayableVietnameseMeta,
-} from "@/lib/chart/labels";
+import { isDisplayableVietnameseMeta } from "@/lib/chart/labels";
 import type { ChartResponse } from "@/lib/chart/validate";
 import { mapGenderToLabel } from "@/lib/form/birth-schema";
 

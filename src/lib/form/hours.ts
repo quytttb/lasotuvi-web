@@ -20,7 +20,3 @@ export const HOUR_BRANCHES: readonly HourBranch[] = [
   { value: 11, name: "Tuất", range: "19:00–20:59", label: "11. Tuất — 19:00–20:59" },
   { value: 12, name: "Hợi", range: "21:00–22:59", label: "12. Hợi — 21:00–22:59" },
 ] as const;
-
-export function getHourBranch(value: number): HourBranch | undefined {
-  return HOUR_BRANCHES.find((h) => h.value === value);
-}

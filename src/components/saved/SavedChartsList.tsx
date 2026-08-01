@@ -120,7 +120,10 @@ export function SavedChartsList() {
 
   if (storage && !storage.available) {
     return (
-      <div className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-6" role="status">
+      <div
+        className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-6"
+        role="status"
+      >
         <p className="font-medium">Không thể dùng bộ nhớ cục bộ</p>
         <p className="mt-2 text-sm text-[var(--ink-muted)]">{storage.reason}</p>
       </div>
@@ -194,7 +197,10 @@ export function SavedChartsList() {
           </Button>
         </div>
       ) : (
-        <ul className="divide-y divide-[var(--line)] border border-[var(--line)]" data-testid="saved-list">
+        <ul
+          className="divide-y divide-[var(--line)] border border-[var(--line)]"
+          data-testid="saved-list"
+        >
           {filtered.map((chart) => (
             <li
               key={chart.id}
@@ -207,7 +213,11 @@ export function SavedChartsList() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button size="sm" onClick={() => openChart(chart.id)} data-testid={`open-${chart.id}`}>
+                <Button
+                  size="sm"
+                  onClick={() => openChart(chart.id)}
+                  data-testid={`open-${chart.id}`}
+                >
                   Mở lại
                 </Button>
                 <Button
@@ -236,6 +246,7 @@ export function SavedChartsList() {
         open={Boolean(renameTarget)}
         title="Đổi tên lá số"
         onClose={() => setRenameTarget(null)}
+        hideCloseButton
       >
         <label htmlFor="rename-input" className="mb-1 block text-sm font-medium">
           Tên mới
@@ -266,12 +277,17 @@ export function SavedChartsList() {
             : undefined
         }
         onClose={() => setDeleteTarget(null)}
+        hideCloseButton
       >
         <div className="flex justify-end gap-2">
           <Button variant="secondary" onClick={() => setDeleteTarget(null)}>
             Hủy
           </Button>
-          <Button variant="danger" onClick={() => void confirmDelete()} data-testid="confirm-delete">
+          <Button
+            variant="danger"
+            onClick={() => void confirmDelete()}
+            data-testid="confirm-delete"
+          >
             Xóa
           </Button>
         </div>

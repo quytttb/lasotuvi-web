@@ -270,8 +270,8 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
 
       {!isSolar ? (
         <p className="text-sm text-[var(--ink-muted)]">
-          Ghi chú: nhập tháng nhuận âm lịch trực tiếp chưa được hỗ trợ đầy đủ trong API hiện tại
-          (BirthInfoRequest chưa có is_leap_month).
+          Ghi chú: tháng nhuận âm lịch chưa được hỗ trợ. Nếu sinh vào tháng nhuận, hãy chọn tháng
+          thường gần nhất hoặc dùng lịch dương.
         </p>
       ) : null}
 

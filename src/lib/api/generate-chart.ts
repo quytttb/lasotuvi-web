@@ -1,14 +1,7 @@
 import { joinApiUrl } from "@/lib/config";
-import {
-  ApiClientError,
-  normalizeApiError,
-  type ApiError,
-} from "@/lib/api/errors";
+import { ApiClientError, normalizeApiError, type ApiError } from "@/lib/api/errors";
 import type { BirthInfoRequest } from "@/lib/form/birth-schema";
-import {
-  safeValidateChartResponse,
-  type ChartResponse,
-} from "@/lib/chart/validate";
+import { safeValidateChartResponse, type ChartResponse } from "@/lib/chart/validate";
 
 export const API_TIMEOUT_MS = 90_000;
 export const COLD_START_HINT_MS = 8_000;
@@ -92,8 +85,7 @@ export async function generateChart(
     } catch (error) {
       if (isAbortError(error)) {
         const reason = controller.signal.reason;
-        const timedOut =
-          reason instanceof DOMException && reason.name === "TimeoutError";
+        const timedOut = reason instanceof DOMException && reason.name === "TimeoutError";
         const userCancelled = Boolean(external?.aborted) && !timedOut;
         throw new ApiClientError(
           normalizeApiError({
@@ -105,8 +97,7 @@ export async function generateChart(
 
       const message = error instanceof Error ? error.message : String(error);
       const looksLikeCors =
-        message.toLowerCase().includes("cors") ||
-        message.toLowerCase().includes("failed to fetch");
+        message.toLowerCase().includes("cors") || message.toLowerCase().includes("failed to fetch");
       throw new ApiClientError(
         normalizeApiError({
           requestId,
@@ -119,9 +110,6 @@ export async function generateChart(
     const body = await readBody(response);
 
     if (!response.ok) {
-      if (!body || (typeof body === "object" && body !== null && !("detail" in body) && !("error" in body) && response.status !== 429 && response.status < 500)) {
-        // Non-JSON or unexpected — still normalize by status when possible
-      }
       if (body === undefined && !response.headers.get("content-type")?.includes("json")) {
         throw new ApiClientError(
           normalizeApiError({
@@ -169,10 +157,6 @@ export async function generateChart(
     clearTimeout(timeoutId);
     external?.removeEventListener("abort", onExternalAbort);
   }
-}
-
-export function isApiError(error: unknown): error is ApiClientError {
-  return error instanceof ApiClientError;
 }
 
 export function toApiError(error: unknown): ApiError {

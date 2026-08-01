@@ -294,7 +294,9 @@ describe("ChartWorkspace save", () => {
     );
     vi.spyOn(repo, "checkStorageAvailability").mockResolvedValue({ available: true });
     vi.spyOn(repo, "saveChart").mockRejectedValue(
-      new Error("Bộ nhớ trình duyệt đã đầy. Hãy xóa bớt lá số đã lưu hoặc giải phóng dung lượng rồi thử lại."),
+      new Error(
+        "Bộ nhớ trình duyệt đã đầy. Hãy xóa bớt lá số đã lưu hoặc giải phóng dung lượng rồi thử lại.",
+      ),
     );
 
     render(<ChartWorkspace />);
@@ -302,5 +304,30 @@ describe("ChartWorkspace save", () => {
     await screen.findByTestId("save-chart");
     await user.click(screen.getByTestId("save-chart"));
     expect(await screen.findByTestId("save-error")).toHaveTextContent(/đầy/i);
+  });
+
+  it("passes existing savedId when re-saving an opened chart", async () => {
+    const user = userEvent.setup();
+    const chart = validateChartResponse(sampleChart);
+    const saveSpy = vi.spyOn(repo, "saveChart").mockResolvedValue({
+      id: "existing-id",
+      schemaVersion: 1,
+      title: "Đã lưu",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      birthInput: chart.birth_info,
+      chart,
+    });
+    vi.spyOn(repo, "checkStorageAvailability").mockResolvedValue({ available: true });
+
+    render(
+      <ChartWorkspace
+        initial={{ birthInput: chart.birth_info, chart }}
+        initialSavedId="existing-id"
+      />,
+    );
+    await user.click(screen.getByTestId("save-chart"));
+    expect(await screen.findByTestId("save-success")).toBeInTheDocument();
+    expect(saveSpy).toHaveBeenCalledWith(expect.objectContaining({ id: "existing-id" }));
   });
 });

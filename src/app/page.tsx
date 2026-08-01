@@ -14,7 +14,9 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-[var(--line)]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(30,77,107,0.12),transparent_50%),radial-gradient(ellipse_at_90%_20%,rgba(143,106,47,0.14),transparent_45%)]" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-          <p className="font-serif text-5xl tracking-wide text-[var(--ink)] sm:text-6xl">LasoTuVi</p>
+          <p className="font-serif text-5xl tracking-wide text-[var(--ink)] sm:text-6xl">
+            LasoTuVi
+          </p>
           <h1 className="mt-6 max-w-2xl font-serif text-3xl leading-snug text-[var(--ink-soft)] sm:text-4xl">
             Lập lá số Tử Vi theo bố cục truyền thống
           </h1>
@@ -68,8 +70,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-[var(--ink-muted)]">
           <h2 className="font-serif text-lg text-[var(--ink)]">Miễn trừ trách nhiệm</h2>
           <p className="mt-2 max-w-3xl leading-relaxed">
-            Nội dung mang tính tham khảo văn hóa và nghiên cứu. Không thay thế tư vấn y tế, tài chính
-            hoặc pháp lý. Hãy tự cân nhắc khi diễn giải kết quả.
+            Nội dung mang tính tham khảo văn hóa và nghiên cứu. Không thay thế tư vấn y tế, tài
+            chính hoặc pháp lý. Hãy tự cân nhắc khi diễn giải kết quả.
           </p>
         </div>
       </section>

@@ -7,7 +7,7 @@ export const SAVED_CHART_SCHEMA_VERSION = 1 as const;
 
 export const savedChartSchema = z.object({
   id: z.string().min(1),
-  schemaVersion: z.literal(1),
+  schemaVersion: z.literal(SAVED_CHART_SCHEMA_VERSION),
   title: z.string().min(1).max(200),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -23,7 +23,7 @@ export function migrateSavedChart(raw: unknown): SavedChart {
   }
   const record = raw as Record<string, unknown>;
   const version = record.schemaVersion;
-  if (version !== 1) {
+  if (version !== SAVED_CHART_SCHEMA_VERSION) {
     throw new Error(
       `Phiên bản schema ${String(version)} chưa được hỗ trợ. Hãy xuất JSON và cập nhật ứng dụng.`,
     );

@@ -5,23 +5,18 @@ import { useMemo } from "react";
 import { ChartBoard } from "@/components/chart/ChartBoard";
 import { PalaceInterpTabs } from "@/components/chart/PalaceInterpTabs";
 import { parseInterpretation } from "@/lib/chart/format-interpretation";
+import { formatBranchPinyinLabel, formatStarCodeLabel } from "@/lib/chart/labels";
 import {
-  formatBranchPinyinLabel,
-  formatStarCodeLabel,
-} from "@/lib/chart/labels";
-import { getPalaceTonePresentation, supportEffectToneClass } from "@/lib/chart/palace-tone";
+  getPalaceTonePresentation,
+  isMajorStar,
+  supportEffectToneClass,
+} from "@/lib/chart/palace-tone";
 import type { ChartResponse, PalaceInfo } from "@/lib/chart/validate";
 import { cn } from "@/lib/utils/cn";
 
 type ChartResultsProps = {
   chart: ChartResponse;
 };
-
-function isMajorCategory(star: PalaceInfo["stars"][number] | undefined): boolean | null {
-  if (!star) return null;
-  if (star.category === 1 || star.category_label === "major_star") return true;
-  return false;
-}
 
 function findStarForCode(palace: PalaceInfo, starCode: string) {
   const label = formatStarCodeLabel(starCode).trim().toLowerCase();
@@ -113,7 +108,7 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
       seen.add(key);
 
       const matched = findStarForCode(palace, item.star);
-      const byCategory = isMajorCategory(matched);
+      const byCategory = matched ? isMajorStar(matched) : null;
       const isMajor =
         byCategory === true ||
         (byCategory === null && !parseInterpretation(item.interpretation).isMinorTemplate);
@@ -125,9 +120,7 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
     return { majorInterps: majors, minorInterps: minors };
   }, [palace]);
 
-  const hasMajorStars = palace.stars.some(
-    (s) => s.category === 1 || s.category_label === "major_star",
-  );
+  const hasMajorStars = palace.stars.some(isMajorStar);
   const hasAnyInterp = majorInterps.length + minorInterps.length > 0;
   const showMinorDisclaimer = minorInterps.some(
     (item) => parseInterpretation(item.interpretation).isMinorTemplate,
@@ -203,8 +196,8 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
               </div>
               {showMinorDisclaimer ? (
                 <p className="text-[0.7rem] leading-snug text-[var(--ink-muted)]">
-                  Phụ tinh là “màu” bổ sung của cung — đọc kèm chính tinh và toàn cục, không tách một
-                  sao để kết luận. Chỉ mang tính tham khảo.
+                  Phụ tinh là “màu” bổ sung của cung — đọc kèm chính tinh và toàn cục, không tách
+                  một sao để kết luận. Chỉ mang tính tham khảo.
                 </p>
               ) : null}
             </div>
@@ -220,8 +213,7 @@ export function ChartResults({ chart }: ChartResultsProps) {
     () => [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index),
     [chart.earth_plate.palaces],
   );
-  const formations =
-    chart.formations.length > 0 ? chart.formations : chart.earth_plate.formations;
+  const formations = chart.formations.length > 0 ? chart.formations : chart.earth_plate.formations;
   const taboo = chart.earth_plate.taboo_palaces ?? [];
 
   return (
@@ -277,8 +269,8 @@ export function ChartResults({ chart }: ChartResultsProps) {
             Cung cần lưu ý
           </h3>
           <p className="text-sm text-[var(--ink-muted)]">
-            Danh sách mang tính tham khảo theo bộ máy; diễn đạt trung tính, không phải kết luận tuyệt
-            đối.
+            Danh sách mang tính tham khảo theo bộ máy; diễn đạt trung tính, không phải kết luận
+            tuyệt đối.
           </p>
           <ul className="list-disc space-y-1 pl-5 text-sm">
             {taboo.map((item) => (

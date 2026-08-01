@@ -3,6 +3,7 @@ import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 import {
   defaultTitleFromBirth,
   migrateSavedChart,
+  SAVED_CHART_SCHEMA_VERSION,
   type SavedChart,
 } from "@/lib/storage/schema";
 import type { BirthInfoRequest } from "@/lib/form/birth-schema";
@@ -20,9 +21,7 @@ interface LasoTuViDB extends DBSchema {
   };
 }
 
-export type StorageAvailability =
-  | { available: true }
-  | { available: false; reason: string };
+export type StorageAvailability = { available: true } | { available: false; reason: string };
 
 let dbPromise: Promise<IDBPDatabase<LasoTuViDB>> | null = null;
 
@@ -75,8 +74,7 @@ export async function checkStorageAvailability(): Promise<StorageAvailability> {
 
 function isQuotaError(error: unknown): boolean {
   return (
-    error instanceof DOMException &&
-    (error.name === "QuotaExceededError" || error.code === 22)
+    error instanceof DOMException && (error.name === "QuotaExceededError" || error.code === 22)
   );
 }
 
@@ -90,11 +88,12 @@ export async function saveChart(params: {
   const existing = params.id ? await getChart(params.id) : undefined;
   const record: SavedChart = {
     id: params.id ?? crypto.randomUUID(),
-    schemaVersion: 1,
-    title: (params.title?.trim() || existing?.title || defaultTitleFromBirth(params.birthInput)).slice(
-      0,
-      200,
-    ),
+    schemaVersion: SAVED_CHART_SCHEMA_VERSION,
+    title: (
+      params.title?.trim() ||
+      existing?.title ||
+      defaultTitleFromBirth(params.birthInput)
+    ).slice(0, 200),
     createdAt: existing?.createdAt ?? now,
     updatedAt: now,
     birthInput: params.birthInput,
@@ -179,9 +178,7 @@ export async function importChart(
     return record;
   } catch (error) {
     if (isQuotaError(error)) {
-      throw new Error(
-        "Bộ nhớ trình duyệt đã đầy. Hãy xóa bớt lá số đã lưu rồi thử lại.",
-      );
+      throw new Error("Bộ nhớ trình duyệt đã đầy. Hãy xóa bớt lá số đã lưu rồi thử lại.");
     }
     throw error;
   }

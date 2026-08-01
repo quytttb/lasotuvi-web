@@ -121,8 +121,7 @@ export function parseInterpretation(raw: string): ParsedInterpretation {
   }
 
   const looksLikeMinorTemplate =
-    /đóng vai trò\s+.+\s+đối với/u.test(body) &&
-    /mặt thuận thường là:/u.test(body);
+    /đóng vai trò\s+.+\s+đối với/u.test(body) && /mặt thuận thường là:/u.test(body);
 
   if (looksLikeMinorTemplate) {
     const compact = stripBoilerplate(body);
