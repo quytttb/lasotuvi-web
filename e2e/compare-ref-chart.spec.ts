@@ -3,8 +3,10 @@ import { expect, test } from "@playwright/test";
 /**
  * Compare FE+API against tuvivietnam sample chart:
  * Dương lịch 08/08/2008 10:30 → giờ Tỵ (6), Nam, năm xem 2026.
+ * Live API only — excluded from mocked CI suite.
  */
 test("reference chart 2008-08-08 matches major an sao", async ({ page }) => {
+  test.skip(!!process.env.CI, "Requires live LasoTuVi API; not in mocked CI suite");
   test.setTimeout(90_000);
 
   await page.goto("/lap-la-so");
@@ -17,7 +19,7 @@ test("reference chart 2008-08-08 matches major an sao", async ({ page }) => {
   await page.getByLabel(/Giới tính/).selectOption("1");
 
   await page.getByTestId("submit-chart").click();
-  await expect(page.getByRole("heading", { name: "Kết quả lá số" })).toBeVisible({
+  await expect(page.getByTestId("chart-board")).toBeVisible({
     timeout: 60_000,
   });
 

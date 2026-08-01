@@ -47,7 +47,7 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: E2E (mocked API)
-        run: pnpm test:e2e --project=chromium --project=mobile
+        run: pnpm test:e2e e2e/mvp.spec.ts --project=chromium --project=mobile
         env:
           NEXT_PUBLIC_LASOTUVI_API_URL: http://localhost:8000
           NEXT_PUBLIC_SITE_URL: http://localhost:3000

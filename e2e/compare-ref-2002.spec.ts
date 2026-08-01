@@ -2,8 +2,10 @@ import { expect, test } from "@playwright/test";
 
 /**
  * Reference: tuvivietnam sample — Nam, 24/02/2002 16:30 (Thân), năm xem 2026.
+ * Live API only — excluded from mocked CI suite.
  */
 test("reference chart 2002-02-24 matches major an sao", async ({ page }) => {
+  test.skip(!!process.env.CI, "Requires live LasoTuVi API; not in mocked CI suite");
   test.setTimeout(90_000);
 
   await page.goto("/lap-la-so");
@@ -16,7 +18,7 @@ test("reference chart 2002-02-24 matches major an sao", async ({ page }) => {
   await page.getByLabel(/Giới tính/).selectOption("1");
 
   await page.getByTestId("submit-chart").click();
-  await expect(page.getByRole("heading", { name: "Kết quả lá số" })).toBeVisible({
+  await expect(page.getByTestId("chart-board")).toBeVisible({
     timeout: 60_000,
   });
 
@@ -51,10 +53,10 @@ test("reference chart 2002-02-24 matches major an sao", async ({ page }) => {
   await expect(board).toContainText("Hóa Kỵ");
 
   // Palace tone / support effect from generate (no /chart/analyze)
-  await page.getByRole("button", { name: /Mệnh/i }).first().click();
-  await expect(page.getByTestId("palace-tone").first()).toBeVisible();
-  await expect(page.getByTestId("palace-tone").first()).toContainText("Luận cung");
-  await expect(page.getByTestId("support-effect").first()).toBeVisible();
+  await page.getByRole("tab", { name: /^Mệnh\b/i }).click();
+  await expect(page.getByTestId("palace-tone")).toBeVisible();
+  await expect(page.getByTestId("palace-tone")).toContainText("Luận cung");
+  await expect(page.getByTestId("support-effect")).toBeVisible();
 
   await page.screenshot({
     path: "/tmp/lasotuvi-test/compare-2002-our-board.png",

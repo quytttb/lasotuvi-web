@@ -9,6 +9,7 @@ test.describe("Live API integration", () => {
   test("form submit calls real /chart/generate and renders board", async ({
     page,
   }) => {
+    test.skip(!!process.env.CI, "Requires live LasoTuVi API; not in mocked CI suite");
     const apiCalls: { url: string; status: number }[] = [];
     page.on("response", (response) => {
       const url = response.url();
