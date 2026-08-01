@@ -75,7 +75,7 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
   const storageDisabled = storage?.available === false;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 print:space-y-0">
       <BirthForm
         onSuccess={onSuccess}
         initialValues={
@@ -90,7 +90,7 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
       />
 
       {result ? (
-        <div id="chart-results" className="space-y-4">
+        <div id="chart-results" className="space-y-4 print:space-y-0">
           <div className="print:hidden flex flex-wrap gap-3">
             <Button
               type="button"
@@ -115,16 +115,9 @@ export function ChartWorkspace({ initial = null, initialFormValues }: ChartWorks
             </p>
           ) : null}
 
-          <div className="hidden print:block mb-4 text-sm">
-            <p>
-              {result.birthInput.name ?? "Ẩn danh"} —{" "}
-              {result.birthInput.day}/{result.birthInput.month}/{result.birthInput.year} — Năm xem:{" "}
-              {result.birthInput.view_year} — Tạo:{" "}
-              {new Date(result.chart.generated_at).toLocaleString("vi-VN")}
-            </p>
+          <div className="chart-print-sheet">
+            <ChartResults chart={result.chart} />
           </div>
-
-          <ChartResults chart={result.chart} />
         </div>
       ) : null}
     </div>

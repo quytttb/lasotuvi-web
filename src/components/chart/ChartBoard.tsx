@@ -24,7 +24,7 @@ export function ChartBoard({ chart, className }: ChartBoardProps) {
     <div
       className={cn(
         "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden border-2 border-[var(--line)] bg-[var(--paper-muted)] shadow-[0_1px_0_rgba(28,25,20,0.04)]",
-        "min-h-[40rem] w-full max-w-6xl",
+        "min-h-[46rem] w-full max-w-7xl",
         className,
       )}
       role="region"

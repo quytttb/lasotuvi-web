@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function LapLaSoPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <header className="mb-8 max-w-2xl">
+    <div className="mx-auto w-full max-w-[100rem] px-2 py-6 sm:px-3 sm:py-8 print:max-w-none print:px-0 print:py-0">
+      <header className="print:hidden mb-6 max-w-2xl">
         <h1 className="font-serif text-3xl text-[var(--ink)]">Lập lá số</h1>
         <p className="mt-2 text-[var(--ink-muted)]">
           Điền thông tin sinh rồi xem kết quả ngay trên trang này. Thông tin sinh không được đưa vào

@@ -12,7 +12,7 @@ const links = [
 export function SiteHeader() {
   return (
     <header className="print:hidden border-b border-[var(--line)] bg-[var(--paper)]/90 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+      <div className="mx-auto flex w-full max-w-[100rem] items-center justify-between gap-4 px-2 py-3 sm:px-3">
         <Link
           href="/"
           className="font-serif text-xl tracking-wide text-[var(--ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]"
@@ -41,7 +41,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="print:hidden mt-auto border-t border-[var(--line)] bg-[var(--paper-muted)]">
-      <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-[var(--ink-muted)]">
+      <div className="mx-auto w-full max-w-[100rem] px-2 py-8 text-sm text-[var(--ink-muted)] sm:px-3">
         <p>
           Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài chính
           hoặc pháp lý.

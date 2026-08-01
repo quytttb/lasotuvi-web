@@ -86,12 +86,38 @@ body {
 @media print {
   @page {
     size: A4 landscape;
-    margin: 10mm;
+    margin: 4mm;
   }
 
+  /* Lock print layout to A4 landscape content box so "Fit to page width"
+     does not shrink the board and leave empty space below. */
+  html,
   body {
     background: white !important;
     color: black !important;
+    width: 289mm !important;
+    height: 202mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body {
+    display: block !important;
+  }
+
+  #main-content,
+  #main-content > *,
+  #chart-results,
+  .chart-print-sheet,
+  .chart-print-board {
+    display: block !important;
+    width: 289mm !important;
+    max-width: 289mm !important;
+    height: 202mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   .print\:hidden {
@@ -102,23 +128,95 @@ body {
     display: block !important;
   }
 
-  .chart-board {
-    max-width: none !important;
-    min-height: 170mm !important;
+  .chart-print-sheet {
     page-break-inside: avoid;
     break-inside: avoid;
+  }
+
+  .chart-board {
+    width: 289mm !important;
+    height: 202mm !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    break-before: avoid;
+    break-after: avoid;
   }
 
   .palace-cell {
     background: white !important;
     border-color: #444 !important;
     color: #111 !important;
+    padding: 2.5mm !important;
+    font-size: 9.5pt !important;
+    line-height: 1.25 !important;
+    overflow: hidden !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  .palace-cell-header {
+    margin-bottom: 1.5mm !important;
+    padding-bottom: 1.5mm !important;
+  }
+
+  .palace-cell-title {
+    font-size: 12pt !important;
+    line-height: 1.15 !important;
+  }
+
+  .palace-cell-sub {
+    font-size: 9pt !important;
+  }
+
+  .palace-cell-body {
+    gap: 1.2mm !important;
+    min-height: 0 !important;
+  }
+
+  .palace-cell-footer {
+    margin-top: 1.5mm !important;
+    padding-top: 1.5mm !important;
+    font-size: 8.5pt !important;
+    flex-shrink: 0 !important;
+  }
+
+  .star-badge-major {
+    font-size: 11pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .star-badge-minor {
+    font-size: 9pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .star-badge-meta {
+    font-size: 8pt !important;
   }
 
   .chart-center {
     background: #fafafa !important;
     border-color: #444 !important;
+    padding: 3mm 4mm !important;
+    font-size: 9.5pt !important;
+    line-height: 1.3 !important;
+    gap: 2mm !important;
+  }
+
+  .chart-center .font-serif {
+    font-size: 15pt !important;
+  }
+
+  .chart-center dt {
+    font-size: 8.5pt !important;
+  }
+
+  .chart-center dd {
+    font-size: 9.5pt !important;
   }
 }

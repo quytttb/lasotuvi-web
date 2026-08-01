@@ -186,4 +186,27 @@ test.describe("LasoTuVi MVP flows", () => {
       await page.evaluate(() => (window as unknown as { __printCalled?: boolean }).__printCalled),
     ).toBe(true);
   });
+
+  test("palace interpretation uses tabs", async ({ page }) => {
+    await mockGenerate(page, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(sample),
+      });
+    });
+    await page.goto("/lap-la-so");
+    await page.getByTestId("submit-chart").click();
+    await expect(page.getByTestId("palace-interp-tabs")).toBeVisible();
+    await expect(page.getByRole("tablist", { name: /Chọn cung/i })).toBeVisible();
+    await expect(page.getByRole("tab")).toHaveCount(12);
+
+    const secondTab = page.getByTestId("palace-tab-2");
+    await secondTab.click();
+    await expect(secondTab).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByTestId("palace-interp-panel")).toHaveAttribute(
+      "data-palace-index",
+      "2",
+    );
+  });
 });

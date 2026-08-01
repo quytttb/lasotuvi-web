@@ -17,18 +17,25 @@ export function StarBadge({ star }: { star: StarInfo }) {
   return (
     <span
       className={cn(
-        "inline-flex max-w-full flex-wrap items-baseline gap-x-1 leading-snug",
+        "star-badge inline-flex max-w-full flex-wrap items-baseline gap-x-1 leading-snug",
         isMajor
-          ? "text-[0.82rem] font-semibold tracking-tight text-[var(--ink)]"
-          : cn("text-[0.68rem] font-medium", categoryClass),
+          ? "star-badge-major text-[0.95rem] font-semibold tracking-tight text-[var(--ink)]"
+          : cn("star-badge-minor text-[0.8rem] font-medium", categoryClass),
       )}
     >
       <span>{star.name}</span>
       {brightness ? (
-        <span className="text-[0.62rem] font-normal text-[var(--ink-muted)]">{brightness}</span>
+        <span className="star-badge-meta text-[0.72rem] font-normal text-[var(--ink-muted)]">
+          {brightness}
+        </span>
       ) : null}
       {mutagen ? (
-        <span className={cn("text-[0.62rem] font-semibold", mutagenClass ?? "text-[var(--fire)]")}>
+        <span
+          className={cn(
+            "star-badge-meta text-[0.72rem] font-semibold",
+            mutagenClass ?? "text-[var(--fire)]",
+          )}
+        >
           {mutagen}
         </span>
       ) : null}

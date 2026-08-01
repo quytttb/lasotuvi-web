@@ -196,6 +196,71 @@ describe("ChartResults", () => {
     };
     expect(() => render(<ChartResults chart={chart} />)).not.toThrow();
   });
+
+  it("renders palace tabs and switches interpretation panel", async () => {
+    const user = userEvent.setup();
+    const chart = validateChartResponse(sampleChart);
+    const sorted = [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index);
+    const first = sorted[0]!;
+    const second = sorted[1]!;
+
+    render(<ChartResults chart={chart} />);
+
+    expect(screen.getByTestId("palace-interp-tabs")).toBeInTheDocument();
+    expect(screen.getAllByRole("tab")).toHaveLength(12);
+    expect(screen.getByTestId("palace-interp-panel")).toHaveAttribute(
+      "data-palace-index",
+      String(first.index),
+    );
+
+    await user.click(screen.getByTestId(`palace-tab-${second.index}`));
+    expect(screen.getByTestId("palace-interp-panel")).toHaveAttribute(
+      "data-palace-index",
+      String(second.index),
+    );
+    expect(screen.getByTestId(`palace-tab-${second.index}`)).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it("formats major and minor interpretation blocks for reading", () => {
+    const chart = validateChartResponse(sampleChart);
+    const palace = chart.earth_plate.palaces.find((p) => p.index === 1)!;
+    palace.interpretations = [
+      {
+        star: "tian_ji",
+        interpretation:
+          "Thiên Cơ chủ trí tuệ. Đắc địa hoặc được lục cát nâng: phát huy trí tuệ. Hãm địa hoặc hội lục sát: dễ đổi hướng. [Tương tác Ngũ Hành: Hành Sao khắc Bản Mệnh (Tử).]",
+      },
+      {
+        star: "jie_shen",
+        interpretation:
+          "Giải Thần tại cung Huynh đệ (luận anh chị em) đóng vai trò củng cố đối với chủ đề quan hệ ngang hàng. Giải Thần chủ tháo gỡ, giảm nạn. Trong bối cảnh hợp tác, mặt thuận thường là: hóa giải. Mặt lệch cần để ý: chậm xử. Khi cùng cung với chính tinh sáng và ít sát, Giải Thần dễ củng cố lực cung. Chỉ mang tính tham khảo.",
+      },
+    ];
+
+    render(<ChartResults chart={chart} />);
+    expect(screen.getByTestId("star-interp-major")).toBeInTheDocument();
+    expect(screen.getByTestId("element-note")).toHaveTextContent(/Ngũ hành/);
+    expect(screen.getByTestId("star-interp-minor")).toHaveTextContent(/Chủ:/);
+    expect(screen.getByTestId("star-interp-minor")).toHaveTextContent(/Thuận:/);
+    expect(screen.getByTestId("star-interp-minor")).not.toHaveTextContent(
+      /Khi cùng cung với chính tinh sáng/,
+    );
+  });
+
+  it("marks non-chart sections as print-hidden", () => {
+    const chart = validateChartResponse(sampleChart);
+    render(<ChartResults chart={chart} />);
+
+    expect(screen.getByTestId("formations-section").className).toContain("print:hidden");
+    expect(screen.getByTestId("palace-interp-section").className).toContain("print:hidden");
+    const taboo = screen.queryByTestId("taboo-section");
+    if (taboo) {
+      expect(taboo.className).toContain("print:hidden");
+    }
+  });
 });
 
 describe("ChartWorkspace save", () => {
