@@ -4,8 +4,11 @@ import {
   formatBranchPinyinLabel,
   formatCategoryLabel,
   formatElementLabel,
+  formatFormationQualityLabel,
   formatMiaoWangLabel,
   formatMutagenLabel,
+  formatPeriodScopeLabel,
+  formatPeriodToneLabel,
   formatStarCodeLabel,
   isDisplayableVietnameseMeta,
 } from "@/lib/chart/labels";
@@ -37,6 +40,7 @@ describe("chart labels", () => {
     expect(formatStarCodeLabel("zi_wei")).toBe("Tử vi");
     expect(formatStarCodeLabel("po_jun")).toBe("Phá quân");
     expect(formatStarCodeLabel("wu_qu")).toBe("Vũ khúc");
+    expect(formatStarCodeLabel("mutagen_note")).toBe("Tứ hóa");
     expect(formatStarCodeLabel("Tử vi")).toBe("Tử vi");
     expect(formatStarCodeLabel("palace_tone")).toBe("Luận cung");
     expect(formatStarCodeLabel("fei_lian")).toBe("Phi liêm");
@@ -52,6 +56,16 @@ describe("chart labels", () => {
   it("maps category labels", () => {
     expect(formatCategoryLabel("major_star")).toBe("Chính tinh");
     expect(formatCategoryLabel("malefic_star")).toBe("Sát tinh");
+  });
+
+  it("maps formation quality and period tone labels", () => {
+    expect(formatFormationQualityLabel("formed")).toBe("Thành");
+    expect(formatFormationQualityLabel("weakened")).toBe("Suy");
+    expect(formatFormationQualityLabel("broken")).toBe("Phá");
+    expect(formatPeriodToneLabel("opportunity_window")).toBe("Cửa cơ hội");
+    expect(formatPeriodToneLabel("caution")).toBe("Thận trọng");
+    expect(formatPeriodScopeLabel("da_xian")).toBe("Đại hạn");
+    expect(formatPeriodScopeLabel("view_year")).toBe("Năm xem");
   });
 
   it("rejects engine placeholder meta", () => {

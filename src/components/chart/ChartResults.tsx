@@ -5,18 +5,28 @@ import { useMemo } from "react";
 import { ChartBoard } from "@/components/chart/ChartBoard";
 import { PalaceInterpTabs } from "@/components/chart/PalaceInterpTabs";
 import { parseInterpretation } from "@/lib/chart/format-interpretation";
-import { formatBranchPinyinLabel, formatStarCodeLabel } from "@/lib/chart/labels";
+import {
+  formatBranchPinyinLabel,
+  formatFormationQualityLabel,
+  formatPeriodScopeLabel,
+  formatPeriodToneLabel,
+  formatStarCodeLabel,
+  formationQualityToneClass,
+  periodToneClass,
+} from "@/lib/chart/labels";
 import {
   getPalaceTonePresentation,
   isMajorStar,
   supportEffectToneClass,
 } from "@/lib/chart/palace-tone";
-import type { ChartResponse, PalaceInfo } from "@/lib/chart/validate";
+import type { ChartResponse, PalaceInfo, PeriodReading } from "@/lib/chart/validate";
 import { cn } from "@/lib/utils/cn";
 
 type ChartResultsProps = {
   chart: ChartResponse;
 };
+
+const SPECIAL_INTERP_STARS = new Set(["palace_tone", "mutagen_note"]);
 
 function findStarForCode(palace: PalaceInfo, starCode: string) {
   const label = formatStarCodeLabel(starCode).trim().toLowerCase();
@@ -93,8 +103,23 @@ function StarInterpretationBlock({
   );
 }
 
+function MutagenNoteBlock({ text }: { text: string }) {
+  return (
+    <article
+      className="rounded-sm border border-[var(--line)] bg-[var(--paper-muted)]/50 px-2.5 py-2.5"
+      data-testid="mutagen-note"
+    >
+      <p className="font-medium text-[var(--ink)]">Tứ hóa nguyên cục</p>
+      <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-[var(--ink-soft)]">
+        {text}
+      </p>
+    </article>
+  );
+}
+
 function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
   const tone = getPalaceTonePresentation(palace);
+  const mutagenNote = palace.interpretations?.find((item) => item.star === "mutagen_note");
 
   const { majorInterps, minorInterps } = useMemo(() => {
     const seen = new Set<string>();
@@ -102,7 +127,7 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
     const minors: NonNullable<PalaceInfo["interpretations"]> = [];
 
     for (const item of palace.interpretations ?? []) {
-      if (item.star === "palace_tone") continue;
+      if (SPECIAL_INTERP_STARS.has(item.star)) continue;
       const key = item.star.trim().toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
@@ -152,6 +177,10 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
           Không tuyệt đối hóa Miếu/Hãm — độ sáng chính tinh xét cùng phụ tinh trong cung.
         </p>
       </div>
+
+      {mutagenNote?.interpretation ? (
+        <MutagenNoteBlock text={mutagenNote.interpretation} />
+      ) : null}
 
       {!hasAnyInterp ? (
         <p className="text-sm text-[var(--ink-muted)]">
@@ -208,12 +237,65 @@ function PalaceInterpretations({ palace }: { palace: PalaceInfo }) {
   );
 }
 
+function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
+  const toneLabel = formatPeriodToneLabel(reading.tone);
+  const ageRange =
+    reading.da_xian_age != null
+      ? reading.da_xian_end_age != null
+        ? `${reading.da_xian_age}–${reading.da_xian_end_age}`
+        : String(reading.da_xian_age)
+      : null;
+
+  return (
+    <li
+      className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+      data-testid="period-reading"
+      data-scope={reading.scope}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="font-medium text-[var(--ink)]">{formatPeriodScopeLabel(reading.scope)}</p>
+        {toneLabel ? (
+          <span
+            className={cn(
+              "inline-flex rounded-sm border px-1.5 py-0.5 text-[0.7rem] font-medium",
+              periodToneClass(reading.tone),
+            )}
+          >
+            {toneLabel}
+          </span>
+        ) : null}
+        {reading.palace_name ? (
+          <span className="text-[0.75rem] text-[var(--ink-muted)]">{reading.palace_name}</span>
+        ) : null}
+        {ageRange ? (
+          <span className="text-[0.75rem] text-[var(--ink-muted)]">Tuổi {ageRange}</span>
+        ) : null}
+        {reading.view_year != null ? (
+          <span className="text-[0.75rem] text-[var(--ink-muted)]">Năm {reading.view_year}</span>
+        ) : null}
+      </div>
+      <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">{reading.text}</p>
+      {reading.disclaimer ? (
+        <p className="mt-2 text-[0.7rem] leading-snug text-[var(--ink-muted)]" data-testid="period-disclaimer">
+          {reading.disclaimer}
+        </p>
+      ) : null}
+    </li>
+  );
+}
+
 export function ChartResults({ chart }: ChartResultsProps) {
   const palaces = useMemo(
     () => [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index),
     [chart.earth_plate.palaces],
   );
   const formations = chart.formations.length > 0 ? chart.formations : chart.earth_plate.formations;
+  const overview =
+    chart.overview.length > 0 ? chart.overview : (chart.earth_plate.overview ?? []);
+  const periodReadings =
+    chart.period_readings.length > 0
+      ? chart.period_readings
+      : (chart.earth_plate.period_readings ?? []);
   const taboo = chart.earth_plate.taboo_palaces ?? [];
 
   return (
@@ -226,6 +308,31 @@ export function ChartResults({ chart }: ChartResultsProps) {
           Lập lúc {new Date(chart.generated_at).toLocaleString("vi-VN")}
         </p>
       </div>
+
+      {overview.length > 0 ? (
+        <section
+          aria-labelledby="overview-heading"
+          className="print:hidden space-y-3"
+          data-testid="overview-section"
+        >
+          <h3 id="overview-heading" className="font-serif text-xl">
+            Tổng quan
+          </h3>
+          <ul className="space-y-2">
+            {overview.map((item) => (
+              <li
+                key={item.code}
+                className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+                data-testid="overview-item"
+                data-code={item.code}
+              >
+                <p className="font-medium text-[var(--ink)]">{item.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-[var(--ink-soft)]">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <div className="chart-print-board w-full max-w-full overflow-x-auto overscroll-x-contain print:overflow-visible">
         <ChartBoard
@@ -246,18 +353,53 @@ export function ChartResults({ chart }: ChartResultsProps) {
           <p className="text-sm text-[var(--ink-muted)]">Không có cách cục được phát hiện.</p>
         ) : (
           <ul className="space-y-2">
-            {formations.map((f) => (
-              <li
-                key={f.code}
-                className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
-              >
-                <p className="font-medium text-[var(--ink)]">{f.name}</p>
-                <p className="mt-1 text-sm text-[var(--ink-soft)]">{f.description}</p>
-              </li>
-            ))}
+            {formations.map((f) => {
+              const qualityLabel = formatFormationQualityLabel(f.quality);
+              return (
+                <li
+                  key={f.code}
+                  className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+                  data-testid="formation-item"
+                  data-quality={f.quality ?? undefined}
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-medium text-[var(--ink)]">{f.name}</p>
+                    {qualityLabel ? (
+                      <span
+                        className={cn(
+                          "inline-flex rounded-sm border px-1.5 py-0.5 text-[0.7rem] font-medium",
+                          formationQualityToneClass(f.quality),
+                        )}
+                        data-testid="formation-quality"
+                      >
+                        {qualityLabel}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-1 text-sm text-[var(--ink-soft)]">{f.description}</p>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
+
+      {periodReadings.length > 0 ? (
+        <section
+          aria-labelledby="period-readings-heading"
+          className="print:hidden space-y-3"
+          data-testid="period-readings-section"
+        >
+          <h3 id="period-readings-heading" className="font-serif text-xl">
+            Hạn
+          </h3>
+          <ul className="space-y-2">
+            {periodReadings.map((reading) => (
+              <PeriodReadingCard key={`${reading.scope}-${reading.code}`} reading={reading} />
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {taboo.length > 0 ? (
         <section

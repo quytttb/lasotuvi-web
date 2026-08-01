@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
@@ -254,12 +254,40 @@ describe("ChartResults", () => {
     const chart = validateChartResponse(sampleChart);
     render(<ChartResults chart={chart} />);
 
+    expect(screen.getByTestId("overview-section").className).toContain("print:hidden");
     expect(screen.getByTestId("formations-section").className).toContain("print:hidden");
+    expect(screen.getByTestId("period-readings-section").className).toContain("print:hidden");
     expect(screen.getByTestId("palace-interp-section").className).toContain("print:hidden");
     const taboo = screen.queryByTestId("taboo-section");
     if (taboo) {
       expect(taboo.className).toContain("print:hidden");
     }
+  });
+
+  it("renders overview, formation quality, active đại hạn, and period disclaimers", () => {
+    const chart = validateChartResponse(sampleChart);
+    render(<ChartResults chart={chart} />);
+
+    expect(screen.getByTestId("overview-section")).toBeInTheDocument();
+    expect(screen.getAllByTestId("overview-item").length).toBeGreaterThan(0);
+    expect(screen.getByTestId("formation-quality")).toHaveTextContent("Thành");
+    expect(screen.getByTestId("active-da-xian-badge")).toHaveTextContent("Đang hạn");
+    expect(screen.getByText(/Đại hạn 36–45/)).toBeInTheDocument();
+
+    const periodSection = screen.getByTestId("period-readings-section");
+    expect(periodSection).toBeInTheDocument();
+    expect(within(periodSection).getAllByTestId("period-disclaimer").length).toBeGreaterThan(0);
+  });
+
+  it("renders mutagen_note separately from star interpretations", async () => {
+    const user = userEvent.setup();
+    const chart = validateChartResponse(sampleChart);
+    render(<ChartResults chart={chart} />);
+
+    await user.click(screen.getByTestId("palace-tab-5"));
+    expect(screen.getByTestId("mutagen-note")).toHaveTextContent(/Tứ hóa nguyên cục/);
+    expect(screen.getByTestId("mutagen-note")).toHaveTextContent(/Thái âm/);
+    expect(screen.queryByTestId("star-interp-major")).toHaveTextContent(/Thái âm/);
   });
 });
 

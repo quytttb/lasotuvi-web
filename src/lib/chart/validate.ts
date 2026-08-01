@@ -23,11 +23,42 @@ const interpretationSchema = z.object({
   interpretation: z.string(),
 });
 
-const formationSchema = z.object({
-  code: z.string(),
-  name: z.string(),
-  description: z.string(),
-});
+const formationQualitySchema = z.enum(["formed", "weakened", "broken"]);
+
+const formationSchema = z
+  .object({
+    code: z.string(),
+    name: z.string(),
+    description: z.string(),
+    quality: formationQualitySchema.nullable().optional(),
+    sources: z.array(z.string()).optional().default([]),
+    school: z.string().nullable().optional(),
+  })
+  .passthrough();
+
+const overviewItemSchema = z
+  .object({
+    code: z.string(),
+    title: z.string(),
+    text: z.string(),
+  })
+  .passthrough();
+
+const periodReadingSchema = z
+  .object({
+    scope: z.string(),
+    code: z.string(),
+    text: z.string(),
+    tone: z.string().optional().default("neutral"),
+    disclaimer: z.string().nullable().optional(),
+    palace_index: z.number().nullable().optional(),
+    palace_name: z.string().nullable().optional(),
+    age: z.number().nullable().optional(),
+    da_xian_age: z.number().nullable().optional(),
+    da_xian_end_age: z.number().nullable().optional(),
+    view_year: z.number().nullable().optional(),
+  })
+  .passthrough();
 
 const palaceSchema = z
   .object({
@@ -41,6 +72,8 @@ const palaceSchema = z
     stars: z.array(starSchema).default([]),
     interpretations: z.array(interpretationSchema).default([]),
     da_xian_age: z.number().nullable().optional(),
+    da_xian_end_age: z.number().nullable().optional(),
+    is_active_da_xian: z.boolean().optional(),
     xiao_xian_branch: z.string().nullable().optional(),
     yue_xian: z.number().nullable().optional(),
     is_body_palace: z.boolean().optional(),
@@ -76,6 +109,8 @@ const earthPlateSchema = z
     palaces: z.array(palaceSchema),
     formations: z.array(formationSchema).default([]),
     taboo_palaces: z.array(z.string()).default([]),
+    overview: z.array(overviewItemSchema).default([]),
+    period_readings: z.array(periodReadingSchema).default([]),
     chart_meta: chartMetaSchema,
   })
   .passthrough();
@@ -117,6 +152,8 @@ export const chartResponseSchema = z
       .passthrough(),
     earth_plate: earthPlateSchema,
     formations: z.array(formationSchema).default([]),
+    overview: z.array(overviewItemSchema).default([]),
+    period_readings: z.array(periodReadingSchema).default([]),
     chart_meta: chartMetaSchema,
     generated_at: z.string(),
   })
@@ -167,6 +204,9 @@ export type ChartResponse = z.infer<typeof chartResponseSchema>;
 export type PalaceInfo = z.infer<typeof palaceSchema>;
 export type StarInfo = z.infer<typeof starSchema>;
 export type ChartFormation = z.infer<typeof formationSchema>;
+export type FormationQuality = z.infer<typeof formationQualitySchema>;
+export type OverviewItem = z.infer<typeof overviewItemSchema>;
+export type PeriodReading = z.infer<typeof periodReadingSchema>;
 export type ChartMeta = NonNullable<z.infer<typeof chartMetaSchema>>;
 
 export function validateChartResponse(data: unknown): ChartResponse {

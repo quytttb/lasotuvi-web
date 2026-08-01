@@ -11,9 +11,19 @@ type PalaceCellProps = {
   style?: CSSProperties;
 };
 
+function formatDaXianRange(palace: PalaceInfo): string | null {
+  if (palace.da_xian_age == null) return null;
+  if (palace.da_xian_end_age != null) {
+    return `Đại hạn ${palace.da_xian_age}–${palace.da_xian_end_age}`;
+  }
+  return `Đại hạn ${palace.da_xian_age}`;
+}
+
 export function PalaceCell({ palace, className, style }: PalaceCellProps) {
   const majorStars = palace.stars.filter(isMajorStar);
   const otherStars = palace.stars.filter((s) => !isMajorStar(s));
+  const isActive = palace.is_active_da_xian === true;
+  const daXianLabel = formatDaXianRange(palace);
 
   return (
     <article
@@ -21,11 +31,13 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
         "palace-cell flex min-h-0 flex-col bg-[var(--paper-raised)] p-2.5 text-[0.8rem] leading-snug",
         "border border-[var(--line)]",
         "break-inside-avoid",
+        isActive && "border-[var(--earth)] bg-[var(--earth-soft)]/35 ring-1 ring-[var(--earth)]/40",
         className,
       )}
       style={style}
       data-palace-index={palace.index}
-      aria-label={`Cung ${palace.palace_name ?? palace.index} — ${palace.branch_name}`}
+      data-active-da-xian={isActive ? "true" : undefined}
+      aria-label={`Cung ${palace.palace_name ?? palace.index} — ${palace.branch_name}${isActive ? " — đại hạn đang xem" : ""}`}
     >
       <header className="palace-cell-header mb-1.5 flex items-start justify-between gap-1 border-b border-[var(--line-soft)] pb-1.5">
         <div className="min-w-0">
@@ -39,6 +51,14 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap justify-end gap-0.5">
+          {isActive ? (
+            <span
+              className="rounded-sm bg-[var(--earth)] px-1 py-0.5 text-[0.7rem] font-medium text-[var(--paper-raised)]"
+              data-testid="active-da-xian-badge"
+            >
+              Đang hạn
+            </span>
+          ) : null}
           {palace.is_body_palace ? (
             <span className="rounded-sm bg-[var(--earth-soft)] px-1 py-0.5 text-[0.7rem] font-medium text-[var(--earth)]">
               Thân
@@ -78,7 +98,7 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
       </div>
 
       <footer className="palace-cell-footer mt-auto flex flex-wrap gap-x-2 gap-y-0.5 border-t border-[var(--line-soft)] pt-1.5 text-[0.72rem] text-[var(--ink-muted)]">
-        {palace.da_xian_age != null ? <span>Đại hạn {palace.da_xian_age}</span> : null}
+        {daXianLabel ? <span>{daXianLabel}</span> : null}
         {palace.xiao_xian_branch ? <span>Tiểu {palace.xiao_xian_branch}</span> : null}
         {palace.yue_xian != null ? <span>Nguyệt {palace.yue_xian}</span> : null}
       </footer>

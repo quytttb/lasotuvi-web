@@ -72,12 +72,27 @@ const CATEGORY_LABELS: Record<string, string> = {
   peach_blossom_star: "Đào hoa",
 };
 
+/** Cách cục quality codes → nhãn tiếng Việt. */
+const FORMATION_QUALITY_LABELS: Record<string, string> = {
+  formed: "Thành",
+  weakened: "Suy",
+  broken: "Phá",
+};
+
+/** Period reading tone → nhãn ngắn. */
+const PERIOD_TONE_LABELS: Record<string, string> = {
+  neutral: "Trung tính",
+  opportunity_window: "Cửa cơ hội",
+  caution: "Thận trọng",
+};
+
 /**
  * Star pinyin codes → Vietnamese display names.
  * Aligned with backend `iztro_adapter._STAR_ROWS`.
  */
 const STAR_CODE_LABELS: Record<string, string> = {
   palace_tone: "Luận cung",
+  mutagen_note: "Tứ hóa",
   zi_wei: "Tử vi",
   lian_zhen: "Liêm trinh",
   tian_tong: "Thiên đồng",
@@ -204,6 +219,53 @@ export function formatStarCodeLabel(code: string | null | undefined): string {
   if (isDisplayableVietnameseMeta(code)) return code.trim();
   // Avoid Title-Case English fallback (e.g. "Fei Lian"); keep stable Vietnamese-looking token.
   return key.replace(/_/g, " ");
+}
+
+export function formatFormationQualityLabel(quality: string | null | undefined): string | null {
+  if (!quality) return null;
+  const key = normalizeKey(quality);
+  return FORMATION_QUALITY_LABELS[key] ?? null;
+}
+
+export function formationQualityToneClass(quality: string | null | undefined): string {
+  switch ((quality ?? "").toLowerCase()) {
+    case "formed":
+      return "border-[var(--wood)] bg-[var(--wood-soft)] text-[var(--wood)]";
+    case "weakened":
+      return "border-[var(--earth)] bg-[var(--earth-soft)] text-[var(--earth)]";
+    case "broken":
+      return "border-[var(--fire)] bg-[var(--fire-soft)] text-[var(--fire)]";
+    default:
+      return "border-[var(--line)] bg-[var(--paper-muted)] text-[var(--ink-muted)]";
+  }
+}
+
+export function formatPeriodToneLabel(tone: string | null | undefined): string | null {
+  if (!tone) return null;
+  const key = normalizeKey(tone);
+  return PERIOD_TONE_LABELS[key] ?? (isDisplayableVietnameseMeta(tone) ? tone.trim() : null);
+}
+
+export function periodToneClass(tone: string | null | undefined): string {
+  switch ((tone ?? "").toLowerCase()) {
+    case "opportunity_window":
+      return "border-[var(--wood)] bg-[var(--wood-soft)] text-[var(--wood)]";
+    case "caution":
+      return "border-[var(--fire)] bg-[var(--fire-soft)] text-[var(--fire)]";
+    default:
+      return "border-[var(--line)] bg-[var(--paper-muted)] text-[var(--ink-muted)]";
+  }
+}
+
+export function formatPeriodScopeLabel(scope: string | null | undefined): string {
+  switch ((scope ?? "").toLowerCase()) {
+    case "da_xian":
+      return "Đại hạn";
+    case "view_year":
+      return "Năm xem";
+    default:
+      return scope?.trim() || "Hạn";
+  }
 }
 
 export function mutagenToneClass(mutagen: string | null | undefined): string | undefined {

@@ -74,6 +74,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
         {palaces.map((palace) => {
           const id = String(palace.index);
           const isSelected = id === String(selected.index);
+          const isActiveDaXian = palace.is_active_da_xian === true;
           const tone = getPalaceTonePresentation(palace);
           const tabId = `${baseId}-tab-${id}`;
           return (
@@ -90,18 +91,21 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
               aria-controls={panelId}
               tabIndex={isSelected ? 0 : -1}
               data-testid={`palace-tab-${id}`}
+              data-active-da-xian={isActiveDaXian ? "true" : undefined}
               className={cn(
                 "min-h-11 rounded-sm border px-1.5 py-1.5 text-center text-sm font-medium leading-tight transition-colors",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 isSelected
                   ? "border-[var(--ink)] bg-[var(--paper-raised)] text-[var(--ink)]"
                   : "border-[var(--line)] bg-[var(--paper)] text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
+                isActiveDaXian && !isSelected && "border-[var(--earth)]",
               )}
               onClick={() => setSelectedId(id)}
             >
               <span className="block truncate">{tabLabel(palace)}</span>
               <span className="mt-0.5 block truncate text-[0.65rem] font-normal text-[var(--ink-muted)]">
-                {palace.branch_name} · {tone.effectLabel}
+                {palace.branch_name}
+                {isActiveDaXian ? " · Đang hạn" : ` · ${tone.effectLabel}`}
               </span>
             </button>
           );
