@@ -106,27 +106,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/calendar/can-chi": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Get Can Chi Alias
-         * @deprecated
-         * @description Deprecated: use `/calendar/stem-branch`.
-         */
-        post: operations["get_can_chi_alias_calendar_can_chi_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/chart/earth-plate": {
         parameters: {
             query?: never;
@@ -138,27 +117,6 @@ export interface paths {
         put?: never;
         /** Generate Earth Plate */
         post: operations["generate_earth_plate_chart_earth_plate_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/chart/dia-ban": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Generate Dia Ban Alias
-         * @deprecated
-         * @description Deprecated: use `/chart/earth-plate`.
-         */
-        post: operations["generate_dia_ban_alias_chart_dia_ban_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -233,27 +191,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/info/gio-chi": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Gio Chi Alias
-         * @deprecated
-         * @description Deprecated: use `/info/hour-branches`.
-         */
-        get: operations["get_gio_chi_alias_info_gio_chi_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/info/stars": {
         parameters: {
             query?: never;
@@ -263,27 +200,6 @@ export interface paths {
         };
         /** Get Star Catalog */
         get: operations["get_star_catalog_info_stars_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/info/sao": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Sao Alias
-         * @deprecated
-         * @description Deprecated: use `/info/stars`.
-         */
-        get: operations["get_sao_alias_info_sao_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -318,26 +234,6 @@ export interface paths {
         };
         /** Get Stem Branch Info */
         get: operations["get_stem_branch_info_info_stem_branch_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/info/can-chi": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Can Chi Info Alias
-         * @deprecated
-         */
-        get: operations["get_can_chi_info_alias_info_can_chi_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -392,25 +288,24 @@ export interface components {
          * BirthInfoRequest
          * @description Birth data used to generate a chart.
          * @example {
-         *       "day": 15,
-         *       "month": 8,
-         *       "year": 1990,
-         *       "hour": 7,
-         *       "gender": 1,
-         *       "is_solar": true,
-         *       "timezone": 7,
-         *       "name": "Nguyễn Văn A",
-         *       "view_year": 2026,
          *       "birth_place": {
          *         "label": "Hà Nội",
-         *         "longitude": 105.85,
-         *         "latitude": 21.03
+         *         "latitude": 21.03,
+         *         "longitude": 105.85
          *       },
-         *       "clock_time": null,
+         *       "day": 15,
+         *       "gender": 1,
+         *       "hour": 7,
+         *       "is_solar": true,
          *       "life_context": {
-         *         "marital_status": "married",
-         *         "children_status": "has_children"
-         *       }
+         *         "children_status": "has_children",
+         *         "marital_status": "married"
+         *       },
+         *       "month": 8,
+         *       "name": "Nguyễn Văn A",
+         *       "timezone": 7,
+         *       "view_year": 2026,
+         *       "year": 1990
          *     }
          */
         BirthInfoRequest: {
@@ -466,11 +361,32 @@ export interface components {
             birth_place?: components["schemas"]["BirthPlace"] | null;
             /**
              * Clock Time
-             * @description Optional civil clock time HH:mm.
+             * @description Optional civil clock time HH:mm. When set, API applies true-solar offset (if birth_place/date available) then maps to hour 1–12. When omitted, hour branch is used unchanged.
              */
             clock_time?: string | null;
-            /** @description Optional marital/children context for Phu thê / Tử tức readings only */
+            /** @description Optional marital/children context for Phu thê / Tử tức readings only; does not change star placement */
             life_context?: components["schemas"]["LifeContext"] | null;
+        };
+        /**
+         * BirthPlace
+         * @description Birth location for true-solar-time longitude correction.
+         */
+        BirthPlace: {
+            /**
+             * Label
+             * @description Display label (e.g. Hà Nội)
+             */
+            label?: string | null;
+            /**
+             * Longitude
+             * @description Geographic longitude in degrees (required when birth_place is set)
+             */
+            longitude: number;
+            /**
+             * Latitude
+             * @description Geographic latitude in degrees (optional)
+             */
+            latitude?: number | null;
         };
         /** ChartAnalysisResponse */
         ChartAnalysisResponse: {
@@ -503,6 +419,12 @@ export interface components {
             name: string;
             /** Description */
             description: string;
+            /** Quality */
+            quality?: ("formed" | "weakened" | "broken") | null;
+            /** Sources */
+            sources?: string[];
+            /** School */
+            school?: string | null;
         };
         /** ChartMeta */
         ChartMeta: {
@@ -528,20 +450,36 @@ export interface components {
             view_year?: number | null;
             /** View Year Branch */
             view_year_branch?: string | null;
-            /** Hour Input */
+            /**
+             * Hour Input
+             * @description Earthly branch hour from request (1–12)
+             */
             hour_input?: number | null;
-            /** Hour Applied */
+            /**
+             * Hour Applied
+             * @description Earthly branch hour used for chart placement after true solar
+             */
             hour_applied?: number | null;
-            /** True Solar Offset Minutes */
+            /**
+             * True Solar Offset Minutes
+             * @description Total true-solar offset applied or reported (longitude + equation of time)
+             */
             true_solar_offset_minutes?: number | null;
             /**
              * True Solar Applied
+             * @description True when clock_time was remapped via true-solar adjustment
              * @default false
              */
             true_solar_applied: boolean;
-            /** Clock Time */
+            /**
+             * Clock Time
+             * @description Civil clock time HH:mm when provided
+             */
             clock_time?: string | null;
-            /** Birth Place Label */
+            /**
+             * Birth Place Label
+             * @description Echo of birth_place.label
+             */
             birth_place_label?: string | null;
             /** Longitude Offset Minutes */
             longitude_offset_minutes?: number | null;
@@ -556,6 +494,10 @@ export interface components {
             earth_plate: components["schemas"]["EarthPlateResponse"];
             /** Formations */
             formations?: components["schemas"]["ChartFormation"][];
+            /** Overview */
+            overview?: components["schemas"]["OverviewItem"][];
+            /** Period Readings */
+            period_readings?: components["schemas"]["PeriodReading"][];
             chart_meta?: components["schemas"]["ChartMeta"] | null;
             /**
              * Generated At
@@ -583,6 +525,10 @@ export interface components {
             formations?: components["schemas"]["ChartFormation"][];
             /** Taboo Palaces */
             taboo_palaces?: string[];
+            /** Overview */
+            overview?: components["schemas"]["OverviewItem"][];
+            /** Period Readings */
+            period_readings?: components["schemas"]["PeriodReading"][];
             chart_meta?: components["schemas"]["ChartMeta"] | null;
         };
         /** ErrorResponse */
@@ -614,6 +560,24 @@ export interface components {
              */
             timestamp?: string;
         };
+        /**
+         * LifeContext
+         * @description Optional life-context hints for spouse/children palace readings only.
+         *
+         *     Does not change star placement. Omit, null, or empty string = undisclosed.
+         */
+        LifeContext: {
+            /**
+             * Marital Status
+             * @description single | married | divorced | remarried; omit/null = undisclosed
+             */
+            marital_status?: ("single" | "married" | "divorced" | "remarried") | null;
+            /**
+             * Children Status
+             * @description has_children | no_children; omit/null = undisclosed
+             */
+            children_status?: ("has_children" | "no_children") | null;
+        };
         /** LunarDateResponse */
         LunarDateResponse: {
             /** Day */
@@ -627,6 +591,18 @@ export interface components {
              * @default false
              */
             is_leap_month: boolean;
+        };
+        /**
+         * OverviewItem
+         * @description One natal overview bullet for FE (tổng quan).
+         */
+        OverviewItem: {
+            /** Code */
+            code: string;
+            /** Title */
+            title: string;
+            /** Text */
+            text: string;
         };
         /** PalaceAnalysis */
         PalaceAnalysis: {
@@ -648,6 +624,16 @@ export interface components {
             positive_aspects: string[];
             /** Negative Aspects */
             negative_aspects: string[];
+            /**
+             * Support Effect
+             * @description rescued | burdened | reinforced | pressed | neutral — major brightness judged together with auxiliary stars
+             */
+            support_effect?: string | null;
+            /**
+             * Support Note
+             * @description Vietnamese note: do not judge by brightness alone
+             */
+            support_note?: string | null;
         };
         /** PalaceInfo */
         PalaceInfo: {
@@ -671,6 +657,13 @@ export interface components {
             interpretations?: components["schemas"]["StarInterpretation"][];
             /** Da Xian Age */
             da_xian_age?: number | null;
+            /** Da Xian End Age */
+            da_xian_end_age?: number | null;
+            /**
+             * Is Active Da Xian
+             * @default false
+             */
+            is_active_da_xian: boolean;
             /** Xiao Xian Branch */
             xiao_xian_branch?: string | null;
             /** Yue Xian */
@@ -690,6 +683,37 @@ export interface components {
              * @default false
              */
             is_triet: boolean;
+        };
+        /**
+         * PeriodReading
+         * @description Time-luck reading template (đại hạn / năm xem).
+         */
+        PeriodReading: {
+            /** Scope */
+            scope: string;
+            /** Code */
+            code: string;
+            /** Text */
+            text: string;
+            /**
+             * Tone
+             * @default neutral
+             */
+            tone: string;
+            /** Disclaimer */
+            disclaimer?: string | null;
+            /** Palace Index */
+            palace_index?: number | null;
+            /** Palace Name */
+            palace_name?: string | null;
+            /** Age */
+            age?: number | null;
+            /** Da Xian Age */
+            da_xian_age?: number | null;
+            /** Da Xian End Age */
+            da_xian_end_age?: number | null;
+            /** View Year */
+            view_year?: number | null;
         };
         /** SolarDateResponse */
         SolarDateResponse: {
@@ -879,43 +903,6 @@ export interface components {
             /** Context */
             ctx?: Record<string, never>;
         };
-        /**
-         * BirthPlace
-         * @description Birth location for true-solar-time longitude correction.
-         */
-        BirthPlace: {
-            /**
-             * Label
-             * @description Display label (e.g. Hà Nội)
-             */
-            label?: string | null;
-            /**
-             * Longitude
-             * @description Geographic longitude in degrees (required when birth_place is set)
-             */
-            longitude: number;
-            /**
-             * Latitude
-             * @description Geographic latitude in degrees (optional)
-             */
-            latitude?: number | null;
-        };
-        /**
-         * LifeContext
-         * @description Optional life-context hints for spouse/children palace readings only.
-         */
-        LifeContext: {
-            /**
-             * Marital Status
-             * @description single | married | divorced | remarried; omit/null = undisclosed
-             */
-            marital_status?: ("single" | "married" | "divorced" | "remarried") | null;
-            /**
-             * Children Status
-             * @description has_children | no_children; omit/null = undisclosed
-             */
-            children_status?: ("has_children" | "no_children") | null;
-        };
     };
     responses: never;
     parameters: never;
@@ -1090,81 +1077,7 @@ export interface operations {
             };
         };
     };
-    get_can_chi_alias_calendar_can_chi_post: {
-        parameters: {
-            query?: {
-                day?: number | null;
-                month?: number | null;
-                year?: number | null;
-                ngay?: number | null;
-                thang?: number | null;
-                nam?: number | null;
-                is_solar?: boolean;
-                duong_lich?: boolean | null;
-                timezone?: number;
-                hour?: number | null;
-                gio?: number | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StemBranchResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
     generate_earth_plate_chart_earth_plate_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["BirthInfoRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EarthPlateResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    generate_dia_ban_alias_chart_dia_ban_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -1316,47 +1229,7 @@ export interface operations {
             };
         };
     };
-    get_gio_chi_alias_info_gio_chi_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
-    };
     get_star_catalog_info_stars_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StarCatalogResponse"];
-                };
-            };
-        };
-    };
-    get_sao_alias_info_sao_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1397,26 +1270,6 @@ export interface operations {
         };
     };
     get_stem_branch_info_info_stem_branch_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
-    };
-    get_can_chi_info_alias_info_can_chi_get: {
         parameters: {
             query?: never;
             header?: never;
