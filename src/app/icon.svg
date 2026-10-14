@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <!-- Radial gradient for lacquer red seal -->
+    <radialGradient id="sealGrad" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#c43825"/>
+      <stop offset="50%" stop-color="#a82b1b"/>
+      <stop offset="100%" stop-color="#7a1a0e"/>
+    </radialGradient>
+
+    <!-- Metallic antique gold gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d77f"/>
+      <stop offset="50%" stop-color="#c49a2a"/>
+      <stop offset="100%" stop-color="#8a6420"/>
+    </linearGradient>
+
+    <!-- Deep lacquer yin gradient -->
+    <linearGradient id="yinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5a140d"/>
+      <stop offset="100%" stop-color="#2a0805"/>
+    </linearGradient>
+
+    <!-- Silk ivory yang gradient -->
+    <linearGradient id="yangGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f4ecd8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer seal base with gold rim -->
+  <circle cx="64" cy="64" r="60" fill="url(#sealGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
+  <circle cx="64" cy="64" r="54" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-opacity="0.6" stroke-dasharray="2,2"/>
+
+  <!-- Taiji symbol (radius = 36) -->
+  <g transform="translate(64, 64) rotate(-30)">
+    <!-- Base circle (Yin - dark) -->
+    <circle cx="0" cy="0" r="36" fill="url(#yinGrad)" stroke="url(#goldGrad)" stroke-width="1.5"/>
+
+    <!-- Yang half: white/ivory right half + S-curve -->
+    <path d="M 0,-36 
+             A 36,36 0 0,1 0,36 
+             A 18,18 0 0,1 0,0 
+             A 18,18 0 0,0 0,-36 Z" 
+          fill="url(#yangGrad)"/>
+
+    <!-- Top Yang eye (small yin dot inside top lobe) -->
+    <circle cx="0" cy="-18" r="5" fill="url(#yinGrad)"/>
+
+    <!-- Bottom Yin eye (small yang dot inside bottom lobe) -->
+    <circle cx="0" cy="18" r="5" fill="url(#yangGrad)"/>
+  </g>
+
+  <!-- 4 Cardinal Star Points (✦) in antique gold -->
+  <!-- North -->
+  <polygon points="64,12 66,16 70,16 67,19 68,23 64,20 60,23 61,19 58,16 62,16" fill="url(#goldGrad)"/>
+  <!-- South -->
+  <polygon points="64,116 66,112 70,112 67,109 68,105 64,108 60,105 61,109 58,112 62,112" fill="url(#goldGrad)"/>
+  <!-- East -->
+  <polygon points="116,64 112,66 112,70 109,67 105,68 108,64 105,60 109,61 112,58 112,62" fill="url(#goldGrad)"/>
+  <!-- West -->
+  <polygon points="12,64 16,66 16,70 19,67 23,68 20,64 23,60 19,61 16,58 16,62" fill="url(#goldGrad)"/>
+</svg>
