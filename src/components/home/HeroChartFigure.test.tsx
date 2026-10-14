@@ -12,9 +12,7 @@ describe("HeroChartFigure", () => {
     expect(screen.queryByTestId("hero-chart-dialog")).not.toBeInTheDocument();
 
     await user.click(screen.getByTestId("hero-chart-open"));
-    const dialog = screen.getByTestId("hero-chart-dialog");
-    expect(dialog).toBeInTheDocument();
-    expect(dialog.className).toContain("animate-chart-zoom");
+    expect(screen.getByTestId("hero-chart-dialog")).toHaveAttribute("role", "dialog");
     expect(screen.getByTestId("hero-chart-open")).toHaveAttribute("aria-expanded", "true");
 
     await user.keyboard("{Escape}");
@@ -29,6 +27,19 @@ describe("HeroChartFigure", () => {
     expect(screen.getByTestId("hero-chart-dialog")).toBeInTheDocument();
 
     await user.click(screen.getByTestId("hero-chart-close-image"));
+    expect(screen.queryByTestId("hero-chart-dialog")).not.toBeInTheDocument();
+  });
+
+  it("closes via the X button and the backdrop", async () => {
+    const user = userEvent.setup();
+    render(<HeroChartFigure />);
+
+    await user.click(screen.getByTestId("hero-chart-open"));
+    await user.click(screen.getByTestId("hero-chart-close"));
+    expect(screen.queryByTestId("hero-chart-dialog")).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId("hero-chart-open"));
+    await user.click(screen.getByTestId("hero-chart-backdrop"));
     expect(screen.queryByTestId("hero-chart-dialog")).not.toBeInTheDocument();
   });
 });

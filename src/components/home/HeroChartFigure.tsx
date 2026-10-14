@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils/cn";
 
 const CHART_SRC = "/images/hero-chart.webp";
@@ -11,35 +10,140 @@ const CHART_ALT = "Lá số Tử Vi mẫu của LasoTuVi với bàn 12 cung theo
 const CHART_WIDTH = 1440;
 const CHART_HEIGHT = 881;
 
+const ENTER_DURATION_MS = 340;
+const EXIT_DURATION_MS = 240;
+
+type Rect = { left: number; top: number; width: number; height: number };
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+/** Khung ảnh nhỏ xoay nghiêng 2deg trên desktop (xem .hero-chart-frame). */
+function thumbnailTilted(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(min-width: 1024px)").matches
+  );
+}
+
 /**
  * Lá số minh họa trên trang chủ. Bấm vào ảnh để phóng to (lightbox),
- * bấm lại / nhấn Escape / bấm nền mờ để thu nhỏ, có animation scale + fade.
+ * bấm lại / nhấn Escape / bấm nền mờ / bấm X để thu nhỏ.
+ * Hiệu ứng FLIP: phóng + tịnh tiến từ đúng vị trí ảnh nhỏ tới bản lớn.
  */
 export function HeroChartFigure() {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const originRef = useRef<Rect | null>(null);
+  const leavingRef = useRef(false);
 
-  const close = useCallback(() => setOpen(false), []);
+  function handleOpen() {
+    const trigger = triggerRef.current;
+    if (trigger) {
+      const rect = trigger.getBoundingClientRect();
+      originRef.current = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+    } else {
+      originRef.current = null;
+    }
+    setOpen(true);
+  }
+
+  const requestClose = useCallback(() => {
+    if (leavingRef.current) return;
+    const panel = panelRef.current;
+    const trigger = triggerRef.current;
+    const canAnimate =
+      panel != null &&
+      trigger != null &&
+      typeof panel.animate === "function" &&
+      !prefersReducedMotion();
+    if (!canAnimate) {
+      setOpen(false);
+      return;
+    }
+    const from = panel.getBoundingClientRect();
+    const to = trigger.getBoundingClientRect();
+    if (from.width === 0 || to.width === 0) {
+      setOpen(false);
+      return;
+    }
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+    const scale = Math.min(1, to.width / from.width);
+    leavingRef.current = true;
+    const animation = panel.animate(
+      [
+        { transform: "translate(0px, 0px) scale(1)", opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, opacity: 0.25 },
+      ],
+      { duration: EXIT_DURATION_MS, easing: "cubic-bezier(0.4, 0, 0.2, 1)", fill: "forwards" },
+    );
+    const finish = () => {
+      leavingRef.current = false;
+      setOpen(false);
+    };
+    animation.onfinish = finish;
+    animation.oncancel = finish;
+  }, []);
 
   useEffect(() => {
     if (!open) return;
+    const trigger = triggerRef.current;
     panelRef.current?.focus();
 
-    const trigger = triggerRef.current;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") requestClose();
     }
     document.addEventListener("keydown", onKey);
+
+    const panel = panelRef.current;
+    const origin = originRef.current;
+    let raf = 0;
+    if (
+      panel != null &&
+      origin != null &&
+      typeof panel.animate === "function" &&
+      !prefersReducedMotion()
+    ) {
+      raf = requestAnimationFrame(() => {
+        const target = panel.getBoundingClientRect();
+        if (target.width === 0 || origin.width === 0) return;
+        const dx = origin.left + origin.width / 2 - (target.left + target.width / 2);
+        const dy = origin.top + origin.height / 2 - (target.top + target.height / 2);
+        const scale = Math.min(1, origin.width / target.width);
+        const tilt = thumbnailTilted() ? " rotate(2deg)" : "";
+        panel.animate(
+          [
+            { transform: `translate(${dx}px, ${dy}px) scale(${scale})${tilt}`, opacity: 0.25 },
+            { transform: "translate(0px, 0px) scale(1) rotate(0deg)", opacity: 1 },
+          ],
+          { duration: ENTER_DURATION_MS, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+        );
+      });
+    }
+
     return () => {
+      cancelAnimationFrame(raf);
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = previousOverflow;
       trigger?.focus();
     };
-  }, [open, close]);
+  }, [open, requestClose]);
 
   return (
     <figure className="relative min-w-0 lg:-mr-8">
@@ -47,7 +151,7 @@ export function HeroChartFigure() {
         <button
           ref={triggerRef}
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={handleOpen}
           aria-haspopup="dialog"
           aria-expanded={open}
           data-testid="hero-chart-open"
@@ -81,14 +185,14 @@ export function HeroChartFigure() {
 
       {open ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
           role="presentation"
         >
           <button
             type="button"
             aria-label="Thu nhỏ lá số minh họa"
             data-testid="hero-chart-backdrop"
-            onClick={close}
+            onClick={requestClose}
             className="absolute inset-0 cursor-zoom-out bg-[var(--ink)]/60"
           />
           <div
@@ -98,11 +202,25 @@ export function HeroChartFigure() {
             aria-label="Lá số minh họa phóng to"
             tabIndex={-1}
             data-testid="hero-chart-dialog"
-            className="animate-chart-zoom relative z-10 max-h-full w-full max-w-5xl overflow-auto rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-3 shadow-2xl focus:outline-none sm:p-4"
+            className="relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-5xl overflow-hidden rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-2 shadow-2xl focus:outline-none sm:p-3"
           >
             <button
               type="button"
-              onClick={close}
+              onClick={requestClose}
+              aria-label="Đóng"
+              data-testid="hero-chart-close"
+              className={cn(
+                "absolute right-3 top-3 z-10 inline-flex min-h-11 min-w-11 items-center justify-center",
+                "rounded-sm border border-[var(--line)] bg-[var(--paper-raised)]/95 text-lg leading-none text-[var(--ink)] shadow-md",
+                "transition-colors hover:border-[var(--earth)]/60 hover:text-[var(--vermillion)]",
+                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
+              )}
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+            <button
+              type="button"
+              onClick={requestClose}
               aria-label="Thu nhỏ lá số minh họa"
               data-testid="hero-chart-close-image"
               className="block w-full cursor-zoom-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]"
@@ -113,15 +231,9 @@ export function HeroChartFigure() {
                 width={CHART_WIDTH}
                 height={CHART_HEIGHT}
                 sizes="(min-width: 1200px) 960px, 92vw"
-                className="h-auto w-full"
+                className="mx-auto h-auto w-auto max-w-full max-h-[calc(100dvh-5rem)]"
               />
             </button>
-            <div className="flex flex-wrap items-center justify-between gap-3 px-1 pb-1 pt-3">
-              <p className="text-sm text-[var(--ink-muted)]">Lá số minh họa · Dữ liệu mẫu</p>
-              <Button size="sm" variant="secondary" onClick={close} data-testid="hero-chart-close">
-                Thu nhỏ
-              </Button>
-            </div>
           </div>
         </div>
       ) : null}
