@@ -42,7 +42,10 @@ export function ChartCenter({ chart }: ChartCenterProps) {
       {/* ── Name & gender ── */}
       <div className="text-center">
         {/* Decorative top ornament */}
-        <p className="text-[var(--vermillion)] text-sm opacity-40 mb-1.5 select-none" aria-hidden="true">
+        <p
+          className="text-[var(--vermillion)] text-sm opacity-40 mb-1.5 select-none"
+          aria-hidden="true"
+        >
           ✦ ☯ ✦
         </p>
         <p className="font-serif text-xl font-semibold text-[var(--ink)] tracking-wide">{name}</p>
@@ -86,7 +89,10 @@ export function ChartCenter({ chart }: ChartCenterProps) {
       </div>
 
       {/* Bottom ornament */}
-      <p className="text-center text-[var(--ink-faint)] text-[10px] select-none opacity-40" aria-hidden="true">
+      <p
+        className="text-center text-[var(--ink-faint)] text-[10px] select-none opacity-40"
+        aria-hidden="true"
+      >
         — 紫微斗數 —
       </p>
     </div>

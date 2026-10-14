@@ -183,7 +183,8 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
     "focus-visible:outline-none focus-visible:border-[var(--earth)]",
     "focus-visible:shadow-[0_0_0_3px_rgba(138,100,32,0.15)]",
   ].join(" ");
-  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]";
+  const labelClass =
+    "mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]";
   const hintClass = "mt-1.5 text-xs text-[var(--ink-faint)]";
   const errorClass = "mt-1 text-xs font-medium text-[var(--fire)]";
 

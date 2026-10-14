@@ -24,18 +24,18 @@
   --line-faint: #e8e0d0;
 
   /* ── Ngũ Hành (Five Elements) ── */
-  --wood: #2d6a40;           /* 木 Mộc — jade green */
+  --wood: #2d6a40; /* 木 Mộc — jade green */
   --wood-light: #4a8f5a;
   --wood-soft: #e2ede6;
-  --fire: #9e2b1e;           /* 火 Hỏa — cinnabar red */
+  --fire: #9e2b1e; /* 火 Hỏa — cinnabar red */
   --fire-light: #c0392b;
   --fire-soft: #f5e4e1;
-  --earth: #8a6420;          /* 土 Thổ — ochre gold */
+  --earth: #8a6420; /* 土 Thổ — ochre gold */
   --earth-light: #a87d2e;
   --earth-soft: #f2e8d0;
-  --metal: #4a5568;          /* 金 Kim — steel */
+  --metal: #4a5568; /* 金 Kim — steel */
   --metal-soft: #e8ecf0;
-  --water: #1b4d7a;          /* 水 Thủy — deep navy */
+  --water: #1b4d7a; /* 水 Thủy — deep navy */
   --water-light: #2563a8;
   --water-soft: #ddeaf5;
 
@@ -74,7 +74,9 @@
 
 /* ── Motion preference ── */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -93,11 +95,7 @@ body {
     radial-gradient(ellipse at 100% 0%, rgba(27, 77, 122, 0.05) 0%, transparent 45%),
     radial-gradient(ellipse at 50% 100%, rgba(45, 106, 64, 0.04) 0%, transparent 50%),
     /* Paper texture gradient */
-    linear-gradient(180deg,
-      #fdf9f0 0%,
-      var(--paper) 30%,
-      #f3ead8 70%,
-      #ede4cc 100%);
+    linear-gradient(180deg, #fdf9f0 0%, var(--paper) 30%, #f3ead8 70%, #ede4cc 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Be Vietnam Pro", "Noto Sans", sans-serif;
   min-height: 100vh;
@@ -144,7 +142,9 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--line));
 }
-.divider-ornament::before { right: 55%; }
+.divider-ornament::before {
+  right: 55%;
+}
 .divider-ornament::after {
   left: 55%;
   background: linear-gradient(90deg, var(--line), transparent);
@@ -183,7 +183,9 @@ body {
    ───────────────────────────────────────────────────────────── */
 .palace-cell {
   position: relative;
-  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .palace-cell:hover {
@@ -212,16 +214,24 @@ body {
 }
 
 /* ── Palace cell typography ── */
-.palace-cell-header { }
-.palace-cell-title { }
-.palace-cell-sub { }
-.palace-cell-body { }
-.palace-cell-footer { }
+.palace-cell-header {
+}
+.palace-cell-title {
+}
+.palace-cell-sub {
+}
+.palace-cell-body {
+}
+.palace-cell-footer {
+}
 
 /* ── Star badges ── */
-.star-badge-major { }
-.star-badge-minor { }
-.star-badge-meta { }
+.star-badge-major {
+}
+.star-badge-minor {
+}
+.star-badge-meta {
+}
 
 /* ─────────────────────────────────────────────────────────────
    CHART BOARD — Bàn lá số
@@ -266,13 +276,23 @@ body {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes brushStroke {
-  from { width: 0; opacity: 0; }
-  to { width: 100%; opacity: 1; }
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
 }
 
 .animate-fade-in-up {
@@ -288,22 +308,28 @@ body {
   background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
   color: var(--paper);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 8px rgba(26, 21, 16, 0.25), 0 1px 0 rgba(255,255,255,0.06) inset;
+  box-shadow:
+    0 2px 8px rgba(26, 21, 16, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
   transition: all 0.2s ease;
 }
 .btn-primary-oriental::before {
   content: "";
   position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   transition: left 0.5s ease;
 }
 .btn-primary-oriental:hover::before {
   left: 100%;
 }
 .btn-primary-oriental:hover {
-  box-shadow: 0 4px 16px rgba(26, 21, 16, 0.3), 0 1px 0 rgba(255,255,255,0.08) inset;
+  box-shadow:
+    0 4px 16px rgba(26, 21, 16, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
   transform: translateY(-1px);
 }
 
@@ -313,12 +339,16 @@ body {
 .field-oriental {
   background: var(--paper-raised);
   border-color: var(--line);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .field-oriental:focus,
 .field-oriental:focus-visible {
   border-color: var(--earth);
-  box-shadow: 0 0 0 2px rgba(138, 100, 32, 0.15), 0 1px 4px var(--shadow-ink);
+  box-shadow:
+    0 0 0 2px rgba(138, 100, 32, 0.15),
+    0 1px 4px var(--shadow-ink);
   outline: none;
 }
 
@@ -378,7 +408,8 @@ body {
     margin: 4mm;
   }
 
-  html, body {
+  html,
+  body {
     background: white !important;
     color: black !important;
     width: 289mm !important;
@@ -406,8 +437,12 @@ body {
     overflow: hidden !important;
   }
 
-  .print\:hidden { display: none !important; }
-  .print\:block { display: block !important; }
+  .print\:hidden {
+    display: none !important;
+  }
+  .print\:block {
+    display: block !important;
+  }
 
   .chart-print-sheet {
     page-break-inside: avoid;
@@ -441,7 +476,10 @@ body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .palace-cell::before, .palace-cell::after { display: none !important; }
+  .palace-cell::before,
+  .palace-cell::after {
+    display: none !important;
+  }
 
   .palace-cell-header {
     margin-bottom: 1.5mm !important;
@@ -451,7 +489,9 @@ body {
     font-size: 12pt !important;
     line-height: 1.15 !important;
   }
-  .palace-cell-sub { font-size: 9pt !important; }
+  .palace-cell-sub {
+    font-size: 9pt !important;
+  }
   .palace-cell-body {
     gap: 1.2mm !important;
     min-height: 0 !important;
@@ -470,7 +510,9 @@ body {
     font-size: 9pt !important;
     line-height: 1.25 !important;
   }
-  .star-badge-meta { font-size: 8pt !important; }
+  .star-badge-meta {
+    font-size: 8pt !important;
+  }
 
   .chart-center {
     background: #fafafa !important;
@@ -481,7 +523,13 @@ body {
     gap: 2mm !important;
     box-shadow: none !important;
   }
-  .chart-center .font-serif { font-size: 15pt !important; }
-  .chart-center dt { font-size: 8.5pt !important; }
-  .chart-center dd { font-size: 9.5pt !important; }
+  .chart-center .font-serif {
+    font-size: 15pt !important;
+  }
+  .chart-center dt {
+    font-size: 8.5pt !important;
+  }
+  .chart-center dd {
+    font-size: 9.5pt !important;
+  }
 }

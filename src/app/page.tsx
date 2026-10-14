@@ -34,31 +34,6 @@ const FEATURES = [
   },
 ];
 
-/** Decorative Chinese seal/stamp ornament */
-function SealOrnament({ text, className }: { text: string; className?: string }) {
-  return (
-    <div
-      className={`select-none font-serif text-[var(--vermillion)] opacity-20 ${className ?? ""}`}
-      aria-hidden="true"
-    >
-      {text}
-    </div>
-  );
-}
-
-/** Decorative horizontal rule with central diamond */
-function OrnamentalDivider() {
-  return (
-    <div className="flex items-center gap-3 my-12" aria-hidden="true">
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[var(--line)]" />
-      <span className="text-[var(--gold)] opacity-60 text-sm">◈</span>
-      <span className="text-[var(--vermillion)] opacity-40 text-base">✦</span>
-      <span className="text-[var(--gold)] opacity-60 text-sm">◈</span>
-      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[var(--line)]" />
-    </div>
-  );
-}
-
 export default function HomePage() {
   return (
     <div>
@@ -70,10 +45,16 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(27,77,122,0.08),transparent_50%),radial-gradient(ellipse_at_85%_10%,rgba(158,43,30,0.07),transparent_45%),radial-gradient(ellipse_at_50%_100%,rgba(138,100,32,0.06),transparent_55%)]" />
 
         {/* Decorative background Chinese characters */}
-        <div className="absolute right-8 top-6 font-serif text-[8rem] leading-none text-[var(--ink)] opacity-[0.025] select-none pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute right-8 top-6 font-serif text-[8rem] leading-none text-[var(--ink)] opacity-[0.025] select-none pointer-events-none"
+          aria-hidden="true"
+        >
           紫
         </div>
-        <div className="absolute left-4 bottom-4 font-serif text-[6rem] leading-none text-[var(--ink)] opacity-[0.03] select-none pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute left-4 bottom-4 font-serif text-[6rem] leading-none text-[var(--ink)] opacity-[0.03] select-none pointer-events-none"
+          aria-hidden="true"
+        >
           斗
         </div>
 
@@ -83,7 +64,9 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-6xl px-5 py-20 sm:py-32">
           {/* Subtitle badge */}
           <div className="mb-6 inline-flex items-center gap-2 rounded-sm border border-[var(--earth)]/30 bg-[var(--earth-soft)]/60 px-3 py-1.5">
-            <span className="text-[var(--earth)] text-xs" aria-hidden="true">☯</span>
+            <span className="text-[var(--earth)] text-xs" aria-hidden="true">
+              ☯
+            </span>
             <span className="text-xs font-medium tracking-[0.08em] text-[var(--earth)]">
               Tử Vi Đẩu Số · Truyền thống Á Đông
             </span>
@@ -99,7 +82,8 @@ export default function HomePage() {
           </div>
 
           <h1 className="mt-6 max-w-2xl font-serif text-2xl leading-relaxed text-[var(--ink-soft)] sm:text-3xl lg:text-4xl">
-            Lập lá số Tử Vi theo bố cục<br className="hidden sm:block" />{" "}
+            Lập lá số Tử Vi theo bố cục
+            <br className="hidden sm:block" />{" "}
             <span className="text-[var(--vermillion)]">truyền thống</span>
           </h1>
 
@@ -117,7 +101,9 @@ export default function HomePage() {
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
               ].join(" ")}
             >
-              <span className="mr-2 opacity-70" aria-hidden="true">☰</span>
+              <span className="mr-2 opacity-70" aria-hidden="true">
+                ☰
+              </span>
               Lập lá số
             </Link>
             <Link
@@ -148,7 +134,10 @@ export default function HomePage() {
                   {el.symbol}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-[var(--ink)]" style={{ color: el.color }}>
+                  <p
+                    className="text-xs font-semibold text-[var(--ink)]"
+                    style={{ color: el.color }}
+                  >
                     {el.name}
                   </p>
                   <p className="text-[10px] text-[var(--ink-faint)]">{el.desc}</p>
@@ -217,8 +206,13 @@ export default function HomePage() {
           ═══════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-y border-[var(--line)] bg-[var(--paper-deep)]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(158,43,30,0.05),transparent_60%)]" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 flex items-center justify-center pointer-events-none" aria-hidden="true">
-          <span className="font-serif text-[5rem] text-[var(--vermillion)] opacity-[0.04] leading-none">命</span>
+        <div
+          className="absolute right-0 top-0 bottom-0 w-32 flex items-center justify-center pointer-events-none"
+          aria-hidden="true"
+        >
+          <span className="font-serif text-[5rem] text-[var(--vermillion)] opacity-[0.04] leading-none">
+            命
+          </span>
         </div>
 
         <div className="relative mx-auto max-w-6xl px-5 py-14 text-center">
@@ -237,7 +231,9 @@ export default function HomePage() {
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
               ].join(" ")}
             >
-              <span className="mr-2" aria-hidden="true">☰</span>
+              <span className="mr-2" aria-hidden="true">
+                ☰
+              </span>
               Bắt đầu lập lá số
             </Link>
           </div>
@@ -250,9 +246,13 @@ export default function HomePage() {
       <section className="border-t border-[var(--line-faint)] bg-[var(--paper-muted)]/50">
         <div className="mx-auto max-w-6xl px-5 py-8 text-sm text-[var(--ink-muted)]">
           <div className="flex items-start gap-3">
-            <span className="text-[var(--earth)] opacity-60 text-base mt-0.5" aria-hidden="true">☯</span>
+            <span className="text-[var(--earth)] opacity-60 text-base mt-0.5" aria-hidden="true">
+              ☯
+            </span>
             <div>
-              <h2 className="font-serif text-base text-[var(--ink)] mb-1.5">Miễn trừ trách nhiệm</h2>
+              <h2 className="font-serif text-base text-[var(--ink)] mb-1.5">
+                Miễn trừ trách nhiệm
+              </h2>
               <p className="max-w-3xl leading-relaxed">
                 Nội dung mang tính tham khảo văn hóa và nghiên cứu. Không thay thế tư vấn y tế, tài
                 chính hoặc pháp lý. Hãy tự cân nhắc khi diễn giải kết quả.

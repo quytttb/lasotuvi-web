@@ -10,24 +10,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gioi-thieu" },
 };
 
-const SECTIONS = [
-  {
-    icon: "源",
-    title: "Nguồn dữ liệu",
-    color: "var(--water)",
-  },
-  {
-    icon: "隱",
-    title: "Quyền riêng tư",
-    color: "var(--wood)",
-  },
-  {
-    icon: "限",
-    title: "Giới hạn",
-    color: "var(--earth)",
-  },
-];
-
 export default function GioiThieuPage() {
   const backendRepo = getBackendRepoUrl();
   const apiUrl = getApiBaseUrl();
@@ -39,12 +21,11 @@ export default function GioiThieuPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
           Về LasoTuVi
         </p>
-        <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">
-          Giới thiệu
-        </h1>
+        <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Giới thiệu</h1>
         <div className="mt-3 h-[2px] w-16 bg-gradient-to-r from-[var(--vermillion)] to-transparent rounded-full" />
         <p className="mt-4 text-[var(--ink-muted)] leading-relaxed">
-          LasoTuVi là ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số — hoàn toàn mã nguồn mở, dữ liệu lưu trên thiết bị, không cần tài khoản.
+          LasoTuVi là ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số — hoàn toàn mã nguồn mở, dữ
+          liệu lưu trên thiết bị, không cần tài khoản.
         </p>
       </div>
 
@@ -107,12 +88,12 @@ export default function GioiThieuPage() {
             <div className="space-y-3 text-sm text-[var(--ink-soft)] leading-relaxed">
               <p>
                 Khi bạn lập lá số, thông tin ngày giờ sinh được gửi tới API công khai để tính toán.
-                Frontend không lưu dữ liệu người dùng trên server riêng. Chỉ khi bạn nhấn "Lưu lá số", bản
-                ghi mới được ghi vào IndexedDB trên trình duyệt hiện tại.
+                Frontend không lưu dữ liệu người dùng trên server riêng. Chỉ khi bạn nhấn &ldquo;Lưu
+                lá số&rdquo;, bản ghi mới được ghi vào IndexedDB trên trình duyệt hiện tại.
               </p>
               <p>
-                Không analytics trong MVP. Không đưa dữ liệu sinh vào URL hay nhật ký phía client ở chế độ
-                production.
+                Không analytics trong MVP. Không đưa dữ liệu sinh vào URL hay nhật ký phía client ở
+                chế độ production.
               </p>
             </div>
           </div>
@@ -146,7 +127,12 @@ export default function GioiThieuPage() {
                 "Không đồng bộ đa thiết bị, không chia sẻ public bằng URL.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5 leading-relaxed">
-                  <span className="text-[var(--earth)] opacity-50 text-[10px] mt-1.5 shrink-0" aria-hidden="true">◆</span>
+                  <span
+                    className="text-[var(--earth)] opacity-50 text-[10px] mt-1.5 shrink-0"
+                    aria-hidden="true"
+                  >
+                    ◆
+                  </span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -157,9 +143,7 @@ export default function GioiThieuPage() {
 
       {/* ── CTA ── */}
       <div className="mt-12 border-t border-[var(--line-faint)] pt-8 flex items-center justify-between gap-4 flex-wrap">
-        <p className="text-sm text-[var(--ink-muted)]">
-          Sẵn sàng xem lá số của bạn?
-        </p>
+        <p className="text-sm text-[var(--ink-muted)]">Sẵn sàng xem lá số của bạn?</p>
         <Link
           href="/lap-la-so"
           className={[

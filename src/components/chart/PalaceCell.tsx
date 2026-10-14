@@ -37,7 +37,8 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
         // Hover elevation
         "transition-all duration-200",
         // Active: ochre gold highlight
-        isActive && "border-[var(--earth)]/70 bg-[var(--earth-soft)]/50 ring-1 ring-[var(--earth)]/30 shadow-[0_0_12px_rgba(138,100,32,0.1)]",
+        isActive &&
+          "border-[var(--earth)]/70 bg-[var(--earth-soft)]/50 ring-1 ring-[var(--earth)]/30 shadow-[0_0_12px_rgba(138,100,32,0.1)]",
         className,
       )}
       style={style}
@@ -123,20 +124,18 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
       </div>
 
       {/* ── Footer: hạn info ── */}
-      {(daXianLabel || palace.xiao_xian_branch || palace.yue_xian != null) ? (
+      {daXianLabel || palace.xiao_xian_branch || palace.yue_xian != null ? (
         <footer className="palace-cell-footer flex flex-wrap gap-x-2 gap-y-0.5 border-t border-[var(--line-faint)] bg-[var(--paper-muted)]/30 px-2.5 py-1.5 text-[0.68rem] text-[var(--ink-faint)]">
           {daXianLabel ? (
             <span className="flex items-center gap-1">
-              <span className="text-[var(--earth)] opacity-60" aria-hidden="true">◇</span>
+              <span className="text-[var(--earth)] opacity-60" aria-hidden="true">
+                ◇
+              </span>
               {daXianLabel}
             </span>
           ) : null}
-          {palace.xiao_xian_branch ? (
-            <span>Tiểu {palace.xiao_xian_branch}</span>
-          ) : null}
-          {palace.yue_xian != null ? (
-            <span>Nguyệt {palace.yue_xian}</span>
-          ) : null}
+          {palace.xiao_xian_branch ? <span>Tiểu {palace.xiao_xian_branch}</span> : null}
+          {palace.yue_xian != null ? <span>Nguyệt {palace.yue_xian}</span> : null}
         </footer>
       ) : null}
     </article>

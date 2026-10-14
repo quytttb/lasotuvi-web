@@ -16,9 +16,7 @@ export default function LapLaSoPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
           Tử Vi Đẩu Số
         </p>
-        <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">
-          Lập lá số
-        </h1>
+        <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Lập lá số</h1>
         <div className="mt-3 h-[2px] w-16 bg-gradient-to-r from-[var(--vermillion)] to-transparent rounded-full" />
         <p className="mt-4 text-[var(--ink-muted)] leading-relaxed text-sm sm:text-base">
           Điền thông tin sinh rồi xem kết quả ngay trên trang này.{" "}

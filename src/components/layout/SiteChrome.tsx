@@ -26,21 +26,84 @@ function LanternIcon({ className }: { className?: string }) {
       aria-hidden="true"
     >
       {/* Lantern string */}
-      <line x1="12" y1="0" x2="12" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+      <line
+        x1="12"
+        y1="0"
+        x2="12"
+        y2="4"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
       {/* Lantern cap */}
-      <path d="M7 4 Q12 2 17 4 L16 7 H8 Z" fill="currentColor" opacity="0.8"/>
+      <path d="M7 4 Q12 2 17 4 L16 7 H8 Z" fill="currentColor" opacity="0.8" />
       {/* Lantern body */}
-      <path d="M6 8 Q3 16 6 24 Q12 27 18 24 Q21 16 18 8 Q12 6 6 8Z" fill="currentColor" opacity="0.15"/>
-      <path d="M8 8 Q5 16 8 23 Q12 26 16 23 Q19 16 16 8 Q12 6.5 8 8Z" stroke="currentColor" strokeWidth="0.8" fill="none" opacity="0.7"/>
+      <path
+        d="M6 8 Q3 16 6 24 Q12 27 18 24 Q21 16 18 8 Q12 6 6 8Z"
+        fill="currentColor"
+        opacity="0.15"
+      />
+      <path
+        d="M8 8 Q5 16 8 23 Q12 26 16 23 Q19 16 16 8 Q12 6.5 8 8Z"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        fill="none"
+        opacity="0.7"
+      />
       {/* Horizontal rings */}
-      <ellipse cx="12" cy="11" rx="5" ry="1.2" stroke="currentColor" strokeWidth="0.7" fill="none" opacity="0.6"/>
-      <ellipse cx="12" cy="20" rx="5" ry="1.2" stroke="currentColor" strokeWidth="0.7" fill="none" opacity="0.6"/>
+      <ellipse
+        cx="12"
+        cy="11"
+        rx="5"
+        ry="1.2"
+        stroke="currentColor"
+        strokeWidth="0.7"
+        fill="none"
+        opacity="0.6"
+      />
+      <ellipse
+        cx="12"
+        cy="20"
+        rx="5"
+        ry="1.2"
+        stroke="currentColor"
+        strokeWidth="0.7"
+        fill="none"
+        opacity="0.6"
+      />
       {/* Lantern base */}
-      <path d="M8 24 Q12 27 16 24 L15 27 H9 Z" fill="currentColor" opacity="0.7"/>
+      <path d="M8 24 Q12 27 16 24 L15 27 H9 Z" fill="currentColor" opacity="0.7" />
       {/* Tassel */}
-      <line x1="11" y1="27" x2="10" y2="31" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.6"/>
-      <line x1="12" y1="27" x2="12" y2="32" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.7"/>
-      <line x1="13" y1="27" x2="14" y2="31" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.6"/>
+      <line
+        x1="11"
+        y1="27"
+        x2="10"
+        y2="31"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+      <line
+        x1="12"
+        y1="27"
+        x2="12"
+        y2="32"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.7"
+      />
+      <line
+        x1="13"
+        y1="27"
+        x2="14"
+        y2="31"
+        stroke="currentColor"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
     </svg>
   );
 }
@@ -184,9 +247,9 @@ export function SiteFooter() {
       <div className="border-t border-[var(--line-soft)]">
         <div className="mx-auto w-full max-w-[100rem] flex flex-wrap items-center justify-between gap-2 px-4 py-4 text-xs text-[var(--ink-faint)] sm:px-5">
           <p>
-            © {year} LasoTuVi{" "}
-            <span className="mx-1.5 opacity-40">·</span>
-            Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài chính hoặc pháp lý.
+            © {year} LasoTuVi <span className="mx-1.5 opacity-40">·</span>
+            Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài
+            chính hoặc pháp lý.
           </p>
           <p className="flex items-center gap-1.5 opacity-70">
             <span>☯</span>
