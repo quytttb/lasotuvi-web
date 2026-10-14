@@ -56,8 +56,8 @@ export function SiteFooter() {
         <div>
           <p className="font-serif text-lg text-[var(--ink)]">LasoTuVi</p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-            Lập và xem lá số Tử Vi Đẩu Số tiếng Việt. Dữ liệu chỉ lưu trên thiết bị khi
-            bạn chọn lưu — không cần tài khoản.
+            Lập và xem lá số Tử Vi Đẩu Số tiếng Việt. Dữ liệu chỉ lưu trên thiết bị khi bạn chọn lưu
+            — không cần tài khoản.
           </p>
           <p className="mt-3 text-sm text-[var(--ink-muted)]">
             Trang web:{" "}
