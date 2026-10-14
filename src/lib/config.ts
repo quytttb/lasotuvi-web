@@ -27,9 +27,14 @@ export function getFrontendRepoUrl(): string {
   return raw ? raw : "https://github.com/quytttb/lasotuvi-web";
 }
 
-export function getContactEmail(): string {
-  const raw = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
-  return raw ? raw : "quyquaquyet02tx@gmail.com";
+export function getContactPhone(): string {
+  const raw = process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim();
+  return raw ? raw : "0394 432 955";
+}
+
+export function getContactFacebook(): string {
+  const raw = process.env.NEXT_PUBLIC_CONTACT_FACEBOOK?.trim();
+  return raw ? raw : "https://www.facebook.com/ly.buihuu.7";
 }
 
 export function joinApiUrl(path: string): string {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getBackendRepoUrl, getContactEmail, getFrontendRepoUrl, getSiteUrl } from "@/lib/config";
+import { getContactFacebook, getContactPhone, getSiteUrl } from "@/lib/config";
 import { cn } from "@/lib/utils/cn";
 
 const links = [
@@ -46,9 +46,8 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const siteUrl = getSiteUrl();
-  const contactEmail = getContactEmail();
-  const frontendRepo = getFrontendRepoUrl();
-  const backendRepo = getBackendRepoUrl();
+  const contactPhone = getContactPhone();
+  const contactFacebook = getContactFacebook();
   const year = new Date().getFullYear();
 
   return (
@@ -57,7 +56,7 @@ export function SiteFooter() {
         <div>
           <p className="font-serif text-lg text-[var(--ink)]">LasoTuVi</p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-            Lập và xem lá số Tử Vi Đẩu Số tiếng Việt. Mã nguồn mở, dữ liệu chỉ lưu trên thiết bị khi
+            Lập và xem lá số Tử Vi Đẩu Số tiếng Việt. Dữ liệu chỉ lưu trên thiết bị khi
             bạn chọn lưu — không cần tài khoản.
           </p>
           <p className="mt-3 text-sm text-[var(--ink-muted)]">
@@ -85,35 +84,22 @@ export function SiteFooter() {
           <p className="text-sm font-medium text-[var(--ink)]">Liên hệ</p>
           <ul className="mt-3 space-y-2 text-sm text-[var(--ink-muted)]">
             <li>
-              Email:{" "}
-              <a href={`mailto:${contactEmail}`} className={footerLinkClass}>
-                {contactEmail}
+              Điện thoại:{" "}
+              <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} className={footerLinkClass}>
+                {contactPhone}
               </a>
             </li>
             <li>
-              Frontend:{" "}
+              Facebook:{" "}
               <a
-                href={frontendRepo}
+                href={contactFacebook}
                 className={footerLinkClass}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                GitHub lasotuvi-web
+                Bùi Hữu Lý
               </a>
             </li>
-            {backendRepo ? (
-              <li>
-                API / backend:{" "}
-                <a
-                  href={backendRepo}
-                  className={footerLinkClass}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  GitHub lasotuvi
-                </a>
-              </li>
-            ) : null}
           </ul>
         </div>
       </div>
