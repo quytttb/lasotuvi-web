@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: "%s · LasoTuVi",
   },
   description:
-    "Ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số qua LasoTuVi API. Mã nguồn mở, dữ liệu lưu trên thiết bị, không cần tài khoản.",
+    "Ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số theo bố cục truyền thống. Dễ dùng, kín đáo, lưu trên thiết bị, không cần đăng ký tài khoản.",
   openGraph: {
     type: "website",
     locale: "vi_VN",

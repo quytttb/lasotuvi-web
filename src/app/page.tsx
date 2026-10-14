@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Trang chủ",
   description:
-    "LasoTuVi — lập lá số Tử Vi Đẩu Số tiếng Việt. Mã nguồn mở, lưu trên thiết bị, không cần tài khoản.",
+    "LasoTuVi — lập lá số Tử Vi Đẩu Số tiếng Việt theo bố cục truyền thống. Miễn phí, xem nhanh, riêng tư, không cần tài khoản.",
   alternates: { canonical: "/" },
 };
 
@@ -18,19 +18,19 @@ const FIVE_ELEMENTS = [
 
 const FEATURES = [
   {
-    icon: "卦",
-    title: "Mã nguồn mở",
-    body: "Bộ máy và API LasoTuVi công khai; frontend cũng mở để kiểm chứng và đóng góp.",
+    icon: "福",
+    title: "Xem nhanh & Miễn phí",
+    body: "Tra cứu lá số bất cứ lúc nào mà không tốn phí. Bố cục sáng rõ, dễ nhìn, người mới tìm hiểu hay người rành Tử Vi đều xem được ngay.",
   },
   {
-    icon: "藏",
-    title: "Dữ liệu trên thiết bị",
-    body: "Lá số đã lưu nằm trong IndexedDB trình duyệt của bạn — không đồng bộ lên máy chủ frontend.",
+    icon: "安",
+    title: "Kín đáo & Riêng tư",
+    body: "Ngày giờ sinh và các lá số đã lưu chỉ nằm gọn trên điện thoại hay máy tính của riêng bạn, an tâm không bị chuyển đi đâu.",
   },
   {
-    icon: "隱",
-    title: "Không cần tài khoản",
-    body: "Không đăng nhập, không cookie phiên. Chỉ gửi thông tin sinh tới API công khai để tính lá số.",
+    icon: "簡",
+    title: "Không cần đăng ký",
+    body: "Không bắt tạo tài khoản, không phải nhớ mật khẩu hay khai báo thông tin phiền toái. Cứ mở trang lên, nhập ngày giờ sinh là có ngay lá số.",
   },
 ];
 

@@ -8,8 +8,11 @@ function trimTrailingSlash(url: string): string {
 }
 
 export function getApiBaseUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_LASOTUVI_API_URL ?? "http://localhost:8000";
-  return trimTrailingSlash(raw.trim());
+  const raw = process.env.NEXT_PUBLIC_LASOTUVI_API_URL;
+  if (raw && (!raw.includes("localhost") || process.env.NODE_ENV === "test")) {
+    return trimTrailingSlash(raw.trim());
+  }
+  return "https://lasotuvi-api.onrender.com";
 }
 
 export function getSiteUrl(): string {

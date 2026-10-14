@@ -24,8 +24,8 @@ export default function GioiThieuPage() {
         <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Giới thiệu</h1>
         <div className="mt-3 h-[2px] w-16 bg-gradient-to-r from-[var(--vermillion)] to-transparent rounded-full" />
         <p className="mt-4 text-[var(--ink-muted)] leading-relaxed">
-          LasoTuVi là ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số — hoàn toàn mã nguồn mở, dữ
-          liệu lưu trên thiết bị, không cần tài khoản.
+          LasoTuVi là ứng dụng web tiếng Việt giúp bạn lập và tra cứu lá số Tử Vi Đẩu Số theo bố cục
+          truyền thống — dễ dùng, lưu an toàn trên thiết bị và không cần tạo tài khoản.
         </p>
       </div>
 
@@ -42,12 +42,8 @@ export default function GioiThieuPage() {
           <div className="flex-1 min-w-0">
             <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Nguồn dữ liệu</h2>
             <p className="text-[var(--ink-soft)] leading-relaxed text-sm">
-              Ứng dụng gọi trực tiếp LasoTuVi API ({apiUrl}) để lập lá số. Không có proxy hay Server
-              Actions trung gian. Endpoint chính của MVP:{" "}
-              <code className="rounded px-1.5 py-0.5 bg-[var(--paper-deep)] text-[var(--water)] text-[0.8rem] font-mono border border-[var(--line-faint)]">
-                POST /chart/generate
-              </code>
-              .
+              Ứng dụng kết nối trực tiếp với máy chủ tính toán LasoTuVi API ({apiUrl}) để an sao và
+              lập lá số theo đúng phép tắc Tử Vi Đẩu Số truyền thống.
             </p>
             {backendRepo ? (
               <p className="mt-3 text-sm text-[var(--ink-muted)]">
