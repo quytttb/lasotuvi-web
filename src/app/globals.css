@@ -16,7 +16,7 @@
   --ink: #1a1510;
   --ink-soft: #312a20;
   --ink-muted: #6b5f4e;
-  --ink-faint: #a0917e;
+  --ink-faint: #7e705e;
 
   /* ── Divider lines ── */
   --line: #c4b49a;
@@ -99,6 +99,67 @@ body {
   color: var(--ink);
   font-family: var(--font-sans), "Be Vietnam Pro", "Noto Sans", sans-serif;
   min-height: 100vh;
+}
+
+/* Shared page gutters; the chart workspace keeps its wider canvas. */
+.site-container,
+.workspace-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+.site-container {
+  max-width: 75rem;
+}
+.workspace-container {
+  max-width: 100rem;
+}
+@media (min-width: 640px) {
+  .site-container,
+  .workspace-container {
+    padding-inline: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .site-container,
+  .workspace-container {
+    padding-inline: 3rem;
+  }
+}
+
+#chart-results {
+  scroll-margin-top: 9rem;
+}
+@media (min-width: 640px) {
+  #chart-results {
+    scroll-margin-top: 6rem;
+  }
+}
+
+/* A real sample chart, framed like a sheet of paper rather than a busy text backdrop. */
+.hero-chart-frame {
+  position: relative;
+  padding: 0.625rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  box-shadow:
+    0 24px 64px rgba(49, 42, 32, 0.14),
+    0 4px 12px rgba(49, 42, 32, 0.08);
+}
+.hero-chart-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--line-soft);
+  background: var(--paper-muted);
+  transform: rotate(-4deg);
+}
+@media (min-width: 1024px) {
+  .hero-chart-frame {
+    padding: 0.875rem;
+    transform: rotate(2deg);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────

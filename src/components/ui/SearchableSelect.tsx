@@ -93,7 +93,7 @@ export function SearchableSelect({
 
   return (
     <div ref={rootRef} className={cn("relative min-w-0", className)} data-testid={testId}>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium text-[var(--ink)]">
+      <label htmlFor={id} className="mb-2 block text-sm font-medium text-[var(--ink)]">
         {label}
         {hint ? <span className="font-normal text-[var(--ink-muted)]"> {hint}</span> : null}
       </label>
@@ -103,7 +103,7 @@ export function SearchableSelect({
           type="button"
           id={id}
           className={cn(
-            "flex min-h-11 w-full items-center justify-between gap-2 rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-left text-[var(--ink)]",
+            "flex min-h-12 w-full items-center justify-between gap-2 rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-left text-base text-[var(--ink)]",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
           )}
           aria-haspopup="listbox"
@@ -131,7 +131,7 @@ export function SearchableSelect({
           aria-controls={listId}
           aria-autocomplete="list"
           className={cn(
-            "min-h-11 w-full rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-[var(--ink)]",
+            "min-h-12 w-full rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-base text-[var(--ink)]",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
           )}
           placeholder="Gõ để tìm…"
@@ -153,7 +153,7 @@ export function SearchableSelect({
               role="option"
               aria-selected={!value}
               className={cn(
-                "flex w-full min-h-10 items-center px-3 text-left text-sm",
+                "flex w-full min-h-11 items-center px-3 text-left text-sm",
                 !value
                   ? "bg-[var(--ink)] text-[var(--paper)]"
                   : "text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
@@ -172,7 +172,7 @@ export function SearchableSelect({
                   role="option"
                   aria-selected={selected}
                   className={cn(
-                    "flex w-full min-h-10 items-center px-3 text-left text-sm",
+                    "flex w-full min-h-11 items-center px-3 text-left text-sm",
                     selected
                       ? "bg-[var(--ink)] text-[var(--paper)]"
                       : "text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",

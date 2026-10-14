@@ -176,26 +176,25 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
   }
 
   const fieldClass = [
-    "min-h-11 w-full rounded-sm px-3 text-[var(--ink)]",
+    "min-h-12 w-full rounded-sm px-3 text-base text-[var(--ink)]",
     "bg-[var(--paper-raised)] border border-[var(--line)]",
     "transition-all duration-200",
     "focus:border-[var(--earth)] focus:shadow-[0_0_0_2px_rgba(138,100,32,0.12)]",
     "focus-visible:outline-none focus-visible:border-[var(--earth)]",
     "focus-visible:shadow-[0_0_0_3px_rgba(138,100,32,0.15)]",
   ].join(" ");
-  const labelClass =
-    "mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]";
-  const hintClass = "mt-1.5 text-xs text-[var(--ink-faint)]";
-  const errorClass = "mt-1 text-xs font-medium text-[var(--fire)]";
+  const labelClass = "mb-2 block text-sm font-medium text-[var(--ink-soft)]";
+  const hintClass = "mt-2 text-sm leading-relaxed text-[var(--ink-muted)]";
+  const errorClass = "mt-2 text-sm font-medium text-[var(--fire)]";
 
   return (
     <form
       onSubmit={handleFormSubmit}
       className={[
-        "print:hidden space-y-6",
+        "print:hidden mx-auto max-w-4xl space-y-8",
         "relative rounded-sm",
         "border border-[var(--line)] bg-[var(--paper-raised)]",
-        "p-5 sm:p-6",
+        "p-6 sm:p-8 lg:p-10",
         "shadow-[0_2px_8px_rgba(26,21,16,0.06)]",
         // Inner decorative border
         "ring-1 ring-inset ring-[var(--line-faint)]",
@@ -203,216 +202,235 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
       noValidate
       data-testid="birth-form"
     >
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <label htmlFor="name" className={labelClass}>
-            Họ tên <span className="font-normal text-[var(--ink-muted)]">(không bắt buộc)</span>
-          </label>
-          <input
-            id="name"
-            className={fieldClass}
-            maxLength={100}
-            autoComplete="name"
-            {...form.register("name")}
-          />
-          {form.formState.errors.name ? (
-            <p className={errorClass}>{form.formState.errors.name.message}</p>
-          ) : null}
-        </div>
-
-        <Controller
-          name="gender"
-          control={form.control}
-          render={({ field }) => (
-            <SegmentedControl
-              id="gender"
-              label="Giới tính"
-              value={field.value}
-              options={GENDER_OPTIONS}
-              onChange={field.onChange}
+      <fieldset className="min-w-0">
+        <legend className="mb-6 font-serif text-xl text-[var(--ink)]">Thông tin sinh</legend>
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div className="sm:col-span-2">
+            <label htmlFor="name" className={labelClass}>
+              Họ tên <span className="font-normal text-[var(--ink-muted)]">(không bắt buộc)</span>
+            </label>
+            <input
+              id="name"
+              className={fieldClass}
+              maxLength={100}
+              autoComplete="name"
+              {...form.register("name")}
             />
-          )}
-        />
+            {form.formState.errors.name ? (
+              <p className={errorClass}>{form.formState.errors.name.message}</p>
+            ) : null}
+          </div>
 
-        <Controller
-          name="is_solar"
-          control={form.control}
-          render={({ field }) => (
-            <SegmentedControl
-              id="is_solar"
-              label="Lịch"
-              value={field.value}
-              options={CALENDAR_OPTIONS}
-              onChange={field.onChange}
-            />
-          )}
-        />
-
-        <div>
-          <label htmlFor="day" className={labelClass}>
-            Ngày
-          </label>
-          <input
-            id="day"
-            type="number"
-            inputMode="numeric"
-            min={1}
-            max={dayMax}
-            className={fieldClass}
-            {...form.register("day", { valueAsNumber: true })}
-          />
-          {form.formState.errors.day ? (
-            <p className={errorClass} role="alert">
-              {form.formState.errors.day.message}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="month" className={labelClass}>
-            Tháng
-          </label>
-          <input
-            id="month"
-            type="number"
-            inputMode="numeric"
-            min={1}
-            max={12}
-            className={fieldClass}
-            {...form.register("month", { valueAsNumber: true })}
-          />
-          {form.formState.errors.month ? (
-            <p className={errorClass}>{form.formState.errors.month.message}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="year" className={labelClass}>
-            Năm sinh
-          </label>
-          <input
-            id="year"
-            type="number"
-            inputMode="numeric"
-            min={1900}
-            max={2100}
-            className={fieldClass}
-            {...form.register("year", { valueAsNumber: true })}
-          />
-          {form.formState.errors.year ? (
-            <p className={errorClass}>{form.formState.errors.year.message}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="view_year" className={labelClass}>
-            Năm xem
-          </label>
-          <input
-            id="view_year"
-            type="number"
-            inputMode="numeric"
-            min={1900}
-            max={2200}
-            className={fieldClass}
-            {...form.register("view_year", { valueAsNumber: true })}
-          />
-          {form.formState.errors.view_year ? (
-            <p className={errorClass}>{form.formState.errors.view_year.message}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="hour" className={labelClass}>
-            Giờ sinh (địa chi)
-          </label>
-          <select
-            id="hour"
-            className={fieldClass}
-            {...form.register("hour", { valueAsNumber: true })}
-          >
-            {HOUR_BRANCHES.map((h) => (
-              <option key={h.value} value={h.value}>
-                {h.label}
-              </option>
-            ))}
-          </select>
-          {form.formState.errors.hour ? (
-            <p className={errorClass}>{form.formState.errors.hour.message}</p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="birth_country" className={labelClass}>
-            Quốc gia
-          </label>
-          <select id="birth_country" className={fieldClass} {...form.register("birth_country")}>
-            {BIRTH_COUNTRIES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <Controller
-          name="birth_place"
-          control={form.control}
-          render={({ field }) => (
-            <div className="sm:col-span-2">
-              <SearchableSelect
-                id="birth_place"
-                label="Khu vực sinh"
-                hint="(để chỉnh giờ theo kinh độ, nếu cần)"
+          <Controller
+            name="gender"
+            control={form.control}
+            render={({ field }) => (
+              <SegmentedControl
+                id="gender"
+                label="Giới tính"
                 value={field.value}
-                options={placeSelectOptions}
+                options={GENDER_OPTIONS}
                 onChange={field.onChange}
-                placeholder="Chọn khu vực (không bắt buộc)"
-                emptyOptionLabel="Không chọn"
-                data-testid="birth-place"
               />
-              {trueSolarHint ? <p className={hintClass}>{trueSolarHint}</p> : null}
-              {form.formState.errors.birth_place ? (
-                <p className={errorClass}>{form.formState.errors.birth_place.message}</p>
-              ) : null}
-            </div>
-          )}
-        />
+            )}
+          />
 
-        <Controller
-          name="marital_status"
-          control={form.control}
-          render={({ field }) => (
-            <SegmentedControl
-              id="marital_status"
-              label="Tình trạng hôn nhân"
-              hint="(tùy chọn, hỗ trợ luận cung Phu thê)"
-              value={field.value}
-              options={MARITAL_OPTIONS}
-              onChange={field.onChange}
-              wrap
-              className="sm:col-span-2"
-            />
-          )}
-        />
+          <Controller
+            name="is_solar"
+            control={form.control}
+            render={({ field }) => (
+              <SegmentedControl
+                id="is_solar"
+                label="Lịch"
+                value={field.value}
+                options={CALENDAR_OPTIONS}
+                onChange={field.onChange}
+              />
+            )}
+          />
 
-        <Controller
-          name="children_status"
-          control={form.control}
-          render={({ field }) => (
-            <SegmentedControl
-              id="children_status"
-              label="Tình trạng con cái"
-              hint="(tùy chọn, hỗ trợ luận cung Tử tức)"
-              value={field.value}
-              options={CHILDREN_OPTIONS}
-              onChange={field.onChange}
-              wrap
-              className="sm:col-span-2"
+          <div>
+            <label htmlFor="day" className={labelClass}>
+              Ngày
+            </label>
+            <input
+              id="day"
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={dayMax}
+              className={fieldClass}
+              {...form.register("day", { valueAsNumber: true })}
             />
-          )}
-        />
-      </div>
+            {form.formState.errors.day ? (
+              <p className={errorClass} role="alert">
+                {form.formState.errors.day.message}
+              </p>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="month" className={labelClass}>
+              Tháng
+            </label>
+            <input
+              id="month"
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={12}
+              className={fieldClass}
+              {...form.register("month", { valueAsNumber: true })}
+            />
+            {form.formState.errors.month ? (
+              <p className={errorClass}>{form.formState.errors.month.message}</p>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="year" className={labelClass}>
+              Năm sinh
+            </label>
+            <input
+              id="year"
+              type="number"
+              inputMode="numeric"
+              min={1900}
+              max={2100}
+              className={fieldClass}
+              {...form.register("year", { valueAsNumber: true })}
+            />
+            {form.formState.errors.year ? (
+              <p className={errorClass}>{form.formState.errors.year.message}</p>
+            ) : null}
+          </div>
+
+          <div>
+            <label htmlFor="hour" className={labelClass}>
+              Giờ sinh (địa chi)
+            </label>
+            <select
+              id="hour"
+              className={fieldClass}
+              {...form.register("hour", { valueAsNumber: true })}
+            >
+              {HOUR_BRANCHES.map((h) => (
+                <option key={h.value} value={h.value}>
+                  {h.label}
+                </option>
+              ))}
+            </select>
+            {form.formState.errors.hour ? (
+              <p className={errorClass}>{form.formState.errors.hour.message}</p>
+            ) : null}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset className="min-w-0 border-t border-[var(--line-faint)] pt-6">
+        <legend className="pr-3 font-serif text-xl text-[var(--ink)]">Thời điểm xem</legend>
+        <div className="grid gap-4 sm:grid-cols-2 sm:items-center">
+          <div>
+            <label htmlFor="view_year" className={labelClass}>
+              Năm xem
+            </label>
+            <input
+              id="view_year"
+              type="number"
+              inputMode="numeric"
+              min={1900}
+              max={2200}
+              className={fieldClass}
+              {...form.register("view_year", { valueAsNumber: true })}
+            />
+            {form.formState.errors.view_year ? (
+              <p className={errorClass}>{form.formState.errors.view_year.message}</p>
+            ) : null}
+          </div>
+          <p className="text-sm leading-relaxed text-[var(--ink-muted)]">
+            Chọn năm bạn muốn xem các hạn trên lá số.
+          </p>
+        </div>
+      </fieldset>
+
+      <fieldset className="min-w-0 border-t border-[var(--line-faint)] pt-6">
+        <legend className="pr-3 font-serif text-xl text-[var(--ink)]">Thông tin bổ sung</legend>
+        <p className="mb-6 text-sm leading-relaxed text-[var(--ink-muted)]">
+          Các mục dưới đây là tùy chọn, giúp bổ sung ngữ cảnh cho luận giải.
+        </p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label htmlFor="birth_country" className={labelClass}>
+              Quốc gia
+            </label>
+            <select id="birth_country" className={fieldClass} {...form.register("birth_country")}>
+              {BIRTH_COUNTRIES.map((c) => (
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <Controller
+            name="birth_place"
+            control={form.control}
+            render={({ field }) => (
+              <div className="sm:col-span-2">
+                <SearchableSelect
+                  id="birth_place"
+                  label="Khu vực sinh"
+                  hint="(để chỉnh giờ theo kinh độ, nếu cần)"
+                  value={field.value}
+                  options={placeSelectOptions}
+                  onChange={field.onChange}
+                  placeholder="Chọn khu vực (không bắt buộc)"
+                  emptyOptionLabel="Không chọn"
+                  data-testid="birth-place"
+                />
+                {trueSolarHint ? <p className={hintClass}>{trueSolarHint}</p> : null}
+                {form.formState.errors.birth_place ? (
+                  <p className={errorClass}>{form.formState.errors.birth_place.message}</p>
+                ) : null}
+              </div>
+            )}
+          />
+
+          <Controller
+            name="marital_status"
+            control={form.control}
+            render={({ field }) => (
+              <SegmentedControl
+                id="marital_status"
+                label="Tình trạng hôn nhân"
+                hint="(tùy chọn, hỗ trợ luận cung Phu thê)"
+                value={field.value}
+                options={MARITAL_OPTIONS}
+                onChange={field.onChange}
+                wrap
+                className="sm:col-span-2"
+              />
+            )}
+          />
+
+          <Controller
+            name="children_status"
+            control={form.control}
+            render={({ field }) => (
+              <SegmentedControl
+                id="children_status"
+                label="Tình trạng con cái"
+                hint="(tùy chọn, hỗ trợ luận cung Tử tức)"
+                value={field.value}
+                options={CHILDREN_OPTIONS}
+                onChange={field.onChange}
+                wrap
+                className="sm:col-span-2"
+              />
+            )}
+          />
+        </div>
+      </fieldset>
 
       {!isSolar ? (
         <p className="text-sm text-[var(--ink-muted)]">
@@ -456,8 +474,14 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
         </p>
       ) : null}
 
-      <div className="flex flex-wrap gap-3">
-        <Button type="submit" disabled={loading} data-testid="submit-chart">
+      <div className="flex flex-wrap gap-3 border-t border-[var(--line-faint)] pt-6">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full sm:w-auto"
+          disabled={loading}
+          data-testid="submit-chart"
+        >
           {loading ? "Đang lập…" : "Lập lá số"}
         </Button>
         {loading ? (

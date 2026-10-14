@@ -105,8 +105,8 @@ export function ChartWorkspace({
       />
 
       {result ? (
-        <div id="chart-results" className="space-y-4 print:space-y-0">
-          <div className="print:hidden flex flex-wrap gap-3">
+        <div id="chart-results" className="space-y-6 print:space-y-0">
+          <div className="print:hidden mx-auto flex max-w-5xl flex-wrap gap-3">
             <Button
               type="button"
               onClick={handleSave}
@@ -126,7 +126,7 @@ export function ChartWorkspace({
           </div>
           {saveMessage ? (
             <p
-              className="print:hidden text-sm text-[var(--wood)]"
+              className="print:hidden mx-auto max-w-5xl text-sm text-[var(--wood)]"
               role="status"
               data-testid="save-success"
             >
@@ -135,7 +135,7 @@ export function ChartWorkspace({
           ) : null}
           {saveError ? (
             <p
-              className="print:hidden text-sm text-[var(--fire)]"
+              className="print:hidden mx-auto max-w-5xl text-sm text-[var(--fire)]"
               role="alert"
               data-testid="save-error"
             >

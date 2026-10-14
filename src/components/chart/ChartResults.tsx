@@ -58,7 +58,7 @@ function StarInterpretationBlock({
   return (
     <article
       className={cn(
-        "rounded-sm border px-2.5 py-2.5",
+        "rounded-sm border p-4 sm:p-5",
         isMajor
           ? "border-[var(--line)] bg-[var(--paper)]"
           : "border-[var(--line)]/70 bg-[var(--paper-muted)]/40",
@@ -94,7 +94,7 @@ function StarInterpretationBlock({
           ) : null}
         </dl>
       ) : (
-        <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-[var(--ink-soft)]">
+        <div className="mt-3 max-w-[70ch] space-y-3 text-base leading-relaxed text-[var(--ink-soft)]">
           {parsed.paragraphs.map((paragraph, index) => (
             <p key={`${starCode}-p-${index}`}>{paragraph}</p>
           ))}
@@ -116,7 +116,7 @@ function StarInterpretationBlock({
 function MutagenNoteBlock({ text }: { text: string }) {
   return (
     <article
-      className="rounded-sm border border-[var(--line)] bg-[var(--paper-muted)]/50 px-2.5 py-2.5"
+      className="rounded-sm border border-[var(--line)] bg-[var(--paper-muted)]/50 p-4 sm:p-5"
       data-testid="mutagen-note"
     >
       <p className="font-medium text-[var(--ink)]">Tứ hóa nguyên cục</p>
@@ -130,7 +130,7 @@ function MutagenNoteBlock({ text }: { text: string }) {
 function LifeContextNoteBlock({ text }: { text: string }) {
   return (
     <article
-      className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/40 px-2.5 py-2.5"
+      className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/40 p-4 sm:p-5"
       data-testid="life-context-note"
     >
       <p className="font-medium text-[var(--ink)]">Ngữ cảnh người xem</p>
@@ -201,19 +201,19 @@ function PalaceInterpretations({
   );
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       {lifeContextNote?.interpretation ? (
         <LifeContextNoteBlock text={lifeContextNote.interpretation} />
       ) : contextHint ? (
         <p
-          className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/50 px-2.5 py-2 text-sm text-[var(--ink-soft)]"
+          className="rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/50 p-4 text-sm leading-relaxed text-[var(--ink-soft)]"
           data-testid="palace-context-hint"
         >
           {contextHint}
         </p>
       ) : null}
       <div
-        className="rounded-sm border border-[var(--line)] bg-[var(--paper)] px-2.5 py-2.5"
+        className="rounded-sm border border-[var(--line)] bg-[var(--paper)] p-4 sm:p-5"
         data-testid="palace-tone"
       >
         <div className="flex flex-wrap items-center gap-2">
@@ -229,10 +229,10 @@ function PalaceInterpretations({
             {tone.effectLabel}
           </span>
         </div>
-        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-[var(--ink-soft)]">
+        <p className="mt-3 max-w-[70ch] whitespace-pre-wrap text-base leading-relaxed text-[var(--ink-soft)]">
           {tone.note}
         </p>
-        <p className="mt-2 text-[0.7rem] text-[var(--ink-muted)]">
+        <p className="mt-3 text-xs leading-relaxed text-[var(--ink-muted)]">
           Không tuyệt đối hóa Miếu/Hãm — độ sáng chính tinh xét cùng phụ tinh trong cung.
         </p>
       </div>
@@ -270,7 +270,7 @@ function PalaceInterpretations({
               <p className="text-xs font-medium uppercase tracking-wide text-[var(--ink-muted)]">
                 Phụ tinh
               </p>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {minorInterps.map((item, index) => (
                   <StarInterpretationBlock
                     key={`minor-${palace.index}-${item.star}-${index}`}
@@ -281,7 +281,7 @@ function PalaceInterpretations({
                 ))}
               </div>
               {showMinorDisclaimer ? (
-                <p className="text-[0.7rem] leading-snug text-[var(--ink-muted)]">
+                <p className="text-xs leading-relaxed text-[var(--ink-muted)]">
                   Phụ tinh là “màu” bổ sung của cung — đọc kèm chính tinh và toàn cục, không tách
                   một sao để kết luận. Chỉ mang tính tham khảo.
                 </p>
@@ -305,7 +305,7 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
 
   return (
     <li
-      className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+      className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
       data-testid="period-reading"
       data-scope={reading.scope}
     >
@@ -331,10 +331,12 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
           <span className="text-[0.75rem] text-[var(--ink-muted)]">Năm {reading.view_year}</span>
         ) : null}
       </div>
-      <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">{reading.text}</p>
+      <p className="mt-3 max-w-[70ch] text-base leading-relaxed text-[var(--ink-soft)]">
+        {reading.text}
+      </p>
       {reading.disclaimer ? (
         <p
-          className="mt-2 text-[0.7rem] leading-snug text-[var(--ink-muted)]"
+          className="mt-3 text-xs leading-relaxed text-[var(--ink-muted)]"
           data-testid="period-disclaimer"
         >
           {reading.disclaimer}
@@ -368,8 +370,8 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
   const taboo = chart.earth_plate.taboo_palaces ?? [];
 
   return (
-    <section className="w-full space-y-6 print:space-y-0" aria-labelledby="chart-results-heading">
-      <div className="print:hidden">
+    <section className="w-full space-y-8 print:space-y-0" aria-labelledby="chart-results-heading">
+      <div className="print:hidden mx-auto max-w-5xl">
         <h2 id="chart-results-heading" className="font-serif text-2xl text-[var(--ink)]">
           Kết quả lá số
         </h2>
@@ -407,22 +409,24 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
       {overview.length > 0 ? (
         <section
           aria-labelledby="overview-heading"
-          className="print:hidden space-y-3"
+          className="print:hidden mx-auto max-w-5xl space-y-4"
           data-testid="overview-section"
         >
           <h3 id="overview-heading" className="font-serif text-xl">
             Tổng quan
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {overview.map((item) => (
               <li
                 key={item.code}
-                className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+                className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
                 data-testid="overview-item"
                 data-code={item.code}
               >
                 <p className="font-medium text-[var(--ink)]">{item.title}</p>
-                <p className="mt-1 text-sm leading-relaxed text-[var(--ink-soft)]">{item.text}</p>
+                <p className="mt-3 max-w-[70ch] text-base leading-relaxed text-[var(--ink-soft)]">
+                  {item.text}
+                </p>
               </li>
             ))}
           </ul>
@@ -438,7 +442,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
 
       <section
         aria-labelledby="formations-heading"
-        className="print:hidden space-y-3"
+        className="print:hidden mx-auto max-w-5xl space-y-4"
         data-testid="formations-section"
       >
         <h3 id="formations-heading" className="font-serif text-xl">
@@ -447,13 +451,13 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         {formations.length === 0 ? (
           <p className="text-sm text-[var(--ink-muted)]">Không có cách cục được phát hiện.</p>
         ) : (
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {formations.map((f) => {
               const qualityLabel = formatFormationQualityLabel(f.quality);
               return (
                 <li
                   key={f.code}
-                  className="border border-[var(--line)] bg-[var(--paper-raised)] px-3 py-2.5"
+                  className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
                   data-testid="formation-item"
                   data-quality={f.quality ?? undefined}
                 >
@@ -471,7 +475,9 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-1 text-sm text-[var(--ink-soft)]">{f.description}</p>
+                  <p className="mt-3 max-w-[70ch] text-base leading-relaxed text-[var(--ink-soft)]">
+                    {f.description}
+                  </p>
                 </li>
               );
             })}
@@ -482,13 +488,13 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
       {periodReadings.length > 0 ? (
         <section
           aria-labelledby="period-readings-heading"
-          className="print:hidden space-y-3"
+          className="print:hidden mx-auto max-w-5xl space-y-4"
           data-testid="period-readings-section"
         >
           <h3 id="period-readings-heading" className="font-serif text-xl">
             Hạn
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {periodReadings.map((reading) => (
               <PeriodReadingCard key={`${reading.scope}-${reading.code}`} reading={reading} />
             ))}
@@ -499,7 +505,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
       {taboo.length > 0 ? (
         <section
           aria-labelledby="taboo-heading"
-          className="print:hidden space-y-2"
+          className="print:hidden mx-auto max-w-5xl space-y-3"
           data-testid="taboo-section"
         >
           <h3 id="taboo-heading" className="font-serif text-xl">
@@ -519,7 +525,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
 
       <section
         aria-labelledby="palace-interp-heading"
-        className="print:hidden w-full space-y-2"
+        className="print:hidden mx-auto w-full max-w-5xl space-y-4"
         data-testid="palace-interp-section"
       >
         <h3 id="palace-interp-heading" className="font-serif text-xl">

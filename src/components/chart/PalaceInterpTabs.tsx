@@ -64,11 +64,11 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
   const panelId = `${baseId}-panel`;
 
   return (
-    <div className={cn("w-full space-y-2", className)} data-testid="palace-interp-tabs">
+    <div className={cn("w-full space-y-4", className)} data-testid="palace-interp-tabs">
       <div
         role="tablist"
         aria-label="Chọn cung để xem luận giải"
-        className="grid w-full grid-cols-3 gap-1 sm:grid-cols-4 lg:grid-cols-6"
+        className="grid w-full grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6"
         onKeyDown={onTabListKeyDown}
       >
         {palaces.map((palace) => {
@@ -93,7 +93,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
               data-testid={`palace-tab-${id}`}
               data-active-da-xian={isActiveDaXian ? "true" : undefined}
               className={cn(
-                "min-h-11 rounded-sm border px-1.5 py-1.5 text-center text-sm font-medium leading-tight transition-colors",
+                "min-h-14 rounded-sm border px-2 py-2 text-center text-sm font-medium leading-tight transition-colors",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 isSelected
                   ? "border-[var(--ink)] bg-[var(--paper-raised)] text-[var(--ink)]"
@@ -103,7 +103,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
               onClick={() => setSelectedId(id)}
             >
               <span className="block truncate">{tabLabel(palace)}</span>
-              <span className="mt-0.5 block truncate text-[0.65rem] font-normal text-[var(--ink-muted)]">
+              <span className="mt-1 block truncate text-xs font-normal text-[var(--ink-muted)]">
                 {palace.branch_name}
                 {isActiveDaXian ? " · Đang hạn" : ` · ${tone.effectLabel}`}
               </span>
@@ -116,7 +116,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
         role="tabpanel"
         id={panelId}
         aria-labelledby={`${baseId}-tab-${selected.index}`}
-        className="w-full border border-[var(--line)] bg-[var(--paper-raised)] px-2 py-3 text-sm text-[var(--ink-soft)] sm:px-3"
+        className="w-full border border-[var(--line)] bg-[var(--paper-raised)] p-4 text-sm text-[var(--ink-soft)] sm:p-6"
         data-testid="palace-interp-panel"
         data-palace-index={selected.index}
       >

@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function LapLaSoPage() {
   return (
-    <div className="mx-auto w-full max-w-[100rem] px-3 py-6 sm:px-5 sm:py-10 print:max-w-none print:px-0 print:py-0">
-      <header className="print:hidden mb-8 max-w-2xl">
+    <div className="workspace-container py-10 sm:py-14 print:max-w-none print:px-0 print:py-0">
+      <header className="print:hidden mx-auto mb-10 max-w-4xl">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
           Tử Vi Đẩu Số
         </p>

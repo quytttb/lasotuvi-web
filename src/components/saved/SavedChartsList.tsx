@@ -132,7 +132,7 @@ export function SavedChartsList() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-5 rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-5 sm:p-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <label htmlFor="search-charts" className="mb-1 block text-sm font-medium">
             Tìm theo tên
@@ -142,7 +142,7 @@ export function SavedChartsList() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="min-h-11 w-full max-w-md rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3"
+            className="min-h-12 w-full max-w-md rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]"
             placeholder="Ví dụ: Nguyễn…"
             data-testid="search-charts"
           />
@@ -156,7 +156,7 @@ export function SavedChartsList() {
             />
             Ghi đè khi trùng ID
           </label>
-          <label className="inline-flex min-h-11 cursor-pointer items-center rounded-sm border border-[var(--line)] px-3 text-sm">
+          <label className="inline-flex min-h-11 cursor-pointer items-center rounded-sm border border-[var(--line)] px-4 text-sm focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--water)]">
             Nhập JSON
             <input
               type="file"
@@ -185,30 +185,42 @@ export function SavedChartsList() {
 
       {filtered.length === 0 ? (
         <div
-          className="rounded-sm border border-dashed border-[var(--line)] bg-[var(--paper-muted)] px-6 py-12 text-center"
+          className="rounded-sm border border-dashed border-[var(--line)] bg-[var(--paper-muted)] px-6 py-14 text-center sm:py-16"
           data-testid="empty-saved"
         >
-          <p className="font-serif text-xl text-[var(--ink)]">Chưa có lá số nào được lưu</p>
-          <p className="mt-2 text-sm text-[var(--ink-muted)]">
-            Lập lá số rồi nhấn “Lưu lá số” để xem lại tại đây.
+          <p className="font-serif text-xl text-[var(--ink)]">
+            {charts.length === 0 ? "Chưa có lá số nào được lưu" : "Không tìm thấy lá số phù hợp"}
           </p>
-          <Button className="mt-6" onClick={() => router.push("/lap-la-so")}>
-            Lập lá số
-          </Button>
+          <p className="mt-2 text-sm text-[var(--ink-muted)]">
+            {charts.length === 0
+              ? "Lập lá số rồi nhấn “Lưu lá số” để xem lại tại đây."
+              : "Thử tìm bằng tên khác hoặc xóa từ khóa để xem tất cả lá số đã lưu."}
+          </p>
+          {charts.length === 0 ? (
+            <Button className="mt-6" onClick={() => router.push("/lap-la-so")}>
+              Lập lá số
+            </Button>
+          ) : (
+            <Button className="mt-6" variant="secondary" onClick={() => setQuery("")}>
+              Xóa từ khóa
+            </Button>
+          )}
         </div>
       ) : (
         <ul
-          className="divide-y divide-[var(--line)] border border-[var(--line)]"
+          className="divide-y divide-[var(--line)] rounded-sm border border-[var(--line)] bg-[var(--paper-raised)]"
           data-testid="saved-list"
         >
           {filtered.map((chart) => (
             <li
               key={chart.id}
-              className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between"
             >
-              <div>
-                <p className="font-medium text-[var(--ink)]">{chart.title}</p>
-                <p className="text-sm text-[var(--ink-muted)]">
+              <div className="min-w-0">
+                <p className="break-words font-serif text-lg font-medium text-[var(--ink)]">
+                  {chart.title}
+                </p>
+                <p className="mt-2 text-sm text-[var(--ink-muted)]">
                   Cập nhật {formatDateVi(chart.updatedAt)}
                 </p>
               </div>
@@ -233,7 +245,12 @@ export function SavedChartsList() {
                 <Button size="sm" variant="secondary" onClick={() => exportOne(chart)}>
                   Xuất JSON
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => setDeleteTarget(chart)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-[var(--fire)] hover:bg-[var(--fire-soft)] hover:text-[var(--fire)]"
+                  onClick={() => setDeleteTarget(chart)}
+                >
                   Xóa
                 </Button>
               </div>

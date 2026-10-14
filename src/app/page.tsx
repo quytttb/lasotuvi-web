@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,11 +10,11 @@ export const metadata: Metadata = {
 };
 
 const FIVE_ELEMENTS = [
-  { symbol: "木", name: "Mộc", color: "var(--wood)", desc: "Sinh trưởng · Nhân từ" },
-  { symbol: "火", name: "Hỏa", color: "var(--fire)", desc: "Sáng soi · Lễ nghĩa" },
-  { symbol: "土", name: "Thổ", color: "var(--earth)", desc: "Bền vững · Tín trung" },
-  { symbol: "金", name: "Kim", color: "var(--metal)", desc: "Cương trực · Nghĩa khí" },
-  { symbol: "水", name: "Thủy", color: "var(--water)", desc: "Uyển chuyển · Trí tuệ" },
+  { symbol: "木", name: "Mộc", color: "var(--wood)" },
+  { symbol: "火", name: "Hỏa", color: "var(--fire)" },
+  { symbol: "土", name: "Thổ", color: "var(--earth)" },
+  { symbol: "金", name: "Kim", color: "var(--metal)" },
+  { symbol: "水", name: "Thủy", color: "var(--water)" },
 ];
 
 const FEATURES = [
@@ -25,7 +26,7 @@ const FEATURES = [
   {
     icon: "安",
     title: "Kín đáo & Riêng tư",
-    body: "Ngày giờ sinh và các lá số đã lưu chỉ nằm gọn trên điện thoại hay máy tính của riêng bạn, an tâm không bị chuyển đi đâu.",
+    body: "Thông tin sinh được gửi tới API để tính lá số. Khi bạn chọn lưu, lá số chỉ được lưu trên trình duyệt hiện tại, không đồng bộ lên máy chủ.",
   },
   {
     icon: "簡",
@@ -40,110 +41,85 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════
           HERO — Banner Á Đông bóng bẩy
           ═══════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden border-b border-[var(--line)]">
-        {/* Layered atmospheric background */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(27,77,122,0.08),transparent_50%),radial-gradient(ellipse_at_85%_10%,rgba(158,43,30,0.07),transparent_45%),radial-gradient(ellipse_at_50%_100%,rgba(138,100,32,0.06),transparent_55%)]" />
-
-        {/* Decorative background Chinese characters */}
+      <section className="relative isolate overflow-hidden border-b border-[var(--line)] bg-[var(--paper-raised)]">
         <div
-          className="absolute right-8 top-6 font-serif text-[8rem] leading-none text-[var(--ink)] opacity-[0.025] select-none pointer-events-none"
+          className="absolute inset-y-0 right-0 hidden w-[42%] border-l border-[var(--line-faint)] bg-[var(--paper-muted)]/60 lg:block"
           aria-hidden="true"
-        >
-          紫
-        </div>
-        <div
-          className="absolute left-4 bottom-4 font-serif text-[6rem] leading-none text-[var(--ink)] opacity-[0.03] select-none pointer-events-none"
-          aria-hidden="true"
-        >
-          斗
-        </div>
-
-        {/* Thin top border accent */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)]/50 to-transparent" />
-
-        <div className="relative mx-auto max-w-6xl px-5 py-20 sm:py-32">
-          {/* Subtitle badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-sm border border-[var(--earth)]/30 bg-[var(--earth-soft)]/60 px-3 py-1.5">
-            <span className="text-[var(--earth)] text-xs" aria-hidden="true">
-              ☯
-            </span>
-            <span className="text-xs font-medium tracking-[0.08em] text-[var(--earth)]">
-              Tử Vi Đẩu Số · Truyền thống Á Đông
-            </span>
-          </div>
-
-          {/* Main title */}
-          <div className="relative">
-            <p className="font-serif text-5xl tracking-[0.06em] text-[var(--ink)] sm:text-6xl lg:text-7xl">
-              LasoTuVi
-            </p>
-            {/* Gold underline brush stroke */}
-            <div className="mt-2 h-[2px] w-24 bg-gradient-to-r from-[var(--vermillion)] via-[var(--gold)] to-transparent rounded-full" />
-          </div>
-
-          <h1 className="mt-6 max-w-2xl font-serif text-2xl leading-relaxed text-[var(--ink-soft)] sm:text-3xl lg:text-4xl">
-            Lập lá số Tử Vi theo bố cục
-            <br className="hidden sm:block" />{" "}
-            <span className="text-[var(--vermillion)]">truyền thống</span>
-          </h1>
-
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--ink-muted)] sm:text-lg">
-            Nhập ngày giờ sinh, xem 12 cung, cách cục và luận giải — dữ liệu chỉ lưu trên thiết bị
-            khi bạn chọn lưu.
-          </p>
-
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link
-              href="/lap-la-so"
-              className={[
-                "btn-primary-oriental",
-                "inline-flex min-h-12 items-center justify-center rounded-sm px-7 text-base font-medium",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
-              ].join(" ")}
-            >
-              <span className="mr-2 opacity-70" aria-hidden="true">
-                ☰
+        />
+        <div className="site-container relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
+          <div>
+            <p className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--earth)] sm:text-sm">
+              <span className="text-lg" aria-hidden="true">
+                ☯
               </span>
-              Lập lá số
-            </Link>
-            <Link
-              href="/gioi-thieu"
-              className={[
-                "inline-flex min-h-12 items-center justify-center rounded-sm",
-                "border border-[var(--line)] bg-[var(--paper-raised)]/80 px-7 text-base font-medium text-[var(--ink)]",
-                "hover:bg-[var(--paper-muted)] hover:border-[var(--earth)]/50 transition-all duration-200",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
-              ].join(" ")}
-            >
-              Tìm hiểu thêm
-            </Link>
+              Tử Vi Đẩu Số · Truyền thống Á Đông
+            </p>
+            <h1 className="max-w-xl font-serif text-4xl leading-[1.25] tracking-tight text-[var(--ink)] sm:text-5xl">
+              Lập lá số Tử Vi theo bố cục{" "}
+              <span className="text-[var(--vermillion)]">truyền thống</span>
+            </h1>
+            <div className="mt-6 h-[2px] w-20 bg-[var(--gold)]" aria-hidden="true" />
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-[var(--ink-muted)] sm:text-lg">
+              Nhập ngày giờ sinh để xem 12 cung, cách cục và luận giải. Khám phá lá số của bạn với
+              bố cục sáng rõ, dễ theo dõi.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap">
+              <Link
+                href="/lap-la-so"
+                className="btn-primary-oriental inline-flex min-h-12 items-center justify-center gap-3 rounded-sm px-7 text-base font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]"
+              >
+                Lập lá số
+                <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                href="/gioi-thieu"
+                className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[var(--line)] px-6 text-base font-medium text-[var(--ink)] transition-colors hover:border-[var(--earth)] hover:bg-[var(--paper-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]"
+              >
+                Tìm hiểu thêm
+              </Link>
+            </div>
+            <p className="mt-5 text-sm leading-relaxed text-[var(--ink-muted)]">
+              Miễn phí · Không cần tài khoản · Lưu trên thiết bị khi bạn chọn
+            </p>
           </div>
 
-          {/* ── Five Elements row ── */}
-          <div className="mt-14 flex flex-wrap gap-3 sm:gap-4">
-            {FIVE_ELEMENTS.map((el) => (
-              <div
-                key={el.symbol}
-                className="flex items-center gap-2 rounded-sm border border-[var(--line-faint)] bg-[var(--paper-raised)]/70 px-3 py-2 backdrop-blur-sm"
-              >
-                <span
-                  className="font-serif text-xl font-semibold leading-none"
+          <figure className="relative min-w-0 lg:-mr-8">
+            <div className="hero-chart-frame">
+              <Image
+                src="/images/hero-chart.webp"
+                alt="Lá số Tử Vi mẫu của LasoTuVi với bàn 12 cung theo bố cục truyền thống"
+                width={1440}
+                height={881}
+                sizes="(min-width: 1200px) 530px, (min-width: 1024px) 46vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
+                preload
+                className="h-auto w-full"
+              />
+            </div>
+            <figcaption className="mt-6 flex items-center justify-between gap-3 text-xs leading-relaxed text-[var(--ink-muted)] sm:text-sm">
+              <span>Lá số minh họa · Dữ liệu mẫu</span>
+              <span className="shrink-0 font-serif text-[var(--earth)]">12 cung · Ngũ hành</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div className="border-t border-[var(--line-faint)]">
+          <div className="site-container flex flex-wrap items-center justify-between gap-4 py-5">
+            <p className="text-sm text-[var(--ink-muted)]">
+              Tinh hoa truyền thống, trải nghiệm hiện đại
+            </p>
+            <ul className="flex flex-wrap gap-5 sm:gap-6" aria-label="Ngũ hành">
+              {FIVE_ELEMENTS.map((el) => (
+                <li
+                  key={el.name}
+                  className="flex items-center gap-2 text-sm font-medium"
                   style={{ color: el.color }}
-                  aria-hidden="true"
                 >
-                  {el.symbol}
-                </span>
-                <div className="min-w-0">
-                  <p
-                    className="text-xs font-semibold text-[var(--ink)]"
-                    style={{ color: el.color }}
-                  >
-                    {el.name}
-                  </p>
-                  <p className="text-[10px] text-[var(--ink-faint)]">{el.desc}</p>
-                </div>
-              </div>
-            ))}
+                  <span className="font-serif text-lg" aria-hidden="true">
+                    {el.symbol}
+                  </span>
+                  {el.name}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -151,14 +127,14 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════
           FEATURES — Ba điểm chính
           ═══════════════════════════════════════════════════ */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
+      <section className="site-container py-14 sm:py-20">
         {/* Section header */}
         <div className="mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
             Đặc điểm nổi bật
           </p>
           <h2 className="font-serif text-2xl text-[var(--ink)] sm:text-3xl heading-decorated mx-auto inline-block">
-            Ba điểm chính
+            Bắt đầu đơn giản, xem lá số rõ ràng
           </h2>
         </div>
 
@@ -169,7 +145,7 @@ export default function HomePage() {
               className={[
                 "group relative overflow-hidden rounded-sm",
                 "border border-[var(--line)] bg-[var(--paper-raised)]",
-                "p-6 transition-all duration-300",
+                "p-6 sm:p-8 transition-all duration-300",
                 "hover:shadow-[0_4px_20px_rgba(26,21,16,0.08)] hover:border-[var(--earth)]/40",
                 "hover:-translate-y-0.5",
               ].join(" ")}
@@ -215,7 +191,7 @@ export default function HomePage() {
           </span>
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-5 py-14 text-center">
+        <div className="site-container relative py-14 text-center sm:py-16">
           <p className="font-serif text-2xl text-[var(--ink)] sm:text-3xl">
             Khám phá lá số của bạn
           </p>
@@ -244,7 +220,7 @@ export default function HomePage() {
           DISCLAIMER
           ═══════════════════════════════════════════════════ */}
       <section className="border-t border-[var(--line-faint)] bg-[var(--paper-muted)]/50">
-        <div className="mx-auto max-w-6xl px-5 py-8 text-sm text-[var(--ink-muted)]">
+        <div className="site-container py-8 text-sm text-[var(--ink-muted)] sm:py-10">
           <div className="flex items-start gap-3">
             <span className="text-[var(--earth)] opacity-60 text-base mt-0.5" aria-hidden="true">
               ☯

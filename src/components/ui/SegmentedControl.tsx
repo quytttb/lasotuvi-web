@@ -37,9 +37,14 @@ export function SegmentedControl<T extends string>({
 
   return (
     <div className={cn("min-w-0", className)}>
-      <p id={labelId} className="mb-1 text-sm font-medium text-[var(--ink)]">
+      <p id={labelId} className="mb-2 text-sm font-medium text-[var(--ink)]">
         {label}
-        {hint ? <span className="font-normal text-[var(--ink-muted)]"> {hint}</span> : null}
+        {hint ? (
+          <span id={hintId} className="font-normal text-[var(--ink-muted)]">
+            {" "}
+            {hint}
+          </span>
+        ) : null}
       </p>
       <div
         role="radiogroup"
@@ -61,7 +66,7 @@ export function SegmentedControl<T extends string>({
               aria-checked={selected}
               data-selected={selected ? "true" : undefined}
               className={cn(
-                "min-h-10 flex-1 rounded-sm px-2.5 text-sm font-medium transition-colors",
+                "min-h-11 flex-1 rounded-sm px-2.5 text-sm font-medium transition-colors",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 wrap ? "min-w-[calc(50%-0.125rem)] sm:min-w-0 sm:flex-1" : null,
                 selected

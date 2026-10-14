@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { getContactFacebook, getContactPhone, getSiteUrl } from "@/lib/config";
 import { cn } from "@/lib/utils/cn";
+import { SiteNavigation } from "@/components/layout/SiteNavigation";
 
 const links = [
   { href: "/", label: "Trang chủ" },
@@ -108,27 +109,18 @@ function LanternIcon({ className }: { className?: string }) {
   );
 }
 
-/** ✦ Decorative compass/star mark */
-function CompassMark({ className }: { className?: string }) {
-  return (
-    <span className={cn("select-none opacity-40", className)} aria-hidden="true">
-      ✦
-    </span>
-  );
-}
-
 export function SiteHeader() {
   return (
     <header className="print:hidden sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]/95 backdrop-blur-sm">
       {/* Thin vermillion top accent line */}
       <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--vermillion)]/60 to-transparent" />
 
-      <div className="mx-auto flex w-full max-w-[100rem] items-center justify-between gap-4 px-3 py-2.5 sm:px-5">
+      <div className="site-container flex flex-col items-start justify-between gap-2 py-3 sm:flex-row sm:items-center sm:gap-4 sm:py-4">
         {/* ── Branding ── */}
         <Link
           href="/"
           className={cn(
-            "flex items-center gap-2.5 group",
+            "flex min-h-11 shrink-0 items-center gap-2.5 group",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
           )}
         >
@@ -139,25 +131,7 @@ export function SiteHeader() {
         </Link>
 
         {/* ── Navigation ── */}
-        <nav aria-label="Chính" className="flex flex-wrap items-center gap-0.5 sm:gap-1">
-          {links.map((link, i) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "relative inline-flex min-h-10 items-center px-2.5 text-sm text-[var(--ink-muted)]",
-                "hover:text-[var(--ink)] transition-colors duration-200",
-                "after:absolute after:bottom-1 after:left-2.5 after:right-2.5 after:h-px",
-                "after:bg-[var(--vermillion)] after:scale-x-0 after:transition-transform after:duration-200 after:origin-left",
-                "hover:after:scale-x-100",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
-              )}
-            >
-              {i > 0 && <CompassMark className="absolute -left-px text-[8px]" />}
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <SiteNavigation />
       </div>
     </header>
   );
@@ -174,7 +148,7 @@ export function SiteFooter() {
       {/* Decorative top border pattern */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
 
-      <div className="mx-auto grid w-full max-w-[100rem] gap-10 px-4 py-12 sm:grid-cols-2 sm:px-5 lg:grid-cols-3">
+      <div className="site-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 lg:py-16">
         {/* ── Brand column ── */}
         <div>
           <div className="flex items-center gap-2.5 mb-3">
@@ -195,7 +169,7 @@ export function SiteFooter() {
 
         {/* ── Navigation column ── */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-muted)] mb-4">
             Trang trên website
           </p>
           <ul className="space-y-2.5 text-sm">
@@ -212,7 +186,7 @@ export function SiteFooter() {
 
         {/* ── Contact column ── */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-muted)] mb-4">
             Liên hệ
           </p>
           <ul className="space-y-2.5 text-sm text-[var(--ink-muted)]">
@@ -245,7 +219,7 @@ export function SiteFooter() {
 
       {/* ── Copyright bar ── */}
       <div className="border-t border-[var(--line-soft)]">
-        <div className="mx-auto w-full max-w-[100rem] flex flex-wrap items-center justify-between gap-2 px-4 py-4 text-xs text-[var(--ink-faint)] sm:px-5">
+        <div className="site-container flex flex-wrap items-center justify-between gap-3 py-5 text-xs leading-relaxed text-[var(--ink-muted)]">
           <p>
             © {year} LasoTuVi <span className="mx-1.5 opacity-40">·</span>
             Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài
