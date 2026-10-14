@@ -1,6 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
+
+import { FIVE_ELEMENTS } from "@/components/home/five-elements";
+import { HeroChartFigure } from "@/components/home/HeroChartFigure";
 
 export const metadata: Metadata = {
   title: "Trang chủ",
@@ -8,14 +10,6 @@ export const metadata: Metadata = {
     "LasoTuVi — lập lá số Tử Vi Đẩu Số tiếng Việt theo bố cục truyền thống. Miễn phí, xem nhanh, riêng tư, không cần tài khoản.",
   alternates: { canonical: "/" },
 };
-
-const FIVE_ELEMENTS = [
-  { symbol: "木", name: "Mộc", color: "var(--wood)" },
-  { symbol: "火", name: "Hỏa", color: "var(--fire)" },
-  { symbol: "土", name: "Thổ", color: "var(--earth)" },
-  { symbol: "金", name: "Kim", color: "var(--metal)" },
-  { symbol: "水", name: "Thủy", color: "var(--water)" },
-];
 
 const FEATURES = [
   {
@@ -83,23 +77,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <figure className="relative min-w-0 lg:-mr-8">
-            <div className="hero-chart-frame">
-              <Image
-                src="/images/hero-chart.webp"
-                alt="Lá số Tử Vi mẫu của LasoTuVi với bàn 12 cung theo bố cục truyền thống"
-                width={1440}
-                height={881}
-                sizes="(min-width: 1200px) 530px, (min-width: 1024px) 46vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
-                preload
-                className="h-auto w-full"
-              />
-            </div>
-            <figcaption className="mt-6 flex items-center justify-between gap-3 text-xs leading-relaxed text-[var(--ink-muted)] sm:text-sm">
-              <span>Lá số minh họa · Dữ liệu mẫu</span>
-              <span className="shrink-0 font-serif text-[var(--earth)]">12 cung · Ngũ hành</span>
-            </figcaption>
-          </figure>
+          <HeroChartFigure />
         </div>
         <div className="border-t border-[var(--line-faint)]">
           <div className="site-container flex flex-wrap items-center justify-between gap-4 py-5">
