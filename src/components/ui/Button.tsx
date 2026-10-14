@@ -9,12 +9,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary: [
-    // Oriental ink-black button with subtle shimmer
+    // Lacquer-red primary button with a subtle paper highlight
     "relative overflow-hidden",
-    "bg-[var(--ink)] text-[var(--paper)]",
-    "border border-[rgba(255,255,255,0.06)]",
-    "shadow-[0_2px_6px_rgba(26,21,16,0.2),0_1px_0_rgba(255,255,255,0.05)_inset]",
-    "hover:bg-[var(--ink-soft)] hover:shadow-[0_3px_12px_rgba(26,21,16,0.25)]",
+    "bg-[var(--lacquer)] text-[var(--paper-raised)]",
+    "border border-[rgba(255,245,223,0.12)]",
+    "shadow-[0_2px_6px_rgba(89,24,22,0.28),0_1px_0_rgba(255,245,223,0.1)_inset]",
+    "hover:bg-[var(--lacquer-deep)] hover:shadow-[0_3px_12px_rgba(89,24,22,0.35)]",
     "hover:-translate-y-px",
     "active:translate-y-0 active:shadow-none",
     "focus-visible:outline-[var(--water)]",
@@ -23,7 +23,7 @@ const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "bg-[var(--paper-raised)] text-[var(--ink)]",
     "border border-[var(--line)]",
     "shadow-[0_1px_3px_rgba(26,21,16,0.06)]",
-    "hover:bg-[var(--paper-muted)] hover:border-[var(--earth)]/40",
+    "hover:bg-[var(--vermillion-soft)] hover:border-[var(--vermillion)]/45",
     "focus-visible:outline-[var(--water)]",
   ].join(" "),
   ghost: [

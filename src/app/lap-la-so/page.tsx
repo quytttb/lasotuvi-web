@@ -13,7 +13,7 @@ export default function LapLaSoPage() {
   return (
     <div className="workspace-container py-10 sm:py-14 print:max-w-none print:px-0 print:py-0">
       <header className="print:hidden mx-auto mb-10 max-w-4xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)] mb-2">
           Tử Vi Đẩu Số
         </p>
         <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Lập lá số</h1>

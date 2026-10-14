@@ -13,7 +13,7 @@ export default function DaLuuPage() {
   return (
     <div className="site-container py-10 sm:py-14">
       <header className="mb-10 max-w-2xl">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)]">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)]">
           Thư viện của bạn
         </p>
         <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Lá số đã lưu</h1>

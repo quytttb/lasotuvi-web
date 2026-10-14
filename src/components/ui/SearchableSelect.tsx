@@ -155,7 +155,7 @@ export function SearchableSelect({
               className={cn(
                 "flex w-full min-h-11 items-center px-3 text-left text-sm",
                 !value
-                  ? "bg-[var(--ink)] text-[var(--paper)]"
+                  ? "bg-[var(--lacquer)] text-[var(--paper-raised)]"
                   : "text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
               )}
               onClick={() => selectValue("")}
@@ -174,7 +174,7 @@ export function SearchableSelect({
                   className={cn(
                     "flex w-full min-h-11 items-center px-3 text-left text-sm",
                     selected
-                      ? "bg-[var(--ink)] text-[var(--paper)]"
+                      ? "bg-[var(--lacquer)] text-[var(--paper-raised)]"
                       : "text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
                   )}
                   onClick={() => selectValue(opt.value)}

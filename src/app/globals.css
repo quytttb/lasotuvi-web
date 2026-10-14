@@ -3,25 +3,25 @@
 /* ─────────────────────────────────────────────────────────────
    🏮 LasoTuVi — Á Đông truyền thống · Design Tokens
    Inspired by: lacquer art (sơn mài), silk (lụa), ink (mực Tàu)
-   Palette: warm ivory + cinnabar red + jade green + ink black
+    Palette: lacquer red + warm ivory + antique gold + ink black
    ───────────────────────────────────────────────────────────── */
 :root {
   /* ── Core paper tones (lụa/giấy dó) ── */
-  --paper: #f8f3e8;
-  --paper-raised: #fdf9f0;
-  --paper-muted: #ede5d4;
-  --paper-deep: #e8ddc8;
+  --paper: #fbf6ed;
+  --paper-raised: #fffaf2;
+  --paper-muted: #f0e4d1;
+  --paper-deep: #e7d4bb;
 
   /* ── Ink tones (mực Tàu) ── */
-  --ink: #1a1510;
-  --ink-soft: #312a20;
-  --ink-muted: #6b5f4e;
-  --ink-faint: #7e705e;
+  --ink: #2b201c;
+  --ink-soft: #43322b;
+  --ink-muted: #705b4e;
+  --ink-faint: #8a7565;
 
   /* ── Divider lines ── */
-  --line: #c4b49a;
-  --line-soft: #d8ccb8;
-  --line-faint: #e8e0d0;
+  --line: #cdb28b;
+  --line-soft: #e0cdb1;
+  --line-faint: #f0e4d2;
 
   /* ── Ngũ Hành (Five Elements) ── */
   --wood: #2d6a40; /* 木 Mộc — jade green */
@@ -40,10 +40,14 @@
   --water-soft: #ddeaf5;
 
   /* ── Accent: Vermillion (son đỏ cổ điển) ── */
-  --vermillion: #b5341a;
-  --vermillion-soft: #f8ede9;
-  --gold: #c49a2a;
-  --gold-soft: #fef8e4;
+  --lacquer: #9f3028;
+  --lacquer-deep: #75201d;
+  --lacquer-dark: #591816;
+  --vermillion: var(--lacquer);
+  --vermillion-soft: #fae9e4;
+  --gold: #b58a45;
+  --gold-light: #d9b975;
+  --gold-soft: #fff5df;
 
   /* ── Star category colors ── */
   --star-lu: #2d6a40;
@@ -60,9 +64,9 @@
   --foreground: var(--ink);
 
   /* ── Ornament: border pattern tokens ── */
-  --border-ornament: rgba(139, 100, 32, 0.25);
-  --shadow-ink: rgba(26, 21, 16, 0.12);
-  --shadow-gold: rgba(196, 154, 42, 0.15);
+  --border-ornament: rgba(159, 48, 40, 0.28);
+  --shadow-ink: rgba(43, 32, 28, 0.12);
+  --shadow-gold: rgba(181, 138, 69, 0.18);
 }
 
 @theme inline {
@@ -90,12 +94,9 @@
 body {
   background-color: var(--paper);
   background-image:
-    /* Subtle corner radial for depth */
-    radial-gradient(ellipse at 0% 0%, rgba(139, 100, 32, 0.06) 0%, transparent 55%),
-    radial-gradient(ellipse at 100% 0%, rgba(27, 77, 122, 0.05) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 100%, rgba(45, 106, 64, 0.04) 0%, transparent 50%),
-    /* Paper texture gradient */
-    linear-gradient(180deg, #fdf9f0 0%, var(--paper) 30%, #f3ead8 70%, #ede4cc 100%);
+    radial-gradient(ellipse at 0% 0%, rgba(159, 48, 40, 0.055) 0%, transparent 48%),
+    radial-gradient(ellipse at 100% 100%, rgba(181, 138, 69, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #fffaf2 0%, var(--paper) 34%, #f6ead9 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Be Vietnam Pro", "Noto Sans", sans-serif;
   min-height: 100vh;
@@ -140,20 +141,66 @@ body {
 .hero-chart-frame {
   position: relative;
   padding: 0.625rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--gold);
   background: var(--paper-raised);
   box-shadow:
-    0 24px 64px rgba(49, 42, 32, 0.14),
-    0 4px 12px rgba(49, 42, 32, 0.08);
+    0 24px 64px rgba(48, 15, 13, 0.28),
+    0 4px 12px rgba(48, 15, 13, 0.18);
 }
 .hero-chart-frame::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  border: 1px solid var(--line-soft);
-  background: var(--paper-muted);
+  border: 1px solid rgba(217, 185, 117, 0.65);
+  background: var(--lacquer-dark);
   transform: rotate(-4deg);
+}
+
+/* ── Lacquer-red surfaces — use for brand moments, never long reading. ── */
+.hero-lacquer {
+  background-color: var(--lacquer-deep);
+  background-image:
+    radial-gradient(circle at 8% 12%, rgba(255, 245, 223, 0.12) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 92% 80%, rgba(217, 185, 117, 0.15) 0 1px, transparent 1.5px),
+    linear-gradient(135deg, var(--lacquer-dark) 0%, var(--lacquer-deep) 46%, #8d2924 100%);
+  color: var(--paper);
+}
+.hero-lacquer::before,
+.hero-lacquer::after {
+  content: "";
+  position: absolute;
+  width: 12rem;
+  height: 12rem;
+  border: 1px solid rgba(217, 185, 117, 0.22);
+  pointer-events: none;
+}
+.hero-lacquer::before {
+  top: -6rem;
+  left: -6rem;
+  transform: rotate(45deg);
+}
+.hero-lacquer::after {
+  right: -6rem;
+  bottom: -6rem;
+  transform: rotate(45deg);
+}
+
+.lacquer-cta-light {
+  background: var(--paper-raised);
+  color: var(--lacquer-deep);
+  border: 1px solid var(--gold-light);
+  box-shadow: 0 2px 10px rgba(48, 15, 13, 0.28);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.lacquer-cta-light:hover {
+  background: var(--gold-soft);
+  box-shadow: 0 5px 18px rgba(48, 15, 13, 0.35);
+  transform: translateY(-1px);
 }
 @media (min-width: 1024px) {
   .hero-chart-frame {
@@ -182,7 +229,7 @@ body {
   left: 0;
   width: 2.5rem;
   height: 2px;
-  background: linear-gradient(90deg, var(--gold), transparent);
+  background: linear-gradient(90deg, var(--vermillion), var(--gold), transparent);
   border-radius: 1px;
 }
 
@@ -366,12 +413,12 @@ body {
 .btn-primary-oriental {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-  color: var(--paper);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, var(--lacquer) 0%, var(--lacquer-deep) 100%);
+  color: var(--paper-raised);
+  border: 1px solid rgba(255, 245, 223, 0.16);
   box-shadow:
-    0 2px 8px rgba(26, 21, 16, 0.25),
-    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    0 2px 8px rgba(89, 24, 22, 0.32),
+    0 1px 0 rgba(255, 245, 223, 0.14) inset;
   transition: all 0.2s ease;
 }
 .btn-primary-oriental::before {
@@ -389,8 +436,8 @@ body {
 }
 .btn-primary-oriental:hover {
   box-shadow:
-    0 4px 16px rgba(26, 21, 16, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    0 4px 16px rgba(89, 24, 22, 0.42),
+    0 1px 0 rgba(255, 245, 223, 0.15) inset;
   transform: translateY(-1px);
 }
 

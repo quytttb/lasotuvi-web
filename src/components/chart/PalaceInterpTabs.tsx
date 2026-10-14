@@ -96,7 +96,7 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
                 "min-h-14 rounded-sm border px-2 py-2 text-center text-sm font-medium leading-tight transition-colors",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 isSelected
-                  ? "border-[var(--ink)] bg-[var(--paper-raised)] text-[var(--ink)]"
+                  ? "border-[var(--lacquer)] bg-[var(--vermillion-soft)] text-[var(--lacquer-deep)]"
                   : "border-[var(--line)] bg-[var(--paper)] text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
                 isActiveDaXian && !isSelected && "border-[var(--earth)]",
               )}

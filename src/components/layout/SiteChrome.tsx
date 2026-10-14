@@ -12,8 +12,8 @@ const links = [
 ];
 
 const footerLinkClass = cn(
-  "text-[var(--ink-muted)] underline-offset-2 hover:text-[var(--vermillion)] hover:underline transition-colors",
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
+  "text-[var(--paper)]/80 underline-offset-2 hover:text-[var(--gold-light)] hover:underline transition-colors",
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]",
 );
 
 /** 🏮 Decorative Lantern SVG for header branding */
@@ -111,9 +111,9 @@ function LanternIcon({ className }: { className?: string }) {
 
 export function SiteHeader() {
   return (
-    <header className="print:hidden sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]/95 backdrop-blur-sm">
-      {/* Thin vermillion top accent line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--vermillion)]/60 to-transparent" />
+    <header className="print:hidden sticky top-0 z-40 border-b border-[var(--lacquer-dark)] bg-[var(--lacquer-deep)]/95 text-[var(--paper)] backdrop-blur-sm">
+      {/* Thin antique-gold top accent line */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--gold-light)] to-transparent" />
 
       <div className="site-container flex flex-col items-start justify-between gap-2 py-3 sm:flex-row sm:items-center sm:gap-4 sm:py-4">
         {/* ── Branding ── */}
@@ -121,11 +121,11 @@ export function SiteHeader() {
           href="/"
           className={cn(
             "flex min-h-11 shrink-0 items-center gap-2.5 group",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]",
           )}
         >
-          <LanternIcon className="h-7 w-auto text-[var(--vermillion)] transition-transform group-hover:scale-110 duration-300" />
-          <span className="font-serif text-xl tracking-[0.04em] text-[var(--ink)] group-hover:text-[var(--vermillion)] transition-colors">
+          <LanternIcon className="h-7 w-auto text-[var(--gold-light)] transition-transform group-hover:scale-110 duration-300" />
+          <span className="font-serif text-xl tracking-[0.04em] text-[var(--paper-raised)] group-hover:text-[var(--gold-light)] transition-colors">
             LasoTuVi
           </span>
         </Link>
@@ -144,22 +144,22 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="print:hidden mt-auto border-t border-[var(--line)] bg-[var(--paper-muted)]">
+    <footer className="print:hidden mt-auto border-t border-[var(--lacquer-dark)] bg-[var(--lacquer-dark)] text-[var(--paper)]">
       {/* Decorative top border pattern */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--gold)]/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[var(--gold-light)]/70 to-transparent" />
 
       <div className="site-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16 lg:py-16">
         {/* ── Brand column ── */}
         <div>
           <div className="flex items-center gap-2.5 mb-3">
-            <LanternIcon className="h-7 w-auto text-[var(--vermillion)] opacity-80" />
-            <p className="font-serif text-lg text-[var(--ink)]">LasoTuVi</p>
+            <LanternIcon className="h-7 w-auto text-[var(--gold-light)]" />
+            <p className="font-serif text-lg text-[var(--paper-raised)]">LasoTuVi</p>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
+          <p className="max-w-sm text-sm leading-relaxed text-[var(--paper)]/75">
             Lập và xem lá số Tử Vi Đẩu Số tiếng Việt. Dữ liệu chỉ lưu trên thiết bị khi bạn chọn lưu
             — không cần tài khoản.
           </p>
-          <p className="mt-4 text-sm text-[var(--ink-muted)]">
+          <p className="mt-4 text-sm text-[var(--paper)]/75">
             Trang web:{" "}
             <a href={siteUrl} className={footerLinkClass} target="_blank" rel="noopener noreferrer">
               {siteUrl.replace(/^https?:\/\//, "")}
@@ -169,13 +169,13 @@ export function SiteFooter() {
 
         {/* ── Navigation column ── */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-muted)] mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--gold-light)] mb-4">
             Trang trên website
           </p>
           <ul className="space-y-2.5 text-sm">
             {links.map((link) => (
               <li key={link.href} className="flex items-center gap-2">
-                <span className="text-[var(--vermillion)] opacity-50 text-[10px]">◆</span>
+                <span className="text-[var(--gold-light)] opacity-80 text-[10px]">◆</span>
                 <Link href={link.href} className={footerLinkClass}>
                   {link.label}
                 </Link>
@@ -186,12 +186,12 @@ export function SiteFooter() {
 
         {/* ── Contact column ── */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ink-muted)] mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--gold-light)] mb-4">
             Liên hệ
           </p>
-          <ul className="space-y-2.5 text-sm text-[var(--ink-muted)]">
+          <ul className="space-y-2.5 text-sm text-[var(--paper)]/75">
             <li className="flex items-center gap-2">
-              <span className="text-[var(--water)] opacity-50 text-[10px]">◆</span>
+              <span className="text-[var(--gold-light)] opacity-80 text-[10px]">◆</span>
               <span>
                 Điện thoại:{" "}
                 <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} className={footerLinkClass}>
@@ -200,7 +200,7 @@ export function SiteFooter() {
               </span>
             </li>
             <li className="flex items-center gap-2">
-              <span className="text-[var(--water)] opacity-50 text-[10px]">◆</span>
+              <span className="text-[var(--gold-light)] opacity-80 text-[10px]">◆</span>
               <span>
                 Facebook:{" "}
                 <a
@@ -218,8 +218,8 @@ export function SiteFooter() {
       </div>
 
       {/* ── Copyright bar ── */}
-      <div className="border-t border-[var(--line-soft)]">
-        <div className="site-container flex flex-wrap items-center justify-between gap-3 py-5 text-xs leading-relaxed text-[var(--ink-muted)]">
+      <div className="border-t border-[var(--gold)]/25">
+        <div className="site-container flex flex-wrap items-center justify-between gap-3 py-5 text-xs leading-relaxed text-[var(--paper)]/65">
           <p>
             © {year} LasoTuVi <span className="mx-1.5 opacity-40">·</span>
             Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài

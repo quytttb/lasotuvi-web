@@ -19,7 +19,7 @@ export default function GioiThieuPage() {
       <div className="mx-auto max-w-3xl">
         {/* ── Page header ── */}
         <div className="mb-10 border-b border-[var(--line)] pb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--earth)] mb-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)] mb-2">
             Về LasoTuVi
           </p>
           <h1 className="font-serif text-3xl text-[var(--ink)] sm:text-4xl">Giới thiệu</h1>
@@ -147,8 +147,8 @@ export default function GioiThieuPage() {
             className={[
               "inline-flex items-center gap-2 min-h-11 px-5",
               "rounded-sm text-sm font-medium",
-              "bg-[var(--ink)] text-[var(--paper)]",
-              "hover:bg-[var(--ink-soft)] transition-colors",
+              "bg-[var(--lacquer)] text-[var(--paper-raised)]",
+              "hover:bg-[var(--lacquer-deep)] transition-colors",
               "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
             ].join(" ")}
           >

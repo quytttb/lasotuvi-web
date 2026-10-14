@@ -179,9 +179,9 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
     "min-h-12 w-full rounded-sm px-3 text-base text-[var(--ink)]",
     "bg-[var(--paper-raised)] border border-[var(--line)]",
     "transition-all duration-200",
-    "focus:border-[var(--earth)] focus:shadow-[0_0_0_2px_rgba(138,100,32,0.12)]",
-    "focus-visible:outline-none focus-visible:border-[var(--earth)]",
-    "focus-visible:shadow-[0_0_0_3px_rgba(138,100,32,0.15)]",
+    "focus:border-[var(--vermillion)] focus:shadow-[0_0_0_2px_rgba(159,48,40,0.12)]",
+    "focus-visible:outline-none focus-visible:border-[var(--vermillion)]",
+    "focus-visible:shadow-[0_0_0_3px_rgba(159,48,40,0.16)]",
   ].join(" ");
   const labelClass = "mb-2 block text-sm font-medium text-[var(--ink-soft)]";
   const hintClass = "mt-2 text-sm leading-relaxed text-[var(--ink-muted)]";

@@ -70,7 +70,7 @@ export function SegmentedControl<T extends string>({
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 wrap ? "min-w-[calc(50%-0.125rem)] sm:min-w-0 sm:flex-1" : null,
                 selected
-                  ? "bg-[var(--ink)] text-[var(--paper)]"
+                  ? "bg-[var(--lacquer)] text-[var(--paper-raised)]"
                   : "bg-transparent text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
               )}
               onClick={() => onChange(opt.value)}

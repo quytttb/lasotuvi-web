@@ -31,8 +31,8 @@ export function SiteNavigation() {
               "inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-sm px-1 text-xs font-medium transition-colors sm:px-3 sm:text-sm",
               "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
               active
-                ? "bg-[var(--vermillion-soft)] text-[var(--vermillion)] shadow-[inset_0_-2px_0_var(--vermillion)]"
-                : "text-[var(--ink-muted)] hover:bg-[var(--paper-muted)] hover:text-[var(--ink)]",
+                ? "bg-[var(--paper-raised)] text-[var(--lacquer-deep)] shadow-[inset_0_-2px_0_var(--gold)]"
+                : "text-[var(--paper)]/80 hover:bg-white/10 hover:text-[var(--paper-raised)]",
             )}
           >
             {link.label}

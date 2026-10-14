@@ -5,6 +5,12 @@ import { describe, expect, it } from "vitest";
 import { HeroChartFigure } from "@/components/home/HeroChartFigure";
 
 describe("HeroChartFigure", () => {
+  it("has no zoom hint badge on the thumbnail", () => {
+    render(<HeroChartFigure />);
+
+    expect(screen.queryByText(/Bấm để phóng to/)).not.toBeInTheDocument();
+  });
+
   it("opens a zoom dialog when the sample chart is clicked and closes on Escape", async () => {
     const user = userEvent.setup();
     render(<HeroChartFigure />);
