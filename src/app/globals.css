@@ -1,32 +1,68 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   🏮 LasoTuVi — Á Đông truyền thống · Design Tokens
+   Inspired by: lacquer art (sơn mài), silk (lụa), ink (mực Tàu)
+   Palette: warm ivory + cinnabar red + jade green + ink black
+   ───────────────────────────────────────────────────────────── */
 :root {
-  --paper: #f7f3ea;
-  --paper-raised: #fffdf8;
-  --paper-muted: #efe8da;
-  --ink: #1c1914;
-  --ink-soft: #3a342c;
-  --ink-muted: #6b6256;
-  --line: #c9bfae;
-  --line-soft: #ddd4c4;
-  --wood: #2f6b3a;
-  --wood-soft: #e4f0e6;
-  --fire: #a33b2b;
-  --fire-soft: #f6e6e2;
-  --earth: #8a6a2f;
-  --earth-soft: #f3ead4;
-  --metal: #5c6570;
-  --water: #1e4d6b;
-  --star-lu: #2f6b3a;
-  --star-quan: #8a6a2f;
-  --star-ke: #1e4d6b;
-  --star-ji: #a33b2b;
-  --star-malefic: #8b3a4a;
-  --star-blessing: #2f6b3a;
-  --star-noble: #1e4d6b;
-  --star-peach: #9a4d6e;
+  /* ── Core paper tones (lụa/giấy dó) ── */
+  --paper: #f8f3e8;
+  --paper-raised: #fdf9f0;
+  --paper-muted: #ede5d4;
+  --paper-deep: #e8ddc8;
+
+  /* ── Ink tones (mực Tàu) ── */
+  --ink: #1a1510;
+  --ink-soft: #312a20;
+  --ink-muted: #6b5f4e;
+  --ink-faint: #a0917e;
+
+  /* ── Divider lines ── */
+  --line: #c4b49a;
+  --line-soft: #d8ccb8;
+  --line-faint: #e8e0d0;
+
+  /* ── Ngũ Hành (Five Elements) ── */
+  --wood: #2d6a40;           /* 木 Mộc — jade green */
+  --wood-light: #4a8f5a;
+  --wood-soft: #e2ede6;
+  --fire: #9e2b1e;           /* 火 Hỏa — cinnabar red */
+  --fire-light: #c0392b;
+  --fire-soft: #f5e4e1;
+  --earth: #8a6420;          /* 土 Thổ — ochre gold */
+  --earth-light: #a87d2e;
+  --earth-soft: #f2e8d0;
+  --metal: #4a5568;          /* 金 Kim — steel */
+  --metal-soft: #e8ecf0;
+  --water: #1b4d7a;          /* 水 Thủy — deep navy */
+  --water-light: #2563a8;
+  --water-soft: #ddeaf5;
+
+  /* ── Accent: Vermillion (son đỏ cổ điển) ── */
+  --vermillion: #b5341a;
+  --vermillion-soft: #f8ede9;
+  --gold: #c49a2a;
+  --gold-soft: #fef8e4;
+
+  /* ── Star category colors ── */
+  --star-lu: #2d6a40;
+  --star-quan: #8a6420;
+  --star-ke: #1b4d7a;
+  --star-ji: #9e2b1e;
+  --star-malefic: #7a2d3a;
+  --star-blessing: #2d6a40;
+  --star-noble: #1b4d7a;
+  --star-peach: #8d3d62;
+
+  /* ── Semantic aliases ── */
   --background: var(--paper);
   --foreground: var(--ink);
+
+  /* ── Ornament: border pattern tokens ── */
+  --border-ornament: rgba(139, 100, 32, 0.25);
+  --shadow-ink: rgba(26, 21, 16, 0.12);
+  --shadow-gold: rgba(196, 154, 42, 0.15);
 }
 
 @theme inline {
@@ -36,10 +72,9 @@
   --font-serif: var(--font-serif);
 }
 
+/* ── Motion preference ── */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -47,19 +82,271 @@
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   BODY — Nền giấy dó với hoa văn tinh tế
+   ───────────────────────────────────────────────────────────── */
 body {
-  background:
-    radial-gradient(circle at top left, rgba(143, 106, 47, 0.08), transparent 40%),
-    linear-gradient(180deg, #faf6ee 0%, var(--paper) 40%, #f3ecdf 100%);
+  background-color: var(--paper);
+  background-image:
+    /* Subtle corner radial for depth */
+    radial-gradient(ellipse at 0% 0%, rgba(139, 100, 32, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 0%, rgba(27, 77, 122, 0.05) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(45, 106, 64, 0.04) 0%, transparent 50%),
+    /* Paper texture gradient */
+    linear-gradient(180deg,
+      #fdf9f0 0%,
+      var(--paper) 30%,
+      #f3ead8 70%,
+      #ede4cc 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Be Vietnam Pro", "Noto Sans", sans-serif;
   min-height: 100vh;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   TYPOGRAPHY
+   ───────────────────────────────────────────────────────────── */
 .font-serif {
   font-family: var(--font-serif), "Source Serif 4", "Noto Serif", Georgia, serif;
 }
 
+/* Decorative heading with gold underline */
+.heading-decorated {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+.heading-decorated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  border-radius: 1px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ORNAMENTAL DIVIDERS (hoa văn ngăn cách)
+   ───────────────────────────────────────────────────────────── */
+.divider-ornament {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+.divider-ornament::before,
+.divider-ornament::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line));
+}
+.divider-ornament::before { right: 55%; }
+.divider-ornament::after {
+  left: 55%;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CARD / SURFACE components
+   ───────────────────────────────────────────────────────────── */
+
+/* Classic Chinese decorative border effect */
+.card-oriental {
+  position: relative;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 3px var(--shadow-ink),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+.card-oriental::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--line-faint);
+  pointer-events: none;
+}
+
+/* Panel with subtle top border accent (vermillion) */
+.panel-accented {
+  border-top: 2px solid var(--vermillion);
+  background: var(--paper-raised);
+  box-shadow: 0 2px 8px var(--shadow-ink);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PALACE CELL — Cung Tử Vi
+   ───────────────────────────────────────────────────────────── */
+.palace-cell {
+  position: relative;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.palace-cell:hover {
+  z-index: 1;
+  box-shadow:
+    0 0 0 1px var(--border-ornament),
+    0 4px 16px rgba(26, 21, 16, 0.1);
+}
+
+/* Corner ornament dots on active cell */
+.palace-cell[data-active-da-xian="true"]::before,
+.palace-cell[data-active-da-xian="true"]::after {
+  content: "◆";
+  position: absolute;
+  font-size: 0.35rem;
+  color: var(--earth);
+  opacity: 0.6;
+}
+.palace-cell[data-active-da-xian="true"]::before {
+  top: 3px;
+  left: 3px;
+}
+.palace-cell[data-active-da-xian="true"]::after {
+  top: 3px;
+  right: 3px;
+}
+
+/* ── Palace cell typography ── */
+.palace-cell-header { }
+.palace-cell-title { }
+.palace-cell-sub { }
+.palace-cell-body { }
+.palace-cell-footer { }
+
+/* ── Star badges ── */
+.star-badge-major { }
+.star-badge-minor { }
+.star-badge-meta { }
+
+/* ─────────────────────────────────────────────────────────────
+   CHART BOARD — Bàn lá số
+   ───────────────────────────────────────────────────────────── */
+.chart-board {
+  border-color: var(--line);
+  box-shadow:
+    0 0 0 1px var(--line-soft),
+    0 4px 24px rgba(26, 21, 16, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  background: var(--paper-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CHART CENTER — Trung tâm lá số
+   ───────────────────────────────────────────────────────────── */
+.chart-center {
+  background: linear-gradient(
+    145deg,
+    var(--paper-raised) 0%,
+    var(--paper) 60%,
+    var(--paper-muted) 100%
+  );
+  border-color: var(--line);
+  box-shadow:
+    0 0 0 1px var(--line-faint) inset,
+    0 2px 8px var(--shadow-ink);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes brushStroke {
+  from { width: 0; opacity: 0; }
+  to { width: 100%; opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease both;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BUTTONS — Phong cách Á Đông
+   ───────────────────────────────────────────────────────────── */
+.btn-primary-oriental {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  color: var(--paper);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 8px rgba(26, 21, 16, 0.25), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transition: all 0.2s ease;
+}
+.btn-primary-oriental::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transition: left 0.5s ease;
+}
+.btn-primary-oriental:hover::before {
+  left: 100%;
+}
+.btn-primary-oriental:hover {
+  box-shadow: 0 4px 16px rgba(26, 21, 16, 0.3), 0 1px 0 rgba(255,255,255,0.08) inset;
+  transform: translateY(-1px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FORM FIELDS — Elegant Oriental Style
+   ───────────────────────────────────────────────────────────── */
+.field-oriental {
+  background: var(--paper-raised);
+  border-color: var(--line);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.field-oriental:focus,
+.field-oriental:focus-visible {
+  border-color: var(--earth);
+  box-shadow: 0 0 0 2px rgba(138, 100, 32, 0.15), 0 1px 4px var(--shadow-ink);
+  outline: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SCROLLBAR — Subtle oriental style
+   ───────────────────────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--line-soft);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ACCESSIBILITY
+   ───────────────────────────────────────────────────────────── */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -71,7 +358,6 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
-
 .focus\:not-sr-only:focus {
   position: static;
   width: auto;
@@ -83,16 +369,16 @@ body {
   white-space: normal;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   PRINT STYLES
+   ───────────────────────────────────────────────────────────── */
 @media print {
   @page {
     size: A4 landscape;
     margin: 4mm;
   }
 
-  /* Lock print layout to A4 landscape content box so "Fit to page width"
-     does not shrink the board and leave empty space below. */
-  html,
-  body {
+  html, body {
     background: white !important;
     color: black !important;
     width: 289mm !important;
@@ -120,13 +406,8 @@ body {
     overflow: hidden !important;
   }
 
-  .print\:hidden {
-    display: none !important;
-  }
-
-  .print\:block {
-    display: block !important;
-  }
+  .print\:hidden { display: none !important; }
+  .print\:block { display: block !important; }
 
   .chart-print-sheet {
     page-break-inside: avoid;
@@ -145,6 +426,7 @@ body {
     break-inside: avoid;
     break-before: avoid;
     break-after: avoid;
+    box-shadow: none !important;
   }
 
   .palace-cell {
@@ -155,49 +437,40 @@ body {
     font-size: 9.5pt !important;
     line-height: 1.25 !important;
     overflow: hidden !important;
+    box-shadow: none !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  .palace-cell::before, .palace-cell::after { display: none !important; }
 
   .palace-cell-header {
     margin-bottom: 1.5mm !important;
     padding-bottom: 1.5mm !important;
   }
-
   .palace-cell-title {
     font-size: 12pt !important;
     line-height: 1.15 !important;
   }
-
-  .palace-cell-sub {
-    font-size: 9pt !important;
-  }
-
+  .palace-cell-sub { font-size: 9pt !important; }
   .palace-cell-body {
     gap: 1.2mm !important;
     min-height: 0 !important;
   }
-
   .palace-cell-footer {
     margin-top: 1.5mm !important;
     padding-top: 1.5mm !important;
     font-size: 8.5pt !important;
     flex-shrink: 0 !important;
   }
-
   .star-badge-major {
     font-size: 11pt !important;
     line-height: 1.25 !important;
   }
-
   .star-badge-minor {
     font-size: 9pt !important;
     line-height: 1.25 !important;
   }
-
-  .star-badge-meta {
-    font-size: 8pt !important;
-  }
+  .star-badge-meta { font-size: 8pt !important; }
 
   .chart-center {
     background: #fafafa !important;
@@ -206,17 +479,9 @@ body {
     font-size: 9.5pt !important;
     line-height: 1.3 !important;
     gap: 2mm !important;
+    box-shadow: none !important;
   }
-
-  .chart-center .font-serif {
-    font-size: 15pt !important;
-  }
-
-  .chart-center dt {
-    font-size: 8.5pt !important;
-  }
-
-  .chart-center dd {
-    font-size: 9.5pt !important;
-  }
+  .chart-center .font-serif { font-size: 15pt !important; }
+  .chart-center dt { font-size: 8.5pt !important; }
+  .chart-center dd { font-size: 9.5pt !important; }
 }

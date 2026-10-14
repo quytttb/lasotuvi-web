@@ -175,16 +175,30 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
     abortRef.current?.abort();
   }
 
-  const fieldClass =
-    "min-h-11 w-full rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-[var(--ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]";
-  const labelClass = "mb-1 block text-sm font-medium text-[var(--ink)]";
-  const hintClass = "mt-1 text-sm font-normal text-[var(--ink-muted)]";
-  const errorClass = "mt-1 text-sm text-[var(--fire)]";
+  const fieldClass = [
+    "min-h-11 w-full rounded-sm px-3 text-[var(--ink)]",
+    "bg-[var(--paper-raised)] border border-[var(--line)]",
+    "transition-all duration-200",
+    "focus:border-[var(--earth)] focus:shadow-[0_0_0_2px_rgba(138,100,32,0.12)]",
+    "focus-visible:outline-none focus-visible:border-[var(--earth)]",
+    "focus-visible:shadow-[0_0_0_3px_rgba(138,100,32,0.15)]",
+  ].join(" ");
+  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]";
+  const hintClass = "mt-1.5 text-xs text-[var(--ink-faint)]";
+  const errorClass = "mt-1 text-xs font-medium text-[var(--fire)]";
 
   return (
     <form
       onSubmit={handleFormSubmit}
-      className="print:hidden space-y-5 rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-5"
+      className={[
+        "print:hidden space-y-6",
+        "relative rounded-sm",
+        "border border-[var(--line)] bg-[var(--paper-raised)]",
+        "p-5 sm:p-6",
+        "shadow-[0_2px_8px_rgba(26,21,16,0.06)]",
+        // Inner decorative border
+        "ring-1 ring-inset ring-[var(--line-faint)]",
+      ].join(" ")}
       noValidate
       data-testid="birth-form"
     >

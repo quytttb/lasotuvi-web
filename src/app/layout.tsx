@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro, Source_Serif_4 } from "next/font/google";
+import { Be_Vietnam_Pro, Noto_Serif } from "next/font/google";
 
 import { SiteFooter, SiteHeader, SkipLink } from "@/components/layout/SiteChrome";
 import { getSiteUrl } from "@/lib/config";
 
 import "./globals.css";
 
+/**
+ * Sans-serif: Be Vietnam Pro — excellent Vietnamese glyph support,
+ * modern yet warm enough for traditional content.
+ */
 const sans = Be_Vietnam_Pro({
   variable: "--font-sans",
   subsets: ["latin", "vietnamese"],
@@ -13,10 +17,14 @@ const sans = Be_Vietnam_Pro({
   display: "swap",
 });
 
-const serif = Source_Serif_4({
+/**
+ * Serif: Noto Serif — covers Vietnamese, Chinese (CJK) characters beautifully.
+ * Perfect for the Tử Vi aesthetic as it renders 紫微斗數 chars elegantly.
+ */
+const serif = Noto_Serif({
   variable: "--font-serif",
   subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 

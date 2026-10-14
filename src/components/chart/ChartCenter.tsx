@@ -20,9 +20,9 @@ function formatLunar(chart: ChartResponse): string {
 function MetaRow({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null;
   return (
-    <div className="grid grid-cols-[6.25rem_minmax(0,1fr)] items-baseline gap-x-1.5 text-left">
-      <dt className="text-[var(--ink-muted)]">{label}</dt>
-      <dd className="min-w-0 break-words font-medium text-[var(--ink)]">{value}</dd>
+    <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-baseline gap-x-2 text-left">
+      <dt className="text-[var(--ink-faint)] text-[0.72rem] uppercase tracking-wide">{label}</dt>
+      <dd className="min-w-0 break-words font-medium text-[var(--ink)] text-[0.8rem]">{value}</dd>
     </div>
   );
 }
@@ -36,16 +36,26 @@ export function ChartCenter({ chart }: ChartCenterProps) {
 
   return (
     <div
-      className="chart-center flex h-full flex-col justify-center gap-3 border border-[var(--line)] bg-[var(--paper)] px-4 py-4 text-[0.85rem] leading-snug"
+      className="chart-center flex h-full flex-col justify-center gap-4 border border-[var(--line)] px-4 py-4 leading-snug"
       style={{ gridRow: "2 / 4", gridColumn: "2 / 4" }}
     >
+      {/* ── Name & gender ── */}
       <div className="text-center">
-        <p className="font-serif text-xl font-semibold text-[var(--ink)]">{name}</p>
-        <p className="mt-0.5 text-[var(--ink-soft)]">{mapGenderToLabel(chart.birth_info.gender)}</p>
+        {/* Decorative top ornament */}
+        <p className="text-[var(--vermillion)] text-sm opacity-40 mb-1.5 select-none" aria-hidden="true">
+          ✦ ☯ ✦
+        </p>
+        <p className="font-serif text-xl font-semibold text-[var(--ink)] tracking-wide">{name}</p>
+        <p className="mt-0.5 text-[0.8rem] text-[var(--ink-muted)]">
+          {mapGenderToLabel(chart.birth_info.gender)}
+        </p>
+        {/* Thin gold rule */}
+        <div className="mx-auto mt-3 h-px w-12 bg-gradient-to-r from-transparent via-[var(--gold)]/60 to-transparent" />
       </div>
 
-      <div className="grid grid-cols-2 gap-x-5 gap-y-2 border-t border-[var(--line-soft)] pt-3">
-        <dl className="space-y-1">
+      {/* ── Metadata grid ── */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[0.8rem]">
+        <dl className="space-y-1.5">
           <MetaRow
             label="Dương lịch"
             value={`${formatSolar(chart)}${chart.birth_info.is_solar ? "" : " (quy đổi)"}`}
@@ -57,7 +67,7 @@ export function ChartCenter({ chart }: ChartCenterProps) {
           {sb.hour?.label ? <MetaRow label="Giờ" value={sb.hour.label} /> : null}
         </dl>
 
-        <dl className="space-y-1 border-l border-[var(--line-soft)] pl-4">
+        <dl className="space-y-1.5 border-l border-[var(--line-faint)] pl-4">
           <MetaRow label="Bản mệnh" value={banMenh} />
           <MetaRow label="Ngũ hành cục" value={chart.earth_plate.wu_xing_ju_name} />
           <MetaRow label="Âm dương" value={meta?.life_yin_yang_status} />
@@ -74,6 +84,11 @@ export function ChartCenter({ chart }: ChartCenterProps) {
           />
         </dl>
       </div>
+
+      {/* Bottom ornament */}
+      <p className="text-center text-[var(--ink-faint)] text-[10px] select-none opacity-40" aria-hidden="true">
+        — 紫微斗數 —
+      </p>
     </div>
   );
 }

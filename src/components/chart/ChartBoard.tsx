@@ -23,7 +23,11 @@ export function ChartBoard({ chart, className }: ChartBoardProps) {
   return (
     <div
       className={cn(
-        "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden border-2 border-[var(--line)] bg-[var(--paper-muted)] shadow-[0_1px_0_rgba(28,25,20,0.04)]",
+        "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden",
+        // Double-rule outer border in the style of traditional Chinese charts
+        "border-2 border-[var(--line)] bg-[var(--paper-muted)]",
+        "ring-1 ring-offset-0 ring-[var(--line-soft)] outline outline-1 outline-[var(--line-faint)] outline-offset-[-5px]",
+        "shadow-[0_4px_24px_rgba(26,21,16,0.08),0_1px_0_rgba(255,255,255,0.5)_inset]",
         "min-h-[46rem] w-full max-w-7xl",
         className,
       )}
