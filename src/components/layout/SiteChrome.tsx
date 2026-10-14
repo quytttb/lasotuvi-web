@@ -187,7 +187,7 @@ export function SiteFooter() {
           </p>
           <p className="mt-4 text-sm text-[var(--ink-muted)]">
             Trang web:{" "}
-            <a href={siteUrl} className={footerLinkClass}>
+            <a href={siteUrl} className={footerLinkClass} target="_blank" rel="noopener noreferrer">
               {siteUrl.replace(/^https?:\/\//, "")}
             </a>
           </p>
@@ -235,7 +235,7 @@ export function SiteFooter() {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Bùi Hữu Lý
+                  Bùi Hữu Ly
                 </a>
               </span>
             </li>

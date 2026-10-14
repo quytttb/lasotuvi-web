@@ -44,7 +44,7 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_LASOTUVI_API_URL: http://localhost:8000
-          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+          NEXT_PUBLIC_SITE_URL: https://lasotuvi-web.vercel.app
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium

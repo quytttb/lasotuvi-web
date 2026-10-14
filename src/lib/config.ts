@@ -13,8 +13,18 @@ export function getApiBaseUrl(): string {
 }
 
 export function getSiteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  return trimTrailingSlash(raw.trim());
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
+      : null) ??
+    (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : null);
+
+  if (raw && !raw.includes("localhost")) {
+    return trimTrailingSlash(raw.trim());
+  }
+
+  return "https://lasotuvi-web.vercel.app";
 }
 
 export function getBackendRepoUrl(): string | null {
