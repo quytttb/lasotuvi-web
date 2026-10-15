@@ -7,7 +7,7 @@ import { ConceptVisualRenderer } from "./ConceptVisuals";
 
 const SLIDE_DURATION_MS = 10000; // 10 seconds auto-advance
 
-export function HeroConceptsShowcase() {
+export function HeroConceptsShowcase({ className }: { className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -93,46 +93,20 @@ export function HeroConceptsShowcase() {
 
   return (
     <figure
-      className="group/showcase relative min-w-0 w-full animate-fade-in-scale"
+      className={cn("group/showcase relative min-w-0 w-full animate-fade-in-scale", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       aria-label="Khám phá 10 khái niệm kinh điển Tử Vi Đẩu Số"
     >
-      {/* Lacquer & Gold frame */}
-      <div className="relative rounded-sm border border-[var(--gold)]/60 bg-[var(--lacquer-dark)]/95 p-3 sm:p-5 shadow-[0_24px_64px_rgba(48,15,13,0.38),0_4px_16px_rgba(48,15,13,0.25)] ring-1 ring-[var(--gold-light)]/20 backdrop-blur-md">
-        {/* Oriental corner gold accents */}
-        <span
-          className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-30"
-          aria-hidden="true"
-        >
-          ❖
-        </span>
-        <span
-          className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-30"
-          aria-hidden="true"
-        >
-          ❖
-        </span>
-        <span
-          className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-30"
-          aria-hidden="true"
-        >
-          ❖
-        </span>
-        <span
-          className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-30"
-          aria-hidden="true"
-        >
-          ❖
-        </span>
-
-        {/* Left Arrow Button (cạnh trái) */}
+      {/* Outer container without heavy total border - border is moved to the cards */}
+      <div className="relative w-full flex items-center">
+        {/* Left Arrow Button (cạnh trái của khung slider) */}
         <button
           type="button"
           onClick={prevSlide}
           title="Đồ hình trước"
           aria-label="Đồ hình trước"
-          className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
+          className="absolute left-0 sm:left-1 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
         >
           <svg
             className="h-4 w-4 sm:h-5 sm:w-5"
@@ -148,13 +122,13 @@ export function HeroConceptsShowcase() {
           </svg>
         </button>
 
-        {/* Right Arrow Button (cạnh phải) */}
+        {/* Right Arrow Button (cạnh phải của khung slider) */}
         <button
           type="button"
           onClick={nextSlide}
           title="Đồ hình tiếp theo"
           aria-label="Đồ hình tiếp theo"
-          className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
+          className="absolute right-0 sm:right-1 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
         >
           <svg
             className="h-4 w-4 sm:h-5 sm:w-5"
@@ -178,7 +152,7 @@ export function HeroConceptsShowcase() {
           role="region"
           aria-roledescription="carousel"
           aria-label="Thanh trượt 10 khái niệm Tử Vi"
-          className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth overscroll-x-contain focus:outline-hidden px-4 sm:px-6"
+          className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth overscroll-x-contain focus:outline-hidden px-6 sm:px-8"
           style={{ scrollbarWidth: "none" }}
         >
           {CONCEPTS_DATA.map((item, idx) => {
@@ -192,9 +166,36 @@ export function HeroConceptsShowcase() {
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${item.number} trên 10: ${item.title}`}
-                className="w-full shrink-0 snap-center px-1 sm:px-2"
+                className="w-full shrink-0 snap-center px-1"
               >
-                <div className="relative flex flex-col justify-between rounded-[2px] border border-[var(--gold)]/45 bg-[#1e0706]/95 p-4 sm:p-6 transition-all duration-300">
+                {/* Each card receives the lacquer & gold border with oriental corner accents */}
+                <div className="relative flex flex-col justify-between rounded-sm border border-[var(--gold)]/60 bg-[var(--lacquer-dark)]/95 p-4 sm:p-6 shadow-[0_24px_64px_rgba(48,15,13,0.38),0_4px_16px_rgba(48,15,13,0.25)] ring-1 ring-[var(--gold-light)]/20 backdrop-blur-md transition-all duration-300">
+                  {/* Oriental corner gold accents on the card itself */}
+                  <span
+                    className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-10"
+                    aria-hidden="true"
+                  >
+                    ❖
+                  </span>
+                  <span
+                    className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-10"
+                    aria-hidden="true"
+                  >
+                    ❖
+                  </span>
+                  <span
+                    className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-10"
+                    aria-hidden="true"
+                  >
+                    ❖
+                  </span>
+                  <span
+                    className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-10"
+                    aria-hidden="true"
+                  >
+                    ❖
+                  </span>
+
                   {/* Subtle background radial glow */}
                   <div
                     className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(217,185,117,0.09)_0%,transparent_75%)]"
@@ -240,7 +241,7 @@ export function HeroConceptsShowcase() {
                     <ConceptVisualRenderer
                       id={item.id}
                       className={cn(
-                        "h-64 sm:h-72 w-full max-w-[440px] drop-shadow-[0_6px_20px_rgba(0,0,0,0.55)] transition-all duration-500",
+                        "h-60 sm:h-72 w-full max-w-[440px] drop-shadow-[0_6px_20px_rgba(0,0,0,0.55)] transition-all duration-500",
                         isSlideActive ? "scale-100 opacity-100" : "scale-95 opacity-75",
                       )}
                     />

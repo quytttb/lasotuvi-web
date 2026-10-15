@@ -49,12 +49,8 @@ export default function HomePage() {
           <div className="absolute top-[30%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
         </div>
 
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
-          aria-hidden="true"
-        />
-        <div className="site-container relative grid flex-1 items-center gap-12 py-10 sm:py-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-16">
-          <div className="animate-fade-in-up">
+        <div className="site-container relative flex flex-col lg:flex-row flex-1 items-center justify-between py-10 sm:py-12 lg:py-16">
+          <div className="animate-fade-in-up w-full lg:max-w-[53%] xl:max-w-[52%]">
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--gold-light)]/40 bg-[var(--lacquer-dark)]/50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--gold-light)] shadow-[0_2px_8px_rgba(0,0,0,0.18)] backdrop-blur-xs sm:text-sm">
               <span className="text-base text-[var(--gold-light)]" aria-hidden="true">
                 ☯
@@ -97,7 +93,10 @@ export default function HomePage() {
               Miễn phí · Không cần tài khoản · Lưu trên thiết bị khi bạn chọn
             </p>
           </div>
+        </div>
 
+        {/* Hero Concepts Slider: replaces the right 42% div with exact position & dimensions on desktop */}
+        <div className="site-container lg:p-0 relative w-full pb-10 lg:pb-0 lg:absolute lg:inset-y-0 lg:right-0 lg:w-[42%] lg:border-l lg:border-[var(--gold)]/30 lg:bg-[var(--lacquer-dark)]/25 lg:flex lg:flex-col lg:justify-center lg:px-4 xl:px-8 z-10">
           <HeroConceptsShowcase />
         </div>
       </section>
