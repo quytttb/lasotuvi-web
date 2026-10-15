@@ -3,12 +3,28 @@ import type { Metadata } from "next";
 
 import { FIVE_ELEMENTS } from "@/components/home/five-elements";
 import { HeroChartFigure } from "@/components/home/HeroChartFigure";
+import { cn } from "@/lib/utils/cn";
 
 export const metadata: Metadata = {
-  title: "Trang chủ",
+  title: {
+    absolute: "LasoTuVi — Lập lá số Tử Vi trực tuyến",
+  },
   description:
     "LasoTuVi — lập lá số Tử Vi Đẩu Số tiếng Việt theo bố cục truyền thống. Miễn phí, xem nhanh, riêng tư, không cần tài khoản.",
   alternates: { canonical: "/" },
+  openGraph: {
+    title: "LasoTuVi — Lập lá số Tử Vi trực tuyến",
+    description:
+      "Lập lá số Tử Vi Đẩu Số tiếng Việt theo bố cục truyền thống. Miễn phí, xem nhanh, riêng tư, không cần tài khoản.",
+  },
+};
+
+const ELEMENT_BADGE_CLASSES: Record<string, string> = {
+  Kim: "bg-[var(--metal-soft)] border-[var(--metal)]/35 text-[var(--metal)] hover:border-[var(--metal)]/70 hover:shadow-[0_2px_8px_rgba(74,85,104,0.25)]",
+  Mộc: "bg-[var(--wood-soft)] border-[var(--wood)]/35 text-[var(--wood)] hover:border-[var(--wood)]/70 hover:shadow-[0_2px_8px_rgba(45,106,64,0.25)]",
+  Thủy: "bg-[var(--water-soft)] border-[var(--water)]/35 text-[var(--water)] hover:border-[var(--water)]/70 hover:shadow-[0_2px_8px_rgba(27,77,122,0.25)]",
+  Hỏa: "bg-[var(--fire-soft)] border-[var(--fire)]/35 text-[var(--fire)] hover:border-[var(--fire)]/70 hover:shadow-[0_2px_8px_rgba(158,43,30,0.25)]",
+  Thổ: "bg-[var(--earth-soft)] border-[var(--earth)]/35 text-[var(--earth)] hover:border-[var(--earth)]/70 hover:shadow-[0_2px_8px_rgba(138,100,32,0.25)]",
 };
 
 const FEATURES = [
@@ -97,29 +113,48 @@ export default function HomePage() {
 
           <HeroChartFigure />
         </div>
-        <div className="relative z-20 border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
-          <div className="site-container flex flex-wrap items-center justify-between gap-4 py-5">
-            <p className="text-sm text-[var(--paper)]/80">
+        <div className="relative z-20 border-t border-b border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
+          <div className="site-container flex flex-wrap items-center justify-between gap-4 py-4 sm:py-5">
+            <p className="flex items-center gap-2 text-sm text-[var(--paper)]/85">
+              <span className="text-[var(--gold-light)]" aria-hidden="true">
+                ☯
+              </span>
               Tinh hoa truyền thống, trải nghiệm hiện đại
             </p>
-            <ul
-              className="flex flex-wrap gap-x-5 gap-y-2 rounded-sm border border-[var(--gold-light)]/35 bg-[var(--paper-raised)] px-3.5 py-2 shadow-[0_2px_10px_rgba(48,15,13,0.22)] sm:gap-x-6"
-              aria-label="Ngũ hành"
-            >
-              {FIVE_ELEMENTS.map((el) => (
-                <li
-                  key={el.name}
-                  className="flex items-center gap-2 rounded-sm px-2 py-0.5 text-sm font-medium transition-all duration-200 hover:bg-black/5 hover:scale-105"
-                  style={{ color: el.color }}
-                >
-                  <span className="font-serif text-lg" aria-hidden="true">
-                    {el.symbol}
-                  </span>
-                  {el.name}
-                </li>
-              ))}
-            </ul>
+            <div className="flex items-center gap-2.5">
+              <span className="hidden text-xs font-medium tracking-wider text-[var(--gold-light)]/90 sm:inline-block">
+                NGŨ HÀNH:
+              </span>
+              <ul
+                className="flex flex-wrap items-center gap-1.5 rounded-sm border border-[var(--gold)]/60 bg-gradient-to-r from-[#fdf9f2] via-[#f7ecda] to-[#fdf9f2] p-1.5 shadow-[0_3px_12px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.8)_inset] ring-1 ring-[var(--gold-light)]/40 sm:gap-2 sm:px-3 sm:py-1.5"
+                aria-label="Ngũ hành"
+              >
+                {FIVE_ELEMENTS.map((el) => {
+                  const badgeClass =
+                    ELEMENT_BADGE_CLASSES[el.name] ??
+                    "bg-[var(--paper-muted)] border-[var(--line)] text-[var(--ink)]";
+                  return (
+                    <li
+                      key={el.name}
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-xs sm:text-sm font-medium shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 cursor-default",
+                        badgeClass,
+                      )}
+                    >
+                      <span
+                        className="font-serif text-base font-bold sm:text-lg"
+                        aria-hidden="true"
+                      >
+                        {el.symbol}
+                      </span>
+                      <span>{el.name}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
+          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--gold-light)]/70 to-transparent" />
         </div>
       </section>
 
@@ -200,6 +235,17 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
+
+        {/* ── Thanh chắn hoa văn truyền thống phân tách phần ── */}
+        <div className="mt-14 text-center sm:mt-18" aria-hidden="true">
+          <div className="flex items-center justify-center gap-3 text-[var(--gold)]">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--line)] to-[var(--gold)]/60" />
+            <span className="font-serif text-sm tracking-widest text-[var(--gold)] select-none">
+              ❖ ☯ ❖
+            </span>
+            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[var(--line)] to-[var(--gold)]/60" />
+          </div>
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════

@@ -38,6 +38,16 @@ export const metadata: Metadata = {
   },
   description:
     "Ứng dụng web tiếng Việt lập lá số Tử Vi Đẩu Số theo bố cục truyền thống. Dễ dùng, kín đáo, lưu trên thiết bị, không cần đăng ký tài khoản.",
+  applicationName: "LasoTuVi",
+  appleWebApp: {
+    capable: true,
+    title: "LasoTuVi",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "vi_VN",
