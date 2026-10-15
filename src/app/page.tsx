@@ -51,22 +51,19 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════
           HERO — Banner Á Đông bóng bẩy
           ═══════════════════════════════════════════════════ */}
-      <section className="hero-lacquer relative isolate overflow-hidden border-b border-[var(--lacquer-dark)]">
-        {/* Floating subtle ambient gold dust / clouds (restricted to top area) */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 bottom-24 overflow-hidden"
-          aria-hidden="true"
-        >
+      <section className="hero-lacquer relative isolate flex min-h-[calc(100svh-123px)] sm:min-h-[calc(100dvh-79px)] flex-col justify-between overflow-hidden border-b border-[var(--lacquer-dark)]">
+        {/* Floating subtle ambient gold dust / clouds */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute top-[18%] left-[8%] h-28 w-28 rounded-full bg-[var(--gold-light)]/8 blur-2xl animate-[floatCloud_8s_ease-in-out_infinite]" />
           <div className="absolute top-[45%] right-[15%] h-36 w-36 rounded-full bg-[var(--gold)]/10 blur-3xl animate-[floatCloud_11s_ease-in-out_infinite_reverse]" />
           <div className="absolute top-[30%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
         </div>
 
         <div
-          className="pointer-events-none absolute top-0 bottom-24 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
+          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
           aria-hidden="true"
         />
-        <div className="site-container relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
+        <div className="site-container relative grid flex-1 items-center gap-12 py-10 sm:py-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-16">
           <div className="animate-fade-in-up">
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--gold-light)]/40 bg-[var(--lacquer-dark)]/50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--gold-light)] shadow-[0_2px_8px_rgba(0,0,0,0.18)] backdrop-blur-xs sm:text-sm">
               <span className="text-base text-[var(--gold-light)]" aria-hidden="true">
@@ -113,7 +110,7 @@ export default function HomePage() {
 
           <HeroChartFigure />
         </div>
-        <div className="relative z-20 border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
+        <div className="relative z-20 mt-auto border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
           <div className="site-container flex flex-wrap items-center justify-between gap-4 py-4 sm:py-5">
             <p className="flex items-center gap-2 text-sm text-[var(--paper)]/85">
               <span className="text-[var(--gold-light)]" aria-hidden="true">
