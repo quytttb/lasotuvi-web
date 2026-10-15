@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { getApiBaseUrl, getBackendRepoUrl } from "@/lib/config";
-
 export const metadata: Metadata = {
   title: "Giới thiệu",
   description:
-    "Nguồn dữ liệu LasoTuVi API, quyền riêng tư, giới hạn sản phẩm và cách dữ liệu được xử lý.",
+    "Về LasoTuVi — tri thức Tử Vi Đẩu Số truyền thống, tôn trọng quyền riêng tư và chiêm nghiệm văn hóa Á Đông.",
   alternates: { canonical: "/gioi-thieu" },
 };
 
 export default function GioiThieuPage() {
-  const backendRepo = getBackendRepoUrl();
-  const apiUrl = getApiBaseUrl();
-
   return (
     <div className="site-container py-10 sm:py-14">
       <div className="mx-auto max-w-3xl">
@@ -41,24 +36,13 @@ export default function GioiThieuPage() {
               源
             </span>
             <div className="flex-1 min-w-0">
-              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Nguồn dữ liệu</h2>
+              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Nguồn cội & Học thuật</h2>
               <p className="text-[var(--ink-soft)] leading-relaxed">
-                Ứng dụng kết nối trực tiếp với máy chủ tính toán LasoTuVi API ({apiUrl}) để an sao
-                và lập lá số theo đúng phép tắc Tử Vi Đẩu Số truyền thống.
+                Khoa Tử Vi Đẩu Số là tinh hoa văn hóa truyền thống phương Đông, lấy thời khắc sinh
+                của mỗi người để đối chiếu can chi ngũ hành, từ đó an định 12 cung số và hệ thống
+                các vì sao. Hệ thống được xây dựng bám sát phép tắc kinh điển, giúp bạn dễ dàng lập
+                lá số sáng rõ và chuẩn xác.
               </p>
-              {backendRepo ? (
-                <p className="mt-3 text-sm text-[var(--ink-muted)]">
-                  Mã nguồn backend:{" "}
-                  <a
-                    href={backendRepo}
-                    className="text-[var(--water)] underline underline-offset-2 hover:text-[var(--water-light)] transition-colors"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {backendRepo}
-                  </a>
-                </p>
-              ) : null}
             </div>
           </div>
         </section>
@@ -81,17 +65,16 @@ export default function GioiThieuPage() {
               隱
             </span>
             <div className="flex-1 min-w-0">
-              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Quyền riêng tư</h2>
+              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Kín đáo & Riêng tư</h2>
               <div className="space-y-4 text-[var(--ink-soft)] leading-relaxed">
                 <p>
-                  Khi bạn lập lá số, thông tin ngày giờ sinh được gửi tới API công khai để tính
-                  toán. Frontend không lưu dữ liệu người dùng trên server riêng. Chỉ khi bạn nhấn
-                  &ldquo;Lưu lá số&rdquo;, bản ghi mới được ghi vào IndexedDB trên trình duyệt hiện
-                  tại.
+                  Thông tin ngày giờ sinh của bạn chỉ được dùng cho một mục đích duy nhất: tính toán
+                  và hiển thị lá số ngay tại thời điểm bạn tra cứu. Chúng tôi không thu thập hay lưu
+                  trữ thông tin cá nhân của bạn.
                 </p>
                 <p>
-                  Không analytics trong MVP. Không đưa dữ liệu sinh vào URL hay nhật ký phía client
-                  ở chế độ production.
+                  Khi bạn bấm “Lưu lá số”, bản ghi được cất giữ an toàn ngay trên chính thiết bị bạn
+                  đang dùng, không chuyển đi bất kỳ đâu và không ai khác có thể xem được ngoài bạn.
                 </p>
               </div>
             </div>
@@ -116,13 +99,13 @@ export default function GioiThieuPage() {
               限
             </span>
             <div className="flex-1 min-w-0">
-              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Giới hạn</h2>
+              <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Chiêm nghiệm & Lưu ý</h2>
               <ul className="space-y-3 text-[var(--ink-soft)]">
                 {[
-                  "Máy chủ Render Free có thể cold start — vui lòng chờ nếu phản hồi chậm.",
-                  "Nhập tháng nhuận âm lịch trực tiếp chưa được hỗ trợ đầy đủ.",
-                  "Nội dung luận giải mang tính tham khảo văn hóa/nghiên cứu.",
-                  "Không đồng bộ đa thiết bị, không chia sẻ public bằng URL.",
+                  "Nội dung luận giải mang tính chiêm nghiệm văn hóa và tri thức truyền thống giúp thấu hiểu bản thân.",
+                  "Đức năng thắng số, nhân định thắng thiên — lá số như một bức tranh tham khảo để bạn định hướng cuộc sống tích cực hơn.",
+                  "Lá số lưu trên thiết bị nào thì xem lại trên thiết bị đó để bảo đảm tính kín đáo tuyệt đối.",
+                  "Nếu sinh vào tháng nhuận âm lịch, hãy chọn tháng thường gần nhất hoặc dùng ngày dương lịch để an sao chuẩn xác.",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 leading-relaxed">
                     <span

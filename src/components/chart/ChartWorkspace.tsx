@@ -100,7 +100,7 @@ export function ChartWorkspace({
         disabledSaveHint={
           storageDisabled
             ? storage.reason
-            : "Dữ liệu chỉ nằm trên trình duyệt này khi bạn nhấn Lưu."
+            : "Lá số sẽ được lưu giữ an toàn và riêng tư trên thiết bị của bạn khi bạn nhấn Lưu."
         }
       />
 

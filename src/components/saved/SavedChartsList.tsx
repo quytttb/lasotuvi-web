@@ -174,7 +174,7 @@ export function SavedChartsList() {
       </div>
 
       <p className="text-sm text-[var(--ink-muted)]">
-        Dữ liệu chỉ nằm trên trình duyệt này. Không đồng bộ lên máy chủ.
+        Lá số được lưu an toàn trên chính thiết bị này để bạn tiện xem lại bất cứ lúc nào.
       </p>
 
       {error ? (

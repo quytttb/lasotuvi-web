@@ -20,7 +20,7 @@ const FEATURES = [
   {
     icon: "安",
     title: "Kín đáo & Riêng tư",
-    body: "Thông tin sinh được gửi tới API để tính lá số. Khi bạn chọn lưu, lá số chỉ được lưu trên trình duyệt hiện tại, không đồng bộ lên máy chủ.",
+    body: "Thông tin ngày giờ sinh chỉ dùng để lập lá số lúc bạn tra cứu. Khi bạn chọn lưu, dữ liệu được giữ an toàn trên thiết bị của bạn, hoàn toàn riêng tư.",
   },
   {
     icon: "簡",

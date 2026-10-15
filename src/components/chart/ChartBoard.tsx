@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils/cn";
 type ChartBoardProps = {
   chart: ChartResponse;
   className?: string;
+  style?: React.CSSProperties;
 };
 
 function palacesByIndex(chart: ChartResponse): Map<number, PalaceInfo> {
@@ -17,11 +18,12 @@ function palacesByIndex(chart: ChartResponse): Map<number, PalaceInfo> {
   return map;
 }
 
-export function ChartBoard({ chart, className }: ChartBoardProps) {
+export function ChartBoard({ chart, className, style }: ChartBoardProps) {
   const byIndex = palacesByIndex(chart);
 
   return (
     <div
+      style={style}
       className={cn(
         "chart-board grid grid-cols-4 grid-rows-4 gap-0 overflow-hidden",
         // Double-rule outer border in the style of traditional Chinese charts

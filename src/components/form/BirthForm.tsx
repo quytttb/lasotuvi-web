@@ -62,14 +62,21 @@ const CHILDREN_OPTIONS = CHILDREN_STATUS_OPTIONS.map((o) => ({
   label: o.label,
 }));
 
+function calculateProgress(elapsedMs: number): number {
+  if (elapsedMs < 1000) return 20;
+  if (elapsedMs < 4000) return Math.min(60, 20 + Math.floor((elapsedMs - 1000) / 100));
+  if (elapsedMs < 10000) return Math.min(85, 60 + Math.floor((elapsedMs - 4000) / 300));
+  return Math.min(96, 85 + Math.floor((elapsedMs - 10000) / 1000));
+}
+
 function loadingHint(elapsedMs: number): string {
   if (elapsedMs >= STILL_PROCESSING_HINT_MS) {
-    return "Lá số vẫn đang được xử lý, vui lòng chờ…";
+    return "Lá số vẫn đang được xử lý, đang hoàn tất luận giải…";
   }
   if (elapsedMs >= COLD_START_HINT_MS) {
-    return "Máy chủ miễn phí có thể đang khởi động…";
+    return "Đang khởi động an sao và bố trí thiên bàn…";
   }
-  return "Đang lập lá số…";
+  return "Đang lập lá số, định cung can chi…";
 }
 
 export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthFormProps) {
@@ -497,9 +504,38 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-[var(--water)]" data-testid="loading-message" aria-live="polite">
-          {loadingHint(elapsedMs)}
-        </p>
+        <div
+          className="space-y-2.5 rounded-sm border border-[var(--gold)]/35 bg-[var(--paper-muted)]/60 p-4 shadow-sm animate-fade-in-up"
+          role="status"
+        >
+          <div className="flex items-center justify-between text-xs sm:text-sm">
+            <span
+              className="flex items-center gap-2 font-medium text-[var(--lacquer-deep)]"
+              data-testid="loading-message"
+              aria-live="polite"
+            >
+              <span
+                className="inline-block animate-spin text-base text-[var(--gold)]"
+                aria-hidden="true"
+              >
+                ☯
+              </span>
+              {loadingHint(elapsedMs)}
+            </span>
+            <span className="font-serif font-bold text-[var(--gold)]">
+              {calculateProgress(elapsedMs)}%
+            </span>
+          </div>
+          <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--paper-deep)] shadow-inner">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-[var(--lacquer)] via-[var(--gold)] to-[var(--lacquer-deep)] transition-all duration-300 ease-out shadow-xs"
+              style={{ width: `${calculateProgress(elapsedMs)}%` }}
+            />
+          </div>
+          <p className="text-[0.75rem] text-[var(--ink-muted)] italic text-center">
+            Hệ thống đang đối chiếu ngũ hành, can chi và an định vị trí 12 cung...
+          </p>
+        </div>
       ) : null}
 
       <div className="flex flex-wrap gap-3 border-t border-[var(--line-faint)] pt-6">

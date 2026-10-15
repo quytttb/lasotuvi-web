@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { ChartBoard } from "@/components/chart/ChartBoard";
 import { PalaceInterpTabs } from "@/components/chart/PalaceInterpTabs";
@@ -58,17 +58,42 @@ function StarInterpretationBlock({
   return (
     <article
       className={cn(
-        "rounded-sm border p-4 sm:p-5",
+        "rounded-sm border p-4 sm:p-5 transition-all duration-200",
         isMajor
-          ? "border-[var(--line)] bg-[var(--paper)]"
+          ? "border-[var(--line)] bg-[var(--paper)] shadow-xs"
           : "border-[var(--line)]/70 bg-[var(--paper-muted)]/40",
       )}
       data-testid={isMajor ? "star-interp-major" : "star-interp-minor"}
     >
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-        <h4 className="font-serif text-base font-medium text-[var(--ink)]">{title}</h4>
-        {!isMajor && parsed.minor?.role ? (
-          <span className="text-[0.7rem] text-[var(--ink-muted)]">{parsed.minor.role}</span>
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        <h4 className="font-serif text-base font-semibold text-[var(--ink)]">{title}</h4>
+        {isMajor ? (
+          <span className="rounded-xs border border-[var(--gold)]/40 bg-[var(--gold-soft)] px-1.5 py-0.5 text-[0.68rem] font-medium text-[var(--earth)]">
+            🌟 Chính tinh chủ đạo
+          </span>
+        ) : parsed.minor?.role ? (
+          <span
+            className={cn(
+              "rounded-xs px-1.5 py-0.5 text-[0.68rem] font-medium border",
+              parsed.minor.role.toLowerCase().includes("sát") ||
+                parsed.minor.role.toLowerCase().includes("hung") ||
+                parsed.minor.role.toLowerCase().includes("bại")
+                ? "border-[var(--fire)]/30 bg-[var(--fire-soft)] text-[var(--fire)]"
+                : parsed.minor.role.toLowerCase().includes("cát") ||
+                    parsed.minor.role.toLowerCase().includes("quý") ||
+                    parsed.minor.role.toLowerCase().includes("phúc")
+                  ? "border-[var(--wood)]/30 bg-[var(--wood-soft)] text-[var(--wood)]"
+                  : "border-[var(--line)] bg-[var(--paper-muted)]/80 text-[var(--ink-muted)]",
+            )}
+          >
+            {parsed.minor.role.toLowerCase().includes("sát") ||
+            parsed.minor.role.toLowerCase().includes("hung")
+              ? `⚡ ${parsed.minor.role} (Cần lưu ý)`
+              : parsed.minor.role.toLowerCase().includes("cát") ||
+                  parsed.minor.role.toLowerCase().includes("quý")
+                ? `🌟 ${parsed.minor.role} (Tốt)`
+                : parsed.minor.role}
+          </span>
         ) : null}
       </div>
 
@@ -347,6 +372,7 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
 }
 
 export function ChartResults({ chart, birthContext = null }: ChartResultsProps) {
+  const [zoomScale, setZoomScale] = useState<number>(100);
   const palaces = useMemo(
     () => [...chart.earth_plate.palaces].sort((a, b) => a.index - b.index),
     [chart.earth_plate.palaces],
@@ -433,12 +459,123 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         </section>
       ) : null}
 
-      <div className="chart-print-board w-full max-w-full overflow-x-auto overscroll-x-contain print:overflow-visible">
-        <ChartBoard
-          chart={chart}
-          className="mx-auto min-w-[56rem] w-full max-w-7xl print:min-w-0 print:max-w-none lg:min-w-0"
-        />
+      {/* ── Bàn lá số & Thanh điều khiển thu phóng trên di động ── */}
+      <div className="mx-auto max-w-7xl space-y-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-[var(--ink-muted)] print:hidden">
+          <span className="flex items-center gap-1.5">
+            <span aria-hidden="true">📱</span>
+            <span>Vuốt ngang để xem trọn 12 cung, hoặc dùng nút thu phóng:</span>
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setZoomScale((prev) => Math.max(70, prev - 15))}
+              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer"
+              aria-label="Thu nhỏ bàn lá số"
+            >
+              − Thu nhỏ
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoomScale(100)}
+              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-semibold text-[var(--ink)] hover:bg-[var(--paper-muted)] cursor-pointer"
+              aria-label="Đặt lại cỡ chuẩn 100%"
+            >
+              {zoomScale}%
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoomScale((prev) => Math.min(130, prev + 15))}
+              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer"
+              aria-label="Phóng to bàn lá số"
+            >
+              + Phóng to
+            </button>
+          </div>
+        </div>
+
+        <div className="chart-print-board w-full max-w-full overflow-x-auto overscroll-x-contain rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/20 p-1 sm:p-2 print:overflow-visible print:border-none print:p-0">
+          <ChartBoard
+            chart={chart}
+            style={
+              zoomScale !== 100
+                ? {
+                    transform: `scale(${zoomScale / 100})`,
+                    transformOrigin: "top left",
+                    width: `${(100 / zoomScale) * 100}%`,
+                  }
+                : undefined
+            }
+            className="mx-auto min-w-[56rem] w-full max-w-7xl print:min-w-0 print:max-w-none lg:min-w-0 transition-transform duration-200"
+          />
+        </div>
       </div>
+
+      {/* ── Hướng dẫn nhanh: Xem sao Tốt & sao Cần lưu ý ── */}
+      <section
+        aria-labelledby="star-guide-heading"
+        className="print:hidden mx-auto max-w-5xl rounded-sm border border-[var(--gold)]/35 bg-[var(--paper-raised)] p-4 sm:p-6 shadow-[0_2px_12px_rgba(26,21,16,0.06)] ring-1 ring-inset ring-[var(--line-faint)]"
+      >
+        <div className="flex items-center justify-between gap-3 border-b border-[var(--line-soft)] pb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg text-[var(--gold)]" aria-hidden="true">
+              📜
+            </span>
+            <h3
+              id="star-guide-heading"
+              className="font-serif text-lg font-semibold text-[var(--ink)]"
+            >
+              Hướng dẫn nhanh: Xem sao Tốt & sao Cần lưu ý
+            </h3>
+          </div>
+          <span className="text-xs text-[var(--ink-muted)] hidden sm:inline">
+            Dành cho người mới xem
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+          {/* Cát tinh */}
+          <div className="rounded-sm border border-[var(--wood)]/30 bg-[var(--wood-soft)]/50 p-3.5 space-y-1.5">
+            <p className="font-serif font-semibold text-[var(--wood)] flex items-center gap-1.5">
+              <span>🌟</span> Sao Tốt (Cát tinh · Quý tinh)
+            </p>
+            <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
+              Đem lại may mắn, phúc đức, tài lộc hanh thông và có quý nhân tương trợ khi gặp khó
+              khăn.
+            </p>
+            <p className="text-[0.75rem] text-[var(--ink-muted)] italic">
+              Ví dụ: Tử Vi, Thiên Phủ, Hóa Lộc, Hóa Quyền, Thiên Khôi, Thiên Việt, Văn Xương, Văn
+              Khúc...
+            </p>
+          </div>
+
+          {/* Sát tinh */}
+          <div className="rounded-sm border border-[var(--fire)]/30 bg-[var(--fire-soft)]/50 p-3.5 space-y-1.5">
+            <p className="font-serif font-semibold text-[var(--fire)] flex items-center gap-1.5">
+              <span>⚡</span> Sao Cần Lưu Ý (Sát tinh · Hung tinh)
+            </p>
+            <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
+              Chủ về thử thách, biến động, rèn luyện ý chí. Khi gặp sao này nên giữ tâm bình tĩnh,
+              làm việc cẩn trọng.
+            </p>
+            <p className="text-[0.75rem] text-[var(--ink-muted)] italic">
+              Ví dụ: Kình Dương, Đà La, Hỏa Tinh, Linh Tinh, Địa Không, Địa Kiếp, Hóa Kỵ...
+            </p>
+          </div>
+
+          {/* Độ sáng & Tứ hóa */}
+          <div className="rounded-sm border border-[var(--earth)]/30 bg-[var(--earth-soft)]/50 p-3.5 space-y-1.5 sm:col-span-2 lg:col-span-1">
+            <p className="font-serif font-semibold text-[var(--earth)] flex items-center gap-1.5">
+              <span>☀️</span> Độ Sáng (Miếu · Vượng · Hãm)
+            </p>
+            <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
+              <strong>Miếu/Vượng:</strong> Sao sáng rực rỡ, phát huy trọn vẹn đặc tính tốt đẹp.
+              <br />
+              <strong>Hãm:</strong> Năng lượng bị bó hẹp, nhắc nhở ta kiên trì tu dưỡng và cẩn thận.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section
         aria-labelledby="formations-heading"

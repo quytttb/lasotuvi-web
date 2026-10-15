@@ -18,10 +18,25 @@ export function StarBadge({ star }: { star: StarInfo }) {
   const isBright = brightness === "Miếu" || brightness === "Vượng";
   const isDark = brightness === "Hãm";
 
+  let tooltip = star.name;
+  if (isMajor) {
+    tooltip += ` — Chính tinh${brightness ? ` (${brightness})` : ""}`;
+  } else if (star.category_label === "Sát tinh") {
+    tooltip += " — Sao cần lưu ý (thử thách, biến động)";
+  } else if (star.category_label === "Cát tinh" || star.category_label === "Quý tinh") {
+    tooltip += " — Sao tốt (may mắn, quý nhân phù trợ)";
+  } else if (brightness) {
+    tooltip += ` (${brightness})`;
+  }
+  if (mutagen) {
+    tooltip += ` · ${mutagen}`;
+  }
+
   return (
     <span
+      title={tooltip}
       className={cn(
-        "star-badge inline-flex max-w-full flex-wrap items-baseline gap-x-1 leading-snug rounded-sm transition-all duration-200",
+        "star-badge inline-flex max-w-full flex-wrap items-baseline gap-x-1 leading-snug rounded-sm transition-all duration-200 cursor-help",
         isMajor
           ? "star-badge-major text-[0.95rem] font-serif font-semibold tracking-tight text-[var(--ink)]"
           : cn("star-badge-minor text-[0.78rem] font-medium", categoryClass),
