@@ -205,10 +205,30 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
       data-testid="birth-form"
     >
       {/* Oriental corner accents on form */}
-      <span className="pointer-events-none absolute top-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌜</span>
-      <span className="pointer-events-none absolute top-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌝</span>
-      <span className="pointer-events-none absolute bottom-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌞</span>
-      <span className="pointer-events-none absolute bottom-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌟</span>
+      <span
+        className="pointer-events-none absolute top-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none"
+        aria-hidden="true"
+      >
+        ⌜
+      </span>
+      <span
+        className="pointer-events-none absolute top-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none"
+        aria-hidden="true"
+      >
+        ⌝
+      </span>
+      <span
+        className="pointer-events-none absolute bottom-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none"
+        aria-hidden="true"
+      >
+        ⌞
+      </span>
+      <span
+        className="pointer-events-none absolute bottom-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none"
+        aria-hidden="true"
+      >
+        ⌟
+      </span>
 
       <fieldset className="min-w-0">
         <legend className="mb-6 font-serif text-xl text-[var(--ink)]">Thông tin sinh</legend>

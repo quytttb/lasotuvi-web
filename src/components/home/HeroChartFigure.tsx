@@ -151,10 +151,30 @@ export function HeroChartFigure() {
     <figure className="relative min-w-0 lg:-mr-8 animate-fade-in-scale">
       <div className="hero-chart-frame group/frame transition-transform duration-300 hover:scale-[1.015]">
         {/* Oriental corner gold accents */}
-        <span className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
-        <span className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
-        <span className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
-        <span className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
+        <span
+          className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
 
         <button
           ref={triggerRef}

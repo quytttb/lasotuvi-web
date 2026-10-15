@@ -98,7 +98,9 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
                 isSelected
                   ? "border-[var(--lacquer)] bg-[var(--vermillion-soft)] text-[var(--lacquer-deep)] font-semibold shadow-[0_3px_10px_rgba(159,48,40,0.18)] -translate-y-0.5"
                   : "border-[var(--line)] bg-[var(--paper)] text-[var(--ink-soft)] hover:bg-[var(--paper-muted)] hover:-translate-y-0.5",
-                isActiveDaXian && !isSelected && "border-[var(--earth)] ring-1 ring-[var(--earth)]/30",
+                isActiveDaXian &&
+                  !isSelected &&
+                  "border-[var(--earth)] ring-1 ring-[var(--earth)]/30",
               )}
               onClick={() => setSelectedId(id)}
             >

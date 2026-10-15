@@ -36,15 +36,18 @@ export default function HomePage() {
           HERO — Banner Á Đông bóng bẩy
           ═══════════════════════════════════════════════════ */}
       <section className="hero-lacquer relative isolate overflow-hidden border-b border-[var(--lacquer-dark)]">
-        {/* Floating subtle ambient gold dust / clouds */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {/* Floating subtle ambient gold dust / clouds (restricted to top area) */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 bottom-24 overflow-hidden"
+          aria-hidden="true"
+        >
           <div className="absolute top-[18%] left-[8%] h-28 w-28 rounded-full bg-[var(--gold-light)]/8 blur-2xl animate-[floatCloud_8s_ease-in-out_infinite]" />
-          <div className="absolute bottom-[25%] right-[15%] h-40 w-40 rounded-full bg-[var(--gold)]/10 blur-3xl animate-[floatCloud_11s_ease-in-out_infinite_reverse]" />
-          <div className="absolute top-[40%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
+          <div className="absolute top-[45%] right-[15%] h-36 w-36 rounded-full bg-[var(--gold)]/10 blur-3xl animate-[floatCloud_11s_ease-in-out_infinite_reverse]" />
+          <div className="absolute top-[30%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
         </div>
 
         <div
-          className="absolute inset-y-0 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
+          className="pointer-events-none absolute top-0 bottom-24 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
           aria-hidden="true"
         />
         <div className="site-container relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
@@ -59,7 +62,10 @@ export default function HomePage() {
               Lập lá số Tử Vi theo bố cục{" "}
               <span className="text-[var(--gold-light)]">truyền thống</span>
             </h1>
-            <div className="mt-6 h-[2px] w-24 bg-gradient-to-r from-[var(--gold-light)] to-transparent" aria-hidden="true" />
+            <div
+              className="mt-6 h-[2px] w-24 bg-gradient-to-r from-[var(--gold-light)] to-transparent"
+              aria-hidden="true"
+            />
             <p className="mt-6 max-w-lg text-base leading-relaxed text-[var(--paper)]/85 sm:text-lg">
               Nhập ngày giờ sinh để xem 12 cung, cách cục và luận giải. Khám phá lá số của bạn với
               bố cục sáng rõ, dễ theo dõi.
@@ -70,7 +76,10 @@ export default function HomePage() {
                 className="lacquer-cta-light group inline-flex min-h-12 items-center justify-center gap-3 rounded-sm px-7 text-base font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]"
               >
                 Lập lá số
-                <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+                <span
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
                   →
                 </span>
               </Link>
@@ -88,13 +97,13 @@ export default function HomePage() {
 
           <HeroChartFigure />
         </div>
-        <div className="border-t border-[var(--gold)]/35 bg-[var(--lacquer-dark)]/20">
+        <div className="relative z-20 border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
           <div className="site-container flex flex-wrap items-center justify-between gap-4 py-5">
             <p className="text-sm text-[var(--paper)]/80">
               Tinh hoa truyền thống, trải nghiệm hiện đại
             </p>
             <ul
-              className="flex flex-wrap gap-x-5 gap-y-2 rounded-sm border border-[var(--gold-light)]/35 bg-[var(--paper-raised)]/95 px-3 py-2 shadow-[0_2px_8px_rgba(48,15,13,0.16)] sm:gap-x-6"
+              className="flex flex-wrap gap-x-5 gap-y-2 rounded-sm border border-[var(--gold-light)]/35 bg-[var(--paper-raised)] px-3.5 py-2 shadow-[0_2px_10px_rgba(48,15,13,0.22)] sm:gap-x-6"
               aria-label="Ngũ hành"
             >
               {FIVE_ELEMENTS.map((el) => (
@@ -142,10 +151,30 @@ export default function HomePage() {
               style={{ animationDelay: `${i * 100}ms` }}
             >
               {/* Corner accent marks (Á Đông) */}
-              <span className="absolute top-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌜</span>
-              <span className="absolute top-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌝</span>
-              <span className="absolute bottom-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌞</span>
-              <span className="absolute bottom-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌟</span>
+              <span
+                className="absolute top-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
+                aria-hidden="true"
+              >
+                ⌜
+              </span>
+              <span
+                className="absolute top-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
+                aria-hidden="true"
+              >
+                ⌝
+              </span>
+              <span
+                className="absolute bottom-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
+                aria-hidden="true"
+              >
+                ⌞
+              </span>
+              <span
+                className="absolute bottom-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
+                aria-hidden="true"
+              >
+                ⌟
+              </span>
 
               {/* Background Chinese character */}
               <div
@@ -211,7 +240,10 @@ export default function HomePage() {
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]",
               ].join(" ")}
             >
-              <span className="mr-2 transition-transform duration-200 group-hover:rotate-45" aria-hidden="true">
+              <span
+                className="mr-2 inline-block transition-transform duration-300 ease-out group-hover:scale-x-150 origin-left"
+                aria-hidden="true"
+              >
                 ☰
               </span>
               Bắt đầu lập lá số
