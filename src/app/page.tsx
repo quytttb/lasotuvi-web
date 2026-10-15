@@ -113,7 +113,7 @@ export default function HomePage() {
 
           <HeroChartFigure />
         </div>
-        <div className="relative z-20 border-t border-b border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
+        <div className="relative z-20 border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
           <div className="site-container flex flex-wrap items-center justify-between gap-4 py-4 sm:py-5">
             <p className="flex items-center gap-2 text-sm text-[var(--paper)]/85">
               <span className="text-[var(--gold-light)]" aria-hidden="true">
@@ -154,30 +154,21 @@ export default function HomePage() {
               </ul>
             </div>
           </div>
-          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--gold-light)]/70 to-transparent" />
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════
           FEATURES — Ba điểm chính
           ═══════════════════════════════════════════════════ */}
-      <section className="site-container pt-8 pb-14 sm:pt-10 sm:pb-20">
+      <section className="site-container py-16 sm:py-24">
         {/* Section header */}
-        <div className="mb-10 text-center animate-fade-in-up sm:mb-12">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--vermillion)]/30 bg-[var(--vermillion-soft)] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)] shadow-2xs">
-            <span className="text-[10px]" aria-hidden="true">
-              ✦
-            </span>
-            <span>Đặc điểm nổi bật</span>
-            <span className="text-[10px]" aria-hidden="true">
-              ✦
-            </span>
-          </div>
-          <div>
-            <h2 className="font-serif text-2xl text-[var(--ink)] sm:text-3xl heading-decorated mx-auto inline-block">
-              Bắt đầu đơn giản, xem lá số rõ ràng
-            </h2>
-          </div>
+        <div className="mb-12 text-center animate-fade-in-up">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)]">
+            Đặc điểm nổi bật
+          </p>
+          <h2 className="heading-decorated mx-auto inline-block font-serif text-2xl text-[var(--ink)] sm:text-3xl">
+            Bắt đầu đơn giản, xem lá số rõ ràng
+          </h2>
         </div>
 
         <ul className="grid gap-6 md:grid-cols-3">
@@ -243,17 +234,6 @@ export default function HomePage() {
             </li>
           ))}
         </ul>
-
-        {/* ── Thanh chắn hoa văn truyền thống phân tách phần ── */}
-        <div className="mt-14 text-center sm:mt-18" aria-hidden="true">
-          <div className="flex items-center justify-center gap-3 text-[var(--gold)]">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--line)] to-[var(--gold)]/60" />
-            <span className="font-serif text-sm tracking-widest text-[var(--gold)] select-none">
-              ❖ ☯ ❖
-            </span>
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[var(--line)] to-[var(--gold)]/60" />
-          </div>
-        </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════
