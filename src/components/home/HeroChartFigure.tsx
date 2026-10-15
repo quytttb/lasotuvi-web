@@ -148,8 +148,14 @@ export function HeroChartFigure() {
   }, [open, requestClose]);
 
   return (
-    <figure className="relative min-w-0 lg:-mr-8">
-      <div className="hero-chart-frame">
+    <figure className="relative min-w-0 lg:-mr-8 animate-fade-in-scale">
+      <div className="hero-chart-frame group/frame transition-transform duration-300 hover:scale-[1.015]">
+        {/* Oriental corner gold accents */}
+        <span className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
+        <span className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
+        <span className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
+        <span className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-75 select-none z-10" aria-hidden="true">❖</span>
+
         <button
           ref={triggerRef}
           type="button"
@@ -159,7 +165,7 @@ export function HeroChartFigure() {
           data-testid="hero-chart-open"
           aria-label="Phóng to lá số minh họa"
           className={cn(
-            "group relative block w-full cursor-zoom-in",
+            "group relative block w-full cursor-zoom-in overflow-hidden rounded-[2px]",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--water)]",
           )}
         >
@@ -170,7 +176,7 @@ export function HeroChartFigure() {
             height={CHART_HEIGHT}
             sizes="(min-width: 1200px) 530px, (min-width: 1024px) 46vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
             preload
-            className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.01]"
+            className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.02]"
           />
         </button>
       </div>

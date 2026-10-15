@@ -9,13 +9,13 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary: [
-    // Lacquer-red primary button with a subtle paper highlight
-    "relative overflow-hidden",
+    // Lacquer-red primary button with shiny reflection sweep
+    "group/btn relative overflow-hidden",
     "bg-[var(--lacquer)] text-[var(--paper-raised)]",
-    "border border-[rgba(255,245,223,0.12)]",
-    "shadow-[0_2px_6px_rgba(89,24,22,0.28),0_1px_0_rgba(255,245,223,0.1)_inset]",
-    "hover:bg-[var(--lacquer-deep)] hover:shadow-[0_3px_12px_rgba(89,24,22,0.35)]",
-    "hover:-translate-y-px",
+    "border border-[rgba(255,245,223,0.18)]",
+    "shadow-[0_2px_8px_rgba(89,24,22,0.32),0_1px_0_rgba(255,245,223,0.15)_inset]",
+    "hover:bg-[var(--lacquer-deep)] hover:shadow-[0_4px_16px_rgba(89,24,22,0.42)]",
+    "hover:-translate-y-0.5",
     "active:translate-y-0 active:shadow-none",
     "focus-visible:outline-[var(--water)]",
   ].join(" "),
@@ -24,6 +24,8 @@ const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "border border-[var(--line)]",
     "shadow-[0_1px_3px_rgba(26,21,16,0.06)]",
     "hover:bg-[var(--vermillion-soft)] hover:border-[var(--vermillion)]/45",
+    "hover:-translate-y-0.5",
+    "active:translate-y-0 active:shadow-none",
     "focus-visible:outline-[var(--water)]",
   ].join(" "),
   ghost: [
@@ -35,7 +37,8 @@ const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "bg-[var(--fire)] text-white",
     "shadow-[0_2px_6px_rgba(158,43,30,0.2)]",
     "hover:bg-[var(--fire-light)] hover:shadow-[0_3px_12px_rgba(158,43,30,0.25)]",
-    "hover:-translate-y-px",
+    "hover:-translate-y-0.5",
+    "active:translate-y-0 active:shadow-none",
     "focus-visible:outline-[var(--fire)]",
   ].join(" "),
 };
@@ -51,6 +54,7 @@ export function Button({
   variant = "primary",
   size = "md",
   type = "button",
+  children,
   ...props
 }: ButtonProps) {
   return (
@@ -66,6 +70,14 @@ export function Button({
         className,
       )}
       {...props}
-    />
+    >
+      {variant === "primary" ? (
+        <span
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 ease-out group-hover/btn:translate-x-full"
+          aria-hidden="true"
+        />
+      ) : null}
+      {children}
+    </button>
   );
 }

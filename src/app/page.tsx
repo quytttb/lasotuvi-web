@@ -36,14 +36,21 @@ export default function HomePage() {
           HERO — Banner Á Đông bóng bẩy
           ═══════════════════════════════════════════════════ */}
       <section className="hero-lacquer relative isolate overflow-hidden border-b border-[var(--lacquer-dark)]">
+        {/* Floating subtle ambient gold dust / clouds */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div className="absolute top-[18%] left-[8%] h-28 w-28 rounded-full bg-[var(--gold-light)]/8 blur-2xl animate-[floatCloud_8s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[25%] right-[15%] h-40 w-40 rounded-full bg-[var(--gold)]/10 blur-3xl animate-[floatCloud_11s_ease-in-out_infinite_reverse]" />
+          <div className="absolute top-[40%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
+        </div>
+
         <div
           className="absolute inset-y-0 right-0 hidden w-[42%] border-l border-[var(--gold)]/30 bg-[var(--lacquer-dark)]/25 lg:block"
           aria-hidden="true"
         />
         <div className="site-container relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
-          <div>
-            <p className="mb-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--gold-light)] sm:text-sm">
-              <span className="text-lg text-[var(--gold-light)]" aria-hidden="true">
+          <div className="animate-fade-in-up">
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--gold-light)]/40 bg-[var(--lacquer-dark)]/50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--gold-light)] shadow-[0_2px_8px_rgba(0,0,0,0.18)] backdrop-blur-xs sm:text-sm">
+              <span className="text-base text-[var(--gold-light)]" aria-hidden="true">
                 ☯
               </span>
               Tử Vi Đẩu Số · Truyền thống Á Đông
@@ -52,7 +59,7 @@ export default function HomePage() {
               Lập lá số Tử Vi theo bố cục{" "}
               <span className="text-[var(--gold-light)]">truyền thống</span>
             </h1>
-            <div className="mt-6 h-[2px] w-20 bg-[var(--gold-light)]" aria-hidden="true" />
+            <div className="mt-6 h-[2px] w-24 bg-gradient-to-r from-[var(--gold-light)] to-transparent" aria-hidden="true" />
             <p className="mt-6 max-w-lg text-base leading-relaxed text-[var(--paper)]/85 sm:text-lg">
               Nhập ngày giờ sinh để xem 12 cung, cách cục và luận giải. Khám phá lá số của bạn với
               bố cục sáng rõ, dễ theo dõi.
@@ -60,14 +67,16 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap">
               <Link
                 href="/lap-la-so"
-                className="lacquer-cta-light inline-flex min-h-12 items-center justify-center gap-3 rounded-sm px-7 text-base font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]"
+                className="lacquer-cta-light group inline-flex min-h-12 items-center justify-center gap-3 rounded-sm px-7 text-base font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]"
               >
                 Lập lá số
-                <span aria-hidden="true">→</span>
+                <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
               </Link>
               <Link
                 href="/gioi-thieu"
-                className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[var(--gold-light)]/70 px-6 text-base font-medium text-[var(--paper-raised)] transition-colors hover:border-[var(--gold-light)] hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]"
+                className="inline-flex min-h-12 items-center justify-center rounded-sm border border-[var(--gold-light)]/70 px-6 text-base font-medium text-[var(--paper-raised)] transition-all duration-200 hover:border-[var(--gold-light)] hover:bg-white/10 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]"
               >
                 Tìm hiểu thêm
               </Link>
@@ -91,7 +100,7 @@ export default function HomePage() {
               {FIVE_ELEMENTS.map((el) => (
                 <li
                   key={el.name}
-                  className="flex items-center gap-2 text-sm font-medium"
+                  className="flex items-center gap-2 rounded-sm px-2 py-0.5 text-sm font-medium transition-all duration-200 hover:bg-black/5 hover:scale-105"
                   style={{ color: el.color }}
                 >
                   <span className="font-serif text-lg" aria-hidden="true">
@@ -110,7 +119,7 @@ export default function HomePage() {
           ═══════════════════════════════════════════════════ */}
       <section className="site-container py-14 sm:py-20">
         {/* Section header */}
-        <div className="mb-12 text-center">
+        <div className="mb-12 text-center animate-fade-in-up">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)] mb-2">
             Đặc điểm nổi bật
           </p>
@@ -127,25 +136,31 @@ export default function HomePage() {
                 "group relative overflow-hidden rounded-sm",
                 "border border-[var(--line)] bg-[var(--paper-raised)]",
                 "p-6 sm:p-8 transition-all duration-300",
-                "hover:shadow-[0_4px_20px_rgba(89,24,22,0.12)] hover:border-[var(--vermillion)]/50",
-                "hover:-translate-y-0.5",
+                "hover:shadow-[0_6px_24px_rgba(89,24,22,0.14)] hover:border-[var(--vermillion)]/60",
+                "hover:-translate-y-1",
               ].join(" ")}
               style={{ animationDelay: `${i * 100}ms` }}
             >
+              {/* Corner accent marks (Á Đông) */}
+              <span className="absolute top-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌜</span>
+              <span className="absolute top-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌝</span>
+              <span className="absolute bottom-2 left-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌞</span>
+              <span className="absolute bottom-2 right-2 text-[10px] text-[var(--gold)] opacity-40 select-none pointer-events-none transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true">⌟</span>
+
               {/* Background Chinese character */}
               <div
-                className="absolute -bottom-4 -right-2 font-serif text-7xl text-[var(--vermillion)] opacity-[0.05] select-none pointer-events-none transition-transform duration-500 group-hover:scale-110 group-hover:opacity-[0.08]"
+                className="absolute -bottom-4 -right-2 font-serif text-7xl text-[var(--vermillion)] opacity-[0.05] select-none pointer-events-none transition-transform duration-500 group-hover:scale-115 group-hover:opacity-[0.09]"
                 aria-hidden="true"
               >
                 {item.icon}
               </div>
 
               {/* Top accent line */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--vermillion)]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[var(--vermillion)]/60 via-[var(--gold)]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               <div className="relative">
                 <span
-                  className="font-serif text-3xl text-[var(--vermillion)] opacity-35 select-none"
+                  className="font-serif text-3xl text-[var(--vermillion)] opacity-35 select-none transition-opacity duration-300 group-hover:opacity-60"
                   aria-hidden="true"
                 >
                   {item.icon}
@@ -162,12 +177,20 @@ export default function HomePage() {
           CTA BANNER — Lập lá số ngay
           ═══════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-y border-[var(--lacquer-dark)] bg-[var(--lacquer-deep)] text-[var(--paper)]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(255,245,223,0.09),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(255,245,223,0.12),transparent_60%)]" />
         <div
-          className="absolute right-0 top-0 bottom-0 w-32 flex items-center justify-center pointer-events-none"
+          className="absolute left-6 top-0 bottom-0 w-32 hidden items-center justify-center pointer-events-none sm:flex"
           aria-hidden="true"
         >
-          <span className="font-serif text-[5rem] text-[var(--gold-light)] opacity-[0.12] leading-none">
+          <span className="font-serif text-[6rem] text-[var(--gold-light)] opacity-[0.08] leading-none select-none">
+            運
+          </span>
+        </div>
+        <div
+          className="absolute right-6 top-0 bottom-0 w-32 flex items-center justify-center pointer-events-none"
+          aria-hidden="true"
+        >
+          <span className="font-serif text-[6rem] text-[var(--gold-light)] opacity-[0.12] leading-none select-none">
             命
           </span>
         </div>
@@ -183,12 +206,12 @@ export default function HomePage() {
             <Link
               href="/lap-la-so"
               className={[
-                "lacquer-cta-light",
+                "lacquer-cta-light group",
                 "inline-flex min-h-12 items-center justify-center rounded-sm px-8 text-base font-medium",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)]",
               ].join(" ")}
             >
-              <span className="mr-2" aria-hidden="true">
+              <span className="mr-2 transition-transform duration-200 group-hover:rotate-45" aria-hidden="true">
                 ☰
               </span>
               Bắt đầu lập lá số

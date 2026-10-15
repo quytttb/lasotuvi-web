@@ -103,7 +103,7 @@ export function SearchableSelect({
           type="button"
           id={id}
           className={cn(
-            "flex min-h-12 w-full items-center justify-between gap-2 rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-left text-base text-[var(--ink)]",
+            "flex min-h-12 w-full items-center justify-between gap-2 rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-left text-base text-[var(--ink)] transition-colors duration-200 hover:border-[var(--gold)]/60",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
           )}
           aria-haspopup="listbox"
@@ -131,7 +131,7 @@ export function SearchableSelect({
           aria-controls={listId}
           aria-autocomplete="list"
           className={cn(
-            "min-h-12 w-full rounded-sm border border-[var(--line)] bg-[var(--paper)] px-3 text-base text-[var(--ink)]",
+            "min-h-12 w-full rounded-sm border border-[var(--vermillion)] bg-[var(--paper)] px-3 text-base text-[var(--ink)] shadow-[0_0_0_3px_rgba(159,48,40,0.14)]",
             "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--water)]",
           )}
           placeholder="Gõ để tìm…"
@@ -145,7 +145,7 @@ export function SearchableSelect({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] shadow-sm"
+          className="absolute z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] shadow-[0_8px_24px_rgba(26,21,16,0.14)] ring-1 ring-inset ring-[var(--line-faint)] animate-fade-in-scale"
         >
           <li role="presentation">
             <button

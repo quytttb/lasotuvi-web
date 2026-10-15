@@ -94,12 +94,26 @@
 body {
   background-color: var(--paper);
   background-image:
-    radial-gradient(ellipse at 0% 0%, rgba(159, 48, 40, 0.055) 0%, transparent 48%),
+    /* Silk wave texture — subtle horizontal ripples */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(205, 178, 139, 0.04) 80px,
+      rgba(205, 178, 139, 0.04) 81px
+    ),
+    /* Warm vermillion glow top-left */
+    radial-gradient(ellipse at 0% 0%, rgba(159, 48, 40, 0.06) 0%, transparent 48%),
+    /* Golden glow bottom-right */
     radial-gradient(ellipse at 100% 100%, rgba(181, 138, 69, 0.08) 0%, transparent 50%),
+    /* Subtle center radiance */
+    radial-gradient(ellipse at 50% 30%, rgba(255, 250, 242, 0.4) 0%, transparent 60%),
+    /* Main vertical gradient */
     linear-gradient(180deg, #fffaf2 0%, var(--paper) 34%, #f6ead9 100%);
   color: var(--ink);
   font-family: var(--font-sans), "Be Vietnam Pro", "Noto Sans", sans-serif;
   min-height: 100vh;
+  scroll-behavior: smooth;
 }
 
 /* Shared page gutters; the chart workspace keeps its wider canvas. */
@@ -287,44 +301,59 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   PALACE CELL — Cung Tử Vi
+   PALACE CELL — Cung Tử Vi (enhanced Á Đông)
    ───────────────────────────────────────────────────────────── */
 .palace-cell {
   position: relative;
+  will-change: transform, box-shadow;
   transition:
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background-color 0.3s ease,
+    transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .palace-cell:hover {
   z-index: 1;
+  transform: translateZ(0) scale(1.008);
   box-shadow:
     0 0 0 1px var(--border-ornament),
-    0 4px 16px rgba(26, 21, 16, 0.1);
+    0 6px 20px rgba(26, 21, 16, 0.12),
+    inset 0 0 12px rgba(181, 138, 69, 0.06);
+}
+
+/* Subtle gold inner border glow on hover */
+.palace-cell::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.35s ease;
+}
+.palace-cell:hover::after {
+  border-color: rgba(181, 138, 69, 0.18);
 }
 
 /* Corner ornament dots on active cell */
-.palace-cell[data-active-da-xian="true"]::before,
-.palace-cell[data-active-da-xian="true"]::after {
+.palace-cell[data-active-da-xian="true"]::before {
   content: "◆";
   position: absolute;
   font-size: 0.35rem;
   color: var(--earth);
   opacity: 0.6;
-}
-.palace-cell[data-active-da-xian="true"]::before {
   top: 3px;
   left: 3px;
-}
-.palace-cell[data-active-da-xian="true"]::after {
-  top: 3px;
-  right: 3px;
+  animation: gentlePulse 3s ease-in-out infinite;
 }
 
 /* ── Palace cell typography ── */
 .palace-cell-header {
 }
 .palace-cell-title {
+  transition: color 0.25s ease;
+}
+.palace-cell:hover .palace-cell-title {
+  color: var(--lacquer);
 }
 .palace-cell-sub {
 }
@@ -333,36 +362,51 @@ body {
 .palace-cell-footer {
 }
 
-/* ── Star badges ── */
+/* ── Star badges — ink brush micro-interaction ── */
 .star-badge-major {
+  transition: text-shadow 0.3s ease, transform 0.2s ease;
+}
+.star-badge-major:hover {
+  text-shadow: 0 0 8px rgba(159, 48, 40, 0.15);
+  transform: translateY(-0.5px);
 }
 .star-badge-minor {
+  transition: opacity 0.25s ease;
+}
+.star-badge-minor:hover {
+  opacity: 0.85;
 }
 .star-badge-meta {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CHART BOARD — Bàn lá số
+   CHART BOARD — Bàn lá số (enhanced)
    ───────────────────────────────────────────────────────────── */
 .chart-board {
   border-color: var(--line);
   box-shadow:
     0 0 0 1px var(--line-soft),
-    0 4px 24px rgba(26, 21, 16, 0.08),
+    0 8px 32px rgba(26, 21, 16, 0.1),
+    0 2px 6px rgba(26, 21, 16, 0.06),
     0 1px 0 rgba(255, 255, 255, 0.5) inset;
-  background: var(--paper-muted);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(181, 138, 69, 0.03), transparent 70%),
+    var(--paper-muted);
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CHART CENTER — Trung tâm lá số
+   CHART CENTER — Trung tâm lá số (enhanced)
    ───────────────────────────────────────────────────────────── */
 .chart-center {
-  background: linear-gradient(
-    145deg,
-    var(--paper-raised) 0%,
-    var(--paper) 60%,
-    var(--paper-muted) 100%
-  );
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(217, 185, 117, 0.06), transparent 60%),
+    linear-gradient(
+      145deg,
+      var(--paper-raised) 0%,
+      var(--paper) 60%,
+      var(--paper-muted) 100%
+    );
   border-color: var(--line);
   box-shadow:
     0 0 0 1px var(--line-faint) inset,
@@ -370,16 +414,27 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   ANIMATIONS
+   ANIMATIONS — Á Đông enhanced (GPU-accelerated)
    ───────────────────────────────────────────────────────────── */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translate3d(0, 12px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
@@ -389,6 +444,15 @@ body {
   }
   100% {
     background-position: 200% center;
+  }
+}
+
+@keyframes goldenShimmer {
+  0% {
+    background-position: -300% center;
+  }
+  100% {
+    background-position: 300% center;
   }
 }
 
@@ -403,9 +467,99 @@ body {
   }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.4s ease both;
+@keyframes inkReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
 }
+
+@keyframes gentlePulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes floatCloud {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(3px, -4px, 0);
+  }
+  50% {
+    transform: translate3d(-2px, -7px, 0);
+  }
+  75% {
+    transform: translate3d(4px, -3px, 0);
+  }
+}
+
+@keyframes inkDrop {
+  from {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-16px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes goldLineExpand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-ink-reveal {
+  animation: inkReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-slide-in {
+  animation: slideInFromLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Staggered animation delay utilities */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
 
 /* ─────────────────────────────────────────────────────────────
    BUTTONS — Phong cách Á Đông

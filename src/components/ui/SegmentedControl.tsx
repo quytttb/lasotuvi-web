@@ -66,12 +66,12 @@ export function SegmentedControl<T extends string>({
               aria-checked={selected}
               data-selected={selected ? "true" : undefined}
               className={cn(
-                "min-h-11 flex-1 rounded-sm px-2.5 text-sm font-medium transition-colors",
+                "min-h-11 flex-1 rounded-sm px-2.5 text-sm font-medium transition-all duration-200",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 wrap ? "min-w-[calc(50%-0.125rem)] sm:min-w-0 sm:flex-1" : null,
                 selected
-                  ? "bg-[var(--lacquer)] text-[var(--paper-raised)]"
-                  : "bg-transparent text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
+                  ? "bg-[var(--lacquer)] text-[var(--paper-raised)] font-semibold shadow-[0_1px_4px_rgba(89,24,22,0.25)]"
+                  : "bg-transparent text-[var(--ink-soft)] hover:bg-[var(--paper-muted)] hover:text-[var(--ink)]",
               )}
               onClick={() => onChange(opt.value)}
             >

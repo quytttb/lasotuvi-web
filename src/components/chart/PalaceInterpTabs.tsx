@@ -93,16 +93,16 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
               data-testid={`palace-tab-${id}`}
               data-active-da-xian={isActiveDaXian ? "true" : undefined}
               className={cn(
-                "min-h-14 rounded-sm border px-2 py-2 text-center text-sm font-medium leading-tight transition-colors",
+                "min-h-14 rounded-sm border px-2 py-2 text-center text-sm font-medium leading-tight transition-all duration-200",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--water)]",
                 isSelected
-                  ? "border-[var(--lacquer)] bg-[var(--vermillion-soft)] text-[var(--lacquer-deep)]"
-                  : "border-[var(--line)] bg-[var(--paper)] text-[var(--ink-soft)] hover:bg-[var(--paper-muted)]",
-                isActiveDaXian && !isSelected && "border-[var(--earth)]",
+                  ? "border-[var(--lacquer)] bg-[var(--vermillion-soft)] text-[var(--lacquer-deep)] font-semibold shadow-[0_3px_10px_rgba(159,48,40,0.18)] -translate-y-0.5"
+                  : "border-[var(--line)] bg-[var(--paper)] text-[var(--ink-soft)] hover:bg-[var(--paper-muted)] hover:-translate-y-0.5",
+                isActiveDaXian && !isSelected && "border-[var(--earth)] ring-1 ring-[var(--earth)]/30",
               )}
               onClick={() => setSelectedId(id)}
             >
-              <span className="block truncate">{tabLabel(palace)}</span>
+              <span className="block truncate font-serif">{tabLabel(palace)}</span>
               <span className="mt-1 block truncate text-xs font-normal text-[var(--ink-muted)]">
                 {palace.branch_name}
                 {isActiveDaXian ? " · Đang hạn" : ` · ${tone.effectLabel}`}
@@ -115,8 +115,9 @@ export function PalaceInterpTabs({ palaces, renderPanel, className }: PalaceInte
       <div
         role="tabpanel"
         id={panelId}
+        key={selected.index}
         aria-labelledby={`${baseId}-tab-${selected.index}`}
-        className="w-full border border-[var(--line)] bg-[var(--paper-raised)] p-4 text-sm text-[var(--ink-soft)] sm:p-6"
+        className="w-full border border-[var(--line)] bg-[var(--paper-raised)] p-4 text-sm text-[var(--ink-soft)] sm:p-6 shadow-[0_4px_16px_rgba(26,21,16,0.06)] ring-1 ring-inset ring-[var(--line-faint)] animate-fade-in-up"
         data-testid="palace-interp-panel"
         data-palace-index={selected.index}
       >

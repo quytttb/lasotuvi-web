@@ -38,7 +38,7 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
         "transition-all duration-200",
         // Active: ochre gold highlight
         isActive &&
-          "border-[var(--earth)]/70 bg-[var(--earth-soft)]/50 ring-1 ring-[var(--earth)]/30 shadow-[0_0_12px_rgba(138,100,32,0.1)]",
+          "border-[var(--earth)] bg-gradient-to-b from-[var(--earth-soft)]/70 to-[var(--paper-raised)] ring-1 ring-[var(--earth)]/40 shadow-[0_0_16px_rgba(138,100,32,0.14)]",
         className,
       )}
       style={style}
@@ -50,7 +50,7 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
       <header className="palace-cell-header flex items-start justify-between gap-1 border-b border-[var(--line-soft)] px-2.5 py-2">
         <div className="min-w-0">
           {/* Palace name */}
-          <p className="palace-cell-title font-serif text-[1rem] font-semibold leading-tight text-[var(--ink)]">
+          <p className="palace-cell-title font-serif text-[1.05rem] font-semibold leading-tight text-[var(--ink)]">
             {palace.palace_name ?? `Cung ${palace.index}`}
           </p>
           {/* Branch info */}
@@ -66,13 +66,13 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
         </div>
 
         {/* Badges */}
-        <div className="flex shrink-0 flex-wrap justify-end gap-0.5 pt-0.5">
+        <div className="flex shrink-0 flex-wrap justify-end gap-1 pt-0.5">
           {isActive ? (
             <span
               className={[
-                "rounded-sm px-1.5 py-0.5 text-[0.65rem] font-semibold tracking-wide",
+                "rounded-[2px] px-1.5 py-0.5 text-[0.65rem] font-semibold tracking-wide",
                 "bg-[var(--earth)] text-[var(--paper-raised)]",
-                "shadow-sm",
+                "shadow-[0_1px_4px_rgba(138,100,32,0.25)] ring-1 ring-[var(--gold-light)]/40",
               ].join(" ")}
               data-testid="active-da-xian-badge"
             >
@@ -82,20 +82,21 @@ export function PalaceCell({ palace, className, style }: PalaceCellProps) {
           {palace.is_body_palace ? (
             <span
               className={[
-                "rounded-sm px-1.5 py-0.5 text-[0.65rem] font-semibold",
-                "border border-[var(--earth)]/40 bg-[var(--earth-soft)] text-[var(--earth)]",
+                "font-serif rounded-[2px] px-1.5 py-0.5 text-[0.65rem] font-bold tracking-wider",
+                "border border-[var(--earth)]/60 bg-[var(--earth-soft)] text-[var(--earth)]",
+                "shadow-[0_1px_2px_rgba(138,100,32,0.12)]",
               ].join(" ")}
             >
               Thân
             </span>
           ) : null}
           {palace.is_xun ? (
-            <span className="rounded-sm border border-[var(--line)] px-1 py-0.5 text-[0.65rem] text-[var(--ink-muted)]">
+            <span className="rounded-[2px] border border-[var(--line)] bg-[var(--paper-muted)]/70 px-1 py-0.5 text-[0.65rem] font-medium text-[var(--ink-muted)] shadow-xs">
               Tuần
             </span>
           ) : null}
           {palace.is_triet ? (
-            <span className="rounded-sm border border-[var(--line)] px-1 py-0.5 text-[0.65rem] text-[var(--ink-muted)]">
+            <span className="rounded-[2px] border border-[var(--line)] bg-[var(--paper-muted)]/70 px-1 py-0.5 text-[0.65rem] font-medium text-[var(--ink-muted)] shadow-xs">
               Triệt
             </span>
           ) : null}

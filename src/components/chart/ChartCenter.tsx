@@ -20,7 +20,7 @@ function formatLunar(chart: ChartResponse): string {
 function MetaRow({ label, value }: { label: string; value: string | null | undefined }) {
   if (!value) return null;
   return (
-    <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-baseline gap-x-2 text-left">
+    <div className="grid grid-cols-[5.8rem_minmax(0,1fr)] items-baseline gap-x-2 text-left rounded-[2px] px-1 py-0.5 transition-colors hover:bg-[var(--gold-soft)]/50">
       <dt className="text-[var(--ink-faint)] text-[0.72rem] uppercase tracking-wide">{label}</dt>
       <dd className="min-w-0 break-words font-medium text-[var(--ink)] text-[0.8rem]">{value}</dd>
     </div>
@@ -33,27 +33,30 @@ export function ChartCenter({ chart }: ChartCenterProps) {
   const name = chart.birth_info.name?.trim() || "Ẩn danh";
   const nayin = isDisplayableVietnameseMeta(meta?.nayin) ? meta?.nayin : null;
   const banMenh = [meta?.ben_ming_name, nayin].filter(Boolean).join(" — ") || null;
+  const genderLabel = mapGenderToLabel(chart.birth_info.gender);
 
   return (
     <div
-      className="chart-center flex h-full flex-col justify-center gap-4 border border-[var(--line)] px-4 py-4 leading-snug"
+      className="chart-center relative flex h-full flex-col justify-center gap-4 border border-[var(--line)] px-4 py-4 leading-snug ring-1 ring-inset ring-[var(--line-soft)]/50"
       style={{ gridRow: "2 / 4", gridColumn: "2 / 4" }}
     >
       {/* ── Name & gender ── */}
       <div className="text-center">
         {/* Decorative top ornament */}
         <p
-          className="text-[var(--vermillion)] text-sm opacity-40 mb-1.5 select-none"
+          className="text-[var(--vermillion)] text-sm opacity-60 mb-1.5 select-none font-serif tracking-widest"
           aria-hidden="true"
         >
           ✦ ☯ ✦
         </p>
-        <p className="font-serif text-xl font-semibold text-[var(--ink)] tracking-wide">{name}</p>
-        <p className="mt-0.5 text-[0.8rem] text-[var(--ink-muted)]">
-          {mapGenderToLabel(chart.birth_info.gender)}
-        </p>
+        <p className="font-serif text-2xl font-bold text-[var(--ink)] tracking-wider">{name}</p>
+        <div className="mt-1 flex items-center justify-center gap-1.5">
+          <span className="font-serif inline-block rounded-[2px] border border-[var(--lacquer)]/30 bg-[var(--vermillion-soft)] px-2 py-0.5 text-[0.72rem] font-medium text-[var(--lacquer-deep)] shadow-xs">
+            {genderLabel}
+          </span>
+        </div>
         {/* Thin gold rule */}
-        <div className="mx-auto mt-3 h-px w-12 bg-gradient-to-r from-transparent via-[var(--gold)]/60 to-transparent" />
+        <div className="mx-auto mt-2.5 h-[1.5px] w-16 bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent" />
       </div>
 
       {/* ── Metadata grid ── */}

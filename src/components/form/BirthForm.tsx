@@ -179,7 +179,8 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
     "min-h-12 w-full rounded-sm px-3 text-base text-[var(--ink)]",
     "bg-[var(--paper-raised)] border border-[var(--line)]",
     "transition-all duration-200",
-    "focus:border-[var(--vermillion)] focus:shadow-[0_0_0_2px_rgba(159,48,40,0.12)]",
+    "hover:border-[var(--gold)]/60",
+    "focus:border-[var(--vermillion)] focus:shadow-[0_0_0_3px_rgba(159,48,40,0.12),0_1px_4px_rgba(26,21,16,0.06)]",
     "focus-visible:outline-none focus-visible:border-[var(--vermillion)]",
     "focus-visible:shadow-[0_0_0_3px_rgba(159,48,40,0.16)]",
   ].join(" ");
@@ -195,13 +196,20 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
         "relative rounded-sm",
         "border border-[var(--line)] bg-[var(--paper-raised)]",
         "p-6 sm:p-8 lg:p-10",
-        "shadow-[0_2px_8px_rgba(26,21,16,0.06)]",
+        "shadow-[0_4px_20px_rgba(26,21,16,0.08)]",
         // Inner decorative border
         "ring-1 ring-inset ring-[var(--line-faint)]",
+        "animate-fade-in-up",
       ].join(" ")}
       noValidate
       data-testid="birth-form"
     >
+      {/* Oriental corner accents on form */}
+      <span className="pointer-events-none absolute top-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌜</span>
+      <span className="pointer-events-none absolute top-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌝</span>
+      <span className="pointer-events-none absolute bottom-2.5 left-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌞</span>
+      <span className="pointer-events-none absolute bottom-2.5 right-2.5 text-[11px] text-[var(--gold)] opacity-50 select-none" aria-hidden="true">⌟</span>
+
       <fieldset className="min-w-0">
         <legend className="mb-6 font-serif text-xl text-[var(--ink)]">Thông tin sinh</legend>
         <div className="grid gap-6 sm:grid-cols-2">

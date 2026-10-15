@@ -305,7 +305,7 @@ function PeriodReadingCard({ reading }: { reading: PeriodReading }) {
 
   return (
     <li
-      className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
+      className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5 shadow-[0_2px_8px_rgba(26,21,16,0.04)] transition-all duration-200 hover:shadow-[0_4px_16px_rgba(26,21,16,0.08)] hover:-translate-y-0.5"
       data-testid="period-reading"
       data-scope={reading.scope}
     >
@@ -412,14 +412,14 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           className="print:hidden mx-auto max-w-5xl space-y-4"
           data-testid="overview-section"
         >
-          <h3 id="overview-heading" className="font-serif text-xl">
+          <h3 id="overview-heading" className="font-serif text-xl heading-decorated">
             Tổng quan
           </h3>
           <ul className="space-y-3">
             {overview.map((item) => (
               <li
                 key={item.code}
-                className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
+                className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5 shadow-[0_2px_8px_rgba(26,21,16,0.04)] transition-all duration-200 hover:shadow-[0_4px_16px_rgba(26,21,16,0.08)] hover:-translate-y-0.5"
                 data-testid="overview-item"
                 data-code={item.code}
               >
@@ -445,7 +445,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         className="print:hidden mx-auto max-w-5xl space-y-4"
         data-testid="formations-section"
       >
-        <h3 id="formations-heading" className="font-serif text-xl">
+        <h3 id="formations-heading" className="font-serif text-xl heading-decorated">
           Cách cục
         </h3>
         {formations.length === 0 ? (
@@ -457,7 +457,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
               return (
                 <li
                   key={f.code}
-                  className="border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5"
+                  className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] p-4 sm:p-5 shadow-[0_2px_8px_rgba(26,21,16,0.04)] transition-all duration-200 hover:shadow-[0_4px_16px_rgba(26,21,16,0.08)] hover:-translate-y-0.5"
                   data-testid="formation-item"
                   data-quality={f.quality ?? undefined}
                 >
@@ -491,7 +491,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           className="print:hidden mx-auto max-w-5xl space-y-4"
           data-testid="period-readings-section"
         >
-          <h3 id="period-readings-heading" className="font-serif text-xl">
+          <h3 id="period-readings-heading" className="font-serif text-xl heading-decorated">
             Hạn
           </h3>
           <ul className="space-y-3">
@@ -508,7 +508,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           className="print:hidden mx-auto max-w-5xl space-y-3"
           data-testid="taboo-section"
         >
-          <h3 id="taboo-heading" className="font-serif text-xl">
+          <h3 id="taboo-heading" className="font-serif text-xl heading-decorated">
             Cung cần lưu ý
           </h3>
           <p className="text-sm text-[var(--ink-muted)]">
@@ -528,7 +528,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         className="print:hidden mx-auto w-full max-w-5xl space-y-4"
         data-testid="palace-interp-section"
       >
-        <h3 id="palace-interp-heading" className="font-serif text-xl">
+        <h3 id="palace-interp-heading" className="font-serif text-xl heading-decorated">
           Luận giải từng cung
         </h3>
         <PalaceInterpTabs
