@@ -140,26 +140,6 @@ body {
   }
 }
 
-/* A real sample chart, framed like a sheet of paper rather than a busy text backdrop. */
-.hero-chart-frame {
-  position: relative;
-  padding: 0.625rem;
-  border: 1px solid var(--gold);
-  background: var(--paper-raised);
-  box-shadow:
-    0 24px 64px rgba(48, 15, 13, 0.28),
-    0 4px 12px rgba(48, 15, 13, 0.18);
-}
-.hero-chart-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border: 1px solid rgba(217, 185, 117, 0.65);
-  background: var(--lacquer-dark);
-  transform: rotate(-4deg);
-}
-
 /* ── Lacquer-red surfaces — use for brand moments, never long reading. ── */
 .hero-lacquer {
   background-color: var(--lacquer-deep);
@@ -205,12 +185,6 @@ body {
   background: var(--gold-soft);
   box-shadow: 0 5px 18px rgba(48, 15, 13, 0.35);
   transform: translateY(-1px);
-}
-@media (min-width: 1024px) {
-  .hero-chart-frame {
-    padding: 0.875rem;
-    transform: rotate(2deg);
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────

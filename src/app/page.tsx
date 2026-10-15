@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { FIVE_ELEMENTS } from "@/components/home/five-elements";
-import { HeroChartFigure } from "@/components/home/HeroChartFigure";
+import { HeroConceptsShowcase } from "@/components/home/HeroConceptsShowcase";
 import { cn } from "@/lib/utils/cn";
 
 export const metadata: Metadata = {
@@ -108,7 +108,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <HeroChartFigure />
+          <HeroConceptsShowcase />
         </div>
         <div className="relative z-20 mt-auto border-t border-[var(--gold)]/40 bg-[var(--lacquer-dark)] shadow-[0_-4px_20px_rgba(48,15,13,0.35)]">
           <div className="site-container flex flex-wrap items-center justify-between gap-4 py-4 sm:py-5">
