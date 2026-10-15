@@ -106,13 +106,12 @@ export function BatQuaiVisual({ className }: VisualProps) {
             </text>
             <text
               x={lblX}
-              y={lblY + 3.5}
+              y={lblY + 4}
               textAnchor="middle"
-              fill="#d9b975"
-              fontSize="9"
+              fill="#f5e4b7"
+              fontSize="11.5"
               fontWeight="bold"
               letterSpacing="0.04em"
-              opacity="0.9"
             >
               {t.cardinal}
             </text>
@@ -203,26 +202,26 @@ export function NguHanhVisual({ className }: VisualProps) {
       <path d={starPath} stroke="#e53e3e" strokeWidth="1.25" strokeDasharray="5 3" opacity="0.65" />
 
       {/* Center label seal */}
-      <circle cx={cx} cy={cy} r="24" fill="#300f0d" stroke="#d9b975" strokeWidth="1" />
+      <circle cx={cx} cy={cy} r="27" fill="#300f0d" stroke="#d9b975" strokeWidth="1.2" />
       <text
         x={cx}
         y={cy - 2}
         textAnchor="middle"
         fill="#f5e4b7"
-        fontSize="10"
-        fontWeight="600"
+        fontSize="11.5"
+        fontWeight="bold"
         fontFamily="serif"
       >
         SINH KHẮC
       </text>
       <text
         x={cx}
-        y={cy + 10}
+        y={cy + 12}
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="7.5"
+        fontSize="9.5"
         letterSpacing="0.08em"
-        opacity="0.85"
+        fontWeight="600"
       >
         NGŨ HÀNH
       </text>
@@ -230,21 +229,14 @@ export function NguHanhVisual({ className }: VisualProps) {
       {/* 5 Element nodes */}
       {coords.map((el) => (
         <g key={el.name}>
-          <circle
-            cx={el.x}
-            cy={el.y}
-            r="21"
-            fill="#1b120c"
-            stroke={el.ringColor}
-            strokeWidth="1.75"
-          />
-          <circle cx={el.x} cy={el.y} r="17" fill={el.color} opacity="0.3" />
+          <circle cx={el.x} cy={el.y} r="23" fill="#1b120c" stroke={el.ringColor} strokeWidth="2" />
+          <circle cx={el.x} cy={el.y} r="19" fill={el.color} opacity="0.35" />
           <text
             x={el.x}
-            y={el.y + 6}
+            y={el.y + 6.5}
             textAnchor="middle"
             fill="#fffaf2"
-            fontSize="15"
+            fontSize="18"
             fontWeight="bold"
             fontFamily="serif"
           >
@@ -252,10 +244,10 @@ export function NguHanhVisual({ className }: VisualProps) {
           </text>
           <text
             x={el.x}
-            y={el.y + 32}
+            y={el.y + 36}
             textAnchor="middle"
             fill="#f5e4b7"
-            fontSize="9"
+            fontSize="12"
             fontWeight="bold"
           >
             {el.name}
@@ -264,29 +256,21 @@ export function NguHanhVisual({ className }: VisualProps) {
       ))}
 
       {/* Legend markers at bottom */}
-      <g transform="translate(70, 260)">
-        <line
-          x1="0"
-          y1="0"
-          x2="20"
-          y2="0"
-          stroke="#d9b975"
-          strokeWidth="1.5"
-          strokeDasharray="3 2"
-        />
-        <text x="26" y="3" fill="#d9b975" fontSize="8.5" fontWeight="500">
+      <g transform="translate(24, 260)">
+        <line x1="0" y1="0" x2="20" y2="0" stroke="#d9b975" strokeWidth="2" strokeDasharray="4 2" />
+        <text x="26" y="3.5" fill="#d9b975" fontSize="10.5" fontWeight="600">
           Vòng ngoài: Tương Sinh
         </text>
         <line
-          x1="130"
+          x1="180"
           y1="0"
-          x2="150"
+          x2="200"
           y2="0"
           stroke="#e53e3e"
-          strokeWidth="1.5"
-          strokeDasharray="3 2"
+          strokeWidth="2"
+          strokeDasharray="4 2"
         />
-        <text x="156" y="3" fill="#e53e3e" fontSize="8.5" fontWeight="500" opacity="0.9">
+        <text x="206" y="3.5" fill="#e53e3e" fontSize="10.5" fontWeight="600" opacity="0.95">
           Đường chéo: Tương Khắc
         </text>
       </g>
@@ -360,10 +344,10 @@ export function CanChiVisual({ className }: VisualProps) {
             />
             <text
               x={x + w / 2}
-              y={y + h / 2 + 5}
+              y={y + h / 2 + 5.5}
               textAnchor="middle"
               fill="#f5e4b7"
-              fontSize="12"
+              fontSize="14"
               fontWeight="bold"
               fontFamily="serif"
             >
@@ -388,53 +372,54 @@ export function CanChiVisual({ className }: VisualProps) {
       <circle
         cx={ox + w * 2}
         cy={oy + h * 2}
-        r="38"
+        r="40"
         stroke="#d9b975"
         strokeWidth="1"
         strokeDasharray="3 3"
       />
       <rect
-        x={ox + w * 2 - 28}
-        y={oy + h * 2 - 20}
-        width="56"
-        height="40"
+        x={ox + w * 2 - 32}
+        y={oy + h * 2 - 22}
+        width="64"
+        height="44"
         fill="#9f3028"
-        rx="2"
+        rx="3"
         stroke="#f5e4b7"
-        strokeWidth="1"
+        strokeWidth="1.2"
       />
       <text
         x={ox + w * 2}
         y={oy + h * 2 - 4}
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="9.5"
+        fontSize="11.5"
         fontWeight="bold"
       >
         LỤC THẬP
       </text>
       <text
         x={ox + w * 2}
-        y={oy + h * 2 + 10}
+        y={oy + h * 2 + 12}
         textAnchor="middle"
         fill="#f5e4b7"
-        fontSize="8.5"
+        fontSize="10"
+        fontWeight="bold"
         letterSpacing="0.08em"
       >
         HOA GIÁP
       </text>
 
       {/* 10 Can horizontal ribbons */}
-      <g transform={`translate(${ox + w + 12}, ${oy + h + 14})`}>
-        <text fill="#d9b975" fontSize="7.5" fontWeight="600" opacity="0.9">
+      <g transform={`translate(${ox + w + 10}, ${oy + h + 13})`}>
+        <text fill="#d9b975" fontSize="9.5" fontWeight="bold" opacity="0.95">
           10 THIÊN CAN:
         </text>
-        <text y="14" fill="#f5e4b7" fontSize="7.5" letterSpacing="0.04em">
+        <text y="14" fill="#f5e4b7" fontSize="9.5" fontWeight="600" letterSpacing="0.03em">
           {stems.slice(0, 5).join(" · ")}
         </text>
       </g>
-      <g transform={`translate(${ox + w + 12}, ${oy + h * 2 + 28})`}>
-        <text y="14" fill="#f5e4b7" fontSize="7.5" letterSpacing="0.04em">
+      <g transform={`translate(${ox + w + 10}, ${oy + h * 2 + 25})`}>
+        <text y="14" fill="#f5e4b7" fontSize="9.5" fontWeight="600" letterSpacing="0.03em">
           {stems.slice(5).join(" · ")}
         </text>
       </g>
@@ -537,31 +522,31 @@ export function ThaiCucVisual({ className }: VisualProps) {
       {/* Labels */}
       <g transform={`translate(${cx - r - 45}, ${cy})`}>
         <rect
-          x="-30"
-          y="-14"
-          width="60"
-          height="28"
+          x="-32"
+          y="-16"
+          width="64"
+          height="32"
           fill="#300f0d"
           stroke="#d9b975"
-          strokeWidth="1"
-          rx="2"
+          strokeWidth="1.2"
+          rx="3"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#f5e4b7" fontSize="10" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#f5e4b7" fontSize="13" fontWeight="bold">
           DƯƠNG
         </text>
       </g>
       <g transform={`translate(${cx + r + 45}, ${cy})`}>
         <rect
-          x="-30"
-          y="-14"
-          width="60"
-          height="28"
+          x="-32"
+          y="-16"
+          width="64"
+          height="32"
           fill="#300f0d"
           stroke="#d9b975"
-          strokeWidth="1"
-          rx="2"
+          strokeWidth="1.2"
+          rx="3"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#f5e4b7" fontSize="10" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#f5e4b7" fontSize="13" fontWeight="bold">
           ÂM
         </text>
       </g>
@@ -571,7 +556,8 @@ export function ThaiCucVisual({ className }: VisualProps) {
         y={cy + r + 40}
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="10"
+        fontSize="11.5"
+        fontWeight="600"
         letterSpacing="0.08em"
       >
         VẠN VẬT QUÂN BÌNH TRONG THÁI CỰC
@@ -584,83 +570,157 @@ export function ThaiCucVisual({ className }: VisualProps) {
  * 05. Chưởng Bàn (Bàn tay bấm độn)
  */
 export function ChuongBanVisual({ className }: VisualProps) {
-  // Hand joints for 12 branches
+  // Hand joints for 12 branches on the left hand
   const branches = [
-    { name: "Tí", x: 175, y: 195, note: "Gốc Áp út" },
-    { name: "Sửu", x: 145, y: 195, note: "Gốc Giữa" },
-    { name: "Dần", x: 115, y: 195, note: "Gốc Trỏ" },
-    { name: "Mão", x: 115, y: 135, note: "Đốt 2 Trỏ" },
-    { name: "Thìn", x: 115, y: 75, note: "Đầu Trỏ" },
-    { name: "Tỵ", x: 155, y: 55, note: "Đầu Giữa" },
-    { name: "Ngọ", x: 195, y: 55, note: "Đầu Áp út" },
-    { name: "Mùi", x: 235, y: 75, note: "Đầu Út" },
-    { name: "Thân", x: 235, y: 135, note: "Đốt 2 Út" },
-    { name: "Dậu", x: 235, y: 195, note: "Gốc Út" },
-    { name: "Tuất", x: 205, y: 195, note: "Đốt 2 Áp út" },
-    { name: "Hợi", x: 175, y: 135, note: "Đốt 2 Giữa" },
+    { name: "TÍ", x: 246, y: 160 },
+    { name: "SỬU", x: 204, y: 160 },
+    { name: "DẦN", x: 162, y: 160 },
+    { name: "MÃO", x: 162, y: 115 },
+    { name: "THÌN", x: 162, y: 65 },
+    { name: "TỴ", x: 204, y: 40 },
+    { name: "NGỌ", x: 246, y: 50 },
+    { name: "MÙI", x: 286, y: 72 },
+    { name: "THÂN", x: 286, y: 115 },
+    { name: "DẬU", x: 286, y: 160 },
+    { name: "TUẤT", x: 246, y: 105 },
+    { name: "HỢI", x: 204, y: 100 },
   ];
+
+  const circuitPoints = branches.map((b) => `${b.x},${b.y}`).join(" L ");
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 420 295"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Minh họa Bàn Tay Bấm Độn"
     >
-      {/* Palm silhouette */}
+      <defs>
+        <radialGradient id="palmGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#d9b975" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#d9b975" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="handGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#4a1815" />
+          <stop offset="50%" stopColor="#38110e" />
+          <stop offset="100%" stopColor="#240a08" />
+        </linearGradient>
+      </defs>
+
+      <ellipse cx="215" cy="145" rx="140" ry="125" fill="url(#palmGlow)" />
+
+      {/* Realistic Left Palm Silhouette */}
       <path
-        d="M 100 240
-           C 95 190, 95 110, 105 70
-           C 110 50, 125 50, 130 70
-           L 135 110
-           L 142 50
-           C 145 35, 165 35, 168 50
-           L 172 105
-           L 182 50
-           C 185 35, 205 35, 208 50
-           L 212 110
-           L 220 70
-           C 223 55, 243 55, 246 70
-           C 255 120, 255 190, 245 240
+        d="M 146 270
+           C 136 238, 105 215, 88 192
+           C 72 170, 60 142, 74 122
+           C 84 108, 102 110, 116 126
+           C 128 140, 134 160, 142 176
+           C 144 162, 142 118, 145 78
+           C 147 48, 150 34, 163 34
+           C 176 34, 178 48, 180 78
+           L 180 112
+           C 180 92, 182 52, 186 26
+           C 189 8, 194 4, 205 4
+           C 216 4, 221 8, 224 26
+           L 224 116
+           C 224 96, 226 60, 230 36
+           C 233 18, 238 16, 248 16
+           C 258 16, 262 22, 264 40
+           L 264 122
+           C 265 108, 268 80, 274 62
+           C 278 48, 284 46, 292 48
+           C 300 50, 304 58, 303 78
+           C 300 118, 298 152, 296 178
+           C 292 220, 280 248, 268 270
            Z"
-        fill="#300f0d"
+        fill="url(#handGrad)"
         stroke="#d9b975"
-        strokeWidth="1.5"
-        opacity="0.85"
+        strokeWidth="1.8"
       />
 
-      {/* Thumb contour on the left */}
+      {/* Knuckle crease lines */}
+      <line x1="147" y1="92" x2="178" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="146" y1="138" x2="178" y2="138" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="182" y1="56" x2="223" y2="56" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="182" y1="92" x2="224" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="226" y1="64" x2="263" y2="64" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="225" y1="100" x2="263" y2="100" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="268" y1="92" x2="300" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="267" y1="128" x2="298" y2="128" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+
+      {/* Major Palm lines */}
       <path
-        d="M 98 200
-           C 70 185, 65 140, 78 125
-           C 88 115, 102 125, 106 145"
+        d="M 294 148 C 260 150, 215 158, 180 135"
+        fill="none"
         stroke="#d9b975"
-        strokeWidth="1.5"
-        fill="#300f0d"
-        opacity="0.75"
+        strokeWidth="1.2"
+        opacity="0.4"
+        strokeDasharray="2 2"
+      />
+      <path
+        d="M 148 182 C 185 182, 230 192, 280 212"
+        fill="none"
+        stroke="#d9b975"
+        strokeWidth="1.2"
+        opacity="0.4"
+        strokeDasharray="2 2"
+      />
+      <path
+        d="M 148 182 C 160 212, 170 245, 195 270"
+        fill="none"
+        stroke="#d9b975"
+        strokeWidth="1.4"
+        opacity="0.45"
+        strokeDasharray="2 2"
       />
 
-      {/* Connecting loop for the finger circuit */}
+      {/* Circuit Line connecting 12 joints in sequence */}
       <path
-        d="M 175 195 L 145 195 L 115 195 L 115 135 L 115 75 L 155 55 L 195 55 L 235 75 L 235 135 L 235 195 L 205 195 L 175 135"
-        stroke="#f5e4b7"
-        strokeWidth="1.25"
+        d={`M ${circuitPoints}`}
+        fill="none"
+        stroke="#d9b975"
+        strokeWidth="1.75"
         strokeDasharray="3 3"
-        opacity="0.65"
+        opacity="0.8"
       />
 
-      {/* 12 Joints Nodes */}
+      {/* Center Palm Seal */}
+      <rect
+        x="182"
+        y="196"
+        width="62"
+        height="24"
+        rx="3"
+        fill="#9f3028"
+        stroke="#f5e4b7"
+        strokeWidth="1"
+      />
+      <text
+        x="213"
+        y="212"
+        textAnchor="middle"
+        fill="#fffaf2"
+        fontSize="10.5"
+        fontWeight="bold"
+        fontFamily="serif"
+      >
+        CHƯỞNG QUYẾT
+      </text>
+
+      {/* 12 Chi Badges - large, crisp and readable */}
       {branches.map((b) => (
         <g key={b.name}>
-          <circle cx={b.x} cy={b.y} r="11" fill="#1f0807" stroke="#d9b975" strokeWidth="1.5" />
+          <circle cx={b.x} cy={b.y} r="13.5" fill="#1b0807" stroke="#d9b975" strokeWidth="1.5" />
+          <circle cx={b.x} cy={b.y} r="11" fill="#9f3028" opacity="0.4" />
           <text
             x={b.x}
-            y={b.y + 4}
+            y={b.y + 4.5}
             textAnchor="middle"
             fill="#fffaf2"
-            fontSize="9"
+            fontSize="11"
             fontWeight="bold"
             fontFamily="serif"
           >
@@ -669,30 +729,16 @@ export function ChuongBanVisual({ className }: VisualProps) {
         </g>
       ))}
 
-      {/* Palm center stamp */}
-      <rect
-        x="145"
-        y="145"
-        width="60"
-        height="24"
-        rx="3"
-        fill="#9f3028"
-        stroke="#f5e4b7"
-        strokeWidth="1"
-      />
-      <text x="175" y="160" textAnchor="middle" fill="#fffaf2" fontSize="9" fontWeight="bold">
-        CHƯỞNG QUYẾT
-      </text>
-
       <text
-        x="190"
-        y="265"
+        x="215"
+        y="286"
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="9.5"
+        fontSize="11"
+        fontWeight="600"
         letterSpacing="0.06em"
       >
-        12 LÓNG TAY AN SAO & TÍNH ĐẠI TIỂU HẠN
+        12 CUNG ĐỊA CHI TRÊN 4 NGÓN TAY TRÁI
       </text>
     </svg>
   );
@@ -781,11 +827,11 @@ export function TamHopVisual({ className }: VisualProps) {
       <line x1={pTi.x} y1={pTi.y} x2={pSuu.x} y2={pSuu.y} stroke="#2563a8" strokeWidth="1.75" />
 
       {/* Center Label */}
-      <circle cx={cx} cy={cy} r="26" fill="#300f0d" stroke="#d9b975" strokeWidth="1" />
-      <text x={cx} y={cy - 2} textAnchor="middle" fill="#f5e4b7" fontSize="9" fontWeight="bold">
+      <circle cx={cx} cy={cy} r="30" fill="#300f0d" stroke="#d9b975" strokeWidth="1.2" />
+      <text x={cx} y={cy - 2} textAnchor="middle" fill="#f5e4b7" fontSize="10.5" fontWeight="bold">
         THÂN · TÍ · THÌN
       </text>
-      <text x={cx} y={cy + 10} textAnchor="middle" fill="#d9b975" fontSize="7.5">
+      <text x={cx} y={cy + 12} textAnchor="middle" fill="#d9b975" fontSize="9" fontWeight="bold">
         THỦY CỤC
       </text>
 
@@ -799,17 +845,17 @@ export function TamHopVisual({ className }: VisualProps) {
             <circle
               cx={pt.x}
               cy={pt.y}
-              r={isHighlight ? 13 : 9}
+              r={isHighlight ? 14 : 10.5}
               fill={isHighlight ? "#9f3028" : "#240b0a"}
               stroke="#d9b975"
-              strokeWidth={isHighlight ? 1.5 : 1}
+              strokeWidth={isHighlight ? 1.75 : 1}
             />
             <text
               x={pt.x}
-              y={pt.y + (isHighlight ? 4 : 3)}
+              y={pt.y + (isHighlight ? 4.5 : 3.5)}
               textAnchor="middle"
               fill="#fffaf2"
-              fontSize={isHighlight ? "10" : "8"}
+              fontSize={isHighlight ? "11.5" : "9"}
               fontWeight="bold"
             >
               {p.name}
@@ -819,25 +865,25 @@ export function TamHopVisual({ className }: VisualProps) {
       })}
 
       {/* Legend */}
-      <g transform="translate(45, 260)">
+      <g transform="translate(35, 260)">
         <polygon points="0,0 8,-5 8,5" fill="#d9b975" />
-        <text x="14" y="3" fill="#d9b975" fontSize="8.5">
+        <text x="14" y="3.5" fill="#d9b975" fontSize="10" fontWeight="600">
           Tam Hợp (Thủy Cục)
         </text>
         <line
-          x1="120"
+          x1="125"
           y1="0"
-          x2="135"
+          x2="140"
           y2="0"
           stroke="#c0392b"
           strokeWidth="2"
           strokeDasharray="3 2"
         />
-        <text x="140" y="3" fill="#c0392b" fontSize="8.5">
+        <text x="146" y="3.5" fill="#e53e3e" fontSize="10" fontWeight="600">
           Xung Chiếu (Tí - Ngọ)
         </text>
-        <line x1="245" y1="0" x2="260" y2="0" stroke="#2563a8" strokeWidth="2" />
-        <text x="265" y="3" fill="#63b3ed" fontSize="8.5">
+        <line x1="260" y1="0" x2="275" y2="0" stroke="#2563a8" strokeWidth="2" />
+        <text x="280" y="3.5" fill="#63b3ed" fontSize="10" fontWeight="600">
           Nhị Hợp
         </text>
       </g>
@@ -955,10 +1001,10 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
           />
           <text
             x={p.x}
-            y={top + graphH + (idx % 2 === 0 ? 16 : 30)}
+            y={top + graphH + (idx % 2 === 0 ? 17 : 33)}
             textAnchor="middle"
             fill={p.peak ? "#f5e4b7" : "#e0cdb1"}
-            fontSize={p.peak ? "9.5" : "8.5"}
+            fontSize={p.peak ? "11" : "9.5"}
             fontWeight={p.peak ? "bold" : "600"}
           >
             {p.name}
@@ -967,28 +1013,29 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
       ))}
 
       {/* Crown indicator at Đế Vượng */}
-      <g transform={`translate(${points[6].x}, ${points[6].y - 16})`}>
+      <g transform={`translate(${points[6].x}, ${points[6].y - 18})`}>
         <rect
-          x="-28"
-          y="-13"
-          width="56"
-          height="17"
+          x="-32"
+          y="-14"
+          width="64"
+          height="19"
           rx="3"
           fill="#9f3028"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="-1" textAnchor="middle" fill="#fffaf2" fontSize="8.5" fontWeight="bold">
+        <text x="0" y="0" textAnchor="middle" fill="#fffaf2" fontSize="9.5" fontWeight="bold">
           CỰC THỊNH
         </text>
       </g>
 
       <text
         x="220"
-        y={top + graphH + 52}
+        y={top + graphH + 54}
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="10"
+        fontSize="11"
+        fontWeight="600"
         letterSpacing="0.08em"
       >
         CHU KỲ SINH TRƯỞNG · THỊNH SUY 12 VẬN HẠN
@@ -1064,18 +1111,18 @@ export function HaDoLacThuVisual({ className }: VisualProps) {
               />
               <circle
                 cx={x + cellSize / 2}
-                cy={y + cellSize / 2 - 4}
-                r="16"
+                cy={y + cellSize / 2 - 6}
+                r="18"
                 fill="#1b0807"
                 stroke={cell.color}
-                strokeWidth="1.5"
+                strokeWidth="1.75"
               />
               <text
                 x={x + cellSize / 2}
-                y={y + cellSize / 2 + 2}
+                y={y + cellSize / 2}
                 textAnchor="middle"
                 fill="#fffaf2"
-                fontSize="15"
+                fontSize="18"
                 fontWeight="bold"
                 fontFamily="serif"
               >
@@ -1083,10 +1130,11 @@ export function HaDoLacThuVisual({ className }: VisualProps) {
               </text>
               <text
                 x={x + cellSize / 2}
-                y={y + cellSize - 8}
+                y={y + cellSize - 7}
                 textAnchor="middle"
                 fill="#d9b975"
-                fontSize="7"
+                fontSize="10"
+                fontWeight="bold"
                 letterSpacing="0.04em"
               >
                 {cell.elem}
@@ -1097,7 +1145,15 @@ export function HaDoLacThuVisual({ className }: VisualProps) {
       )}
 
       {/* Formula note */}
-      <text x="190" y="255" textAnchor="middle" fill="#f5e4b7" fontSize="9" letterSpacing="0.06em">
+      <text
+        x="190"
+        y="255"
+        textAnchor="middle"
+        fill="#f5e4b7"
+        fontSize="11"
+        fontWeight="600"
+        letterSpacing="0.06em"
+      >
         1-6 THỦY · 2-7 HỎA · 3-8 MỘC · 4-9 KIM · 5-10 THỔ
       </text>
     </svg>
@@ -1188,68 +1244,76 @@ export function TuHoaPhiTinhVisual({ className }: VisualProps) {
       />
 
       {/* 4 Badges */}
-      <g transform="translate(145, 50)">
+      <g transform="translate(145, 48)">
         <rect
-          x="-18"
-          y="-10"
-          width="36"
-          height="20"
+          x="-24"
+          y="-12"
+          width="48"
+          height="24"
           rx="3"
           fill="#2d6a40"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#fffaf2" fontSize="9" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
           祿 LỘC
         </text>
       </g>
       <g transform="translate(235, 115)">
         <rect
-          x="-18"
-          y="-10"
-          width="36"
-          height="20"
+          x="-24"
+          y="-12"
+          width="48"
+          height="24"
           rx="3"
           fill="#9e2b1e"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#fffaf2" fontSize="9" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
           權 QUYỀN
         </text>
       </g>
       <g transform="translate(190, 155)">
         <rect
-          x="-18"
-          y="-10"
-          width="36"
-          height="20"
+          x="-24"
+          y="-12"
+          width="48"
+          height="24"
           rx="3"
           fill="#8a6420"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#fffaf2" fontSize="9" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
           科 KHOA
         </text>
       </g>
       <g transform="translate(100, 135)">
         <rect
-          x="-18"
-          y="-10"
-          width="36"
-          height="20"
+          x="-24"
+          y="-12"
+          width="48"
+          height="24"
           rx="3"
           fill="#553c9a"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="4" textAnchor="middle" fill="#fffaf2" fontSize="9" fontWeight="bold">
+        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
           忌 KỴ
         </text>
       </g>
 
-      <text x={cx} y="250" textAnchor="middle" fill="#d9b975" fontSize="9.5" letterSpacing="0.08em">
+      <text
+        x={cx}
+        y="252"
+        textAnchor="middle"
+        fill="#d9b975"
+        fontSize="11"
+        fontWeight="600"
+        letterSpacing="0.08em"
+      >
         MẠNG LƯỚI PHI HÓA BIẾN DỊCH VẬN MỆNH
       </text>
     </svg>
@@ -1317,13 +1381,13 @@ export function TamTaiVisual({ className }: VisualProps) {
       <circle cx={cx} cy={cy} r="35" stroke="#f5e4b7" strokeWidth="1.5" fill="#591816" />
 
       {/* Center Seal */}
-      <circle cx={cx} cy={cy} r="14" fill="#9f3028" stroke="#fffaf2" strokeWidth="1" />
+      <circle cx={cx} cy={cy} r="18" fill="#9f3028" stroke="#fffaf2" strokeWidth="1.2" />
       <text
         x={cx}
-        y={cy + 4}
+        y={cy + 6}
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="11"
+        fontSize="16"
         fontWeight="bold"
         fontFamily="serif"
       >
@@ -1336,9 +1400,9 @@ export function TamTaiVisual({ className }: VisualProps) {
         y={cy - 72}
         textAnchor="middle"
         fill="#f5e4b7"
-        fontSize="8.5"
+        fontSize="11.5"
         fontWeight="bold"
-        letterSpacing="0.1em"
+        letterSpacing="0.08em"
       >
         THIÊN BÀN · TIÊN THIÊN
       </text>
@@ -1347,18 +1411,18 @@ export function TamTaiVisual({ className }: VisualProps) {
         y={cy - 44}
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="8"
+        fontSize="10.5"
         fontWeight="bold"
-        letterSpacing="0.08em"
+        letterSpacing="0.06em"
       >
         ĐỊA BÀN · CĂN CƠ
       </text>
       <text
         x={cx}
-        y={cy + 25}
+        y={cy + 27}
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="7.5"
+        fontSize="10"
         fontWeight="bold"
         letterSpacing="0.06em"
       >
@@ -1378,7 +1442,15 @@ export function TamTaiVisual({ className }: VisualProps) {
         );
       })}
 
-      <text x={cx} y="255" textAnchor="middle" fill="#d9b975" fontSize="9" letterSpacing="0.08em">
+      <text
+        x={cx}
+        y="255"
+        textAnchor="middle"
+        fill="#d9b975"
+        fontSize="11"
+        fontWeight="600"
+        letterSpacing="0.08em"
+      >
         TAM TÀI ĐỒNG QUY · BẢN NGUYÊN VẬN MỆNH
       </text>
     </svg>

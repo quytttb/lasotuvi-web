@@ -9,16 +9,37 @@ const SLIDE_DURATION_MS = 10000; // 10 seconds auto-advance
 
 export function HeroConceptsShowcase({ className }: { className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isHovered, setIsHovered] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
+  const goToSlide = useCallback(
+    (nextIdx: number, dir: "next" | "prev") => {
+      setPrevIndex(currentIndex);
+      setDirection(dir);
+      setCurrentIndex(nextIdx);
+    },
+    [currentIndex],
+  );
+
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % CONCEPTS_DATA.length);
-  }, []);
+    goToSlide((currentIndex + 1) % CONCEPTS_DATA.length, "next");
+  }, [currentIndex, goToSlide]);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + CONCEPTS_DATA.length) % CONCEPTS_DATA.length);
-  }, []);
+    goToSlide((currentIndex - 1 + CONCEPTS_DATA.length) % CONCEPTS_DATA.length, "prev");
+  }, [currentIndex, goToSlide]);
+
+  // Clear prevIndex after animation duration
+  useEffect(() => {
+    if (prevIndex !== null) {
+      const timer = setTimeout(() => {
+        setPrevIndex(null);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+  }, [prevIndex]);
 
   // Pick a random concept different from the current one
   const pickRandomIndex = useCallback(() => {
@@ -27,8 +48,8 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
       next = Math.floor(Math.random() * CONCEPTS_DATA.length);
     } while (next === currentIndex && CONCEPTS_DATA.length > 1);
 
-    setCurrentIndex(next);
-  }, [currentIndex]);
+    goToSlide(next, "next");
+  }, [currentIndex, goToSlide]);
 
   // 10-Second Auto-Advance Timer (silent random pick in background, paused on hover)
   useEffect(() => {
@@ -130,23 +151,42 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
             aria-hidden="true"
           />
 
-          {/* Sliding Track: Only internal slide content shifts, frame is static */}
+          {/* Sliding Track: Only active and transitioning slides animate with GPU-accelerated directional cross-slide */}
           <div
             role="region"
             aria-roledescription="carousel"
             aria-label="Thanh trượt 10 khái niệm Tử Vi"
-            className="flex transition-transform duration-500 ease-out will-change-transform"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            className="relative grid grid-cols-1 grid-rows-1 w-full"
           >
             {CONCEPTS_DATA.map((item, idx) => {
-              const isSlideActive = idx === currentIndex;
+              const isCurrent = idx === currentIndex;
+              const isPrev = idx === prevIndex;
+
+              let motionClass = "";
+              if (isCurrent) {
+                motionClass = "opacity-100 translate-x-0 scale-100 z-10 pointer-events-auto";
+              } else if (isPrev) {
+                motionClass = cn(
+                  "opacity-0 z-0 pointer-events-none scale-[0.98]",
+                  direction === "next" ? "-translate-x-8" : "translate-x-8",
+                );
+              } else {
+                motionClass = cn(
+                  "opacity-0 z-0 pointer-events-none scale-[0.98]",
+                  direction === "next" ? "translate-x-8" : "-translate-x-8",
+                );
+              }
+
               return (
                 <div
                   key={item.id}
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`${item.number} trên 10: ${item.title}`}
-                  className="w-full shrink-0 flex flex-col justify-between p-4 sm:p-6"
+                  className={cn(
+                    "col-start-1 row-start-1 w-full flex flex-col justify-between p-4 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[transform,opacity]",
+                    motionClass,
+                  )}
                 >
                   {/* Clean Header: Removed 5 Yếu Tố, 02/10, etc. Kept Title, Subtitle & Hanzi Stamp */}
                   <div className="relative z-10 flex items-start justify-between gap-3">
@@ -172,15 +212,12 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
                   <div className="relative my-2 sm:my-3 flex items-center justify-center py-1">
                     <ConceptVisualRenderer
                       id={item.id}
-                      className={cn(
-                        "h-56 sm:h-68 md:h-76 w-full max-w-[500px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-500",
-                        isSlideActive ? "scale-100 opacity-100" : "scale-95 opacity-75",
-                      )}
+                      className="h-56 sm:h-68 md:h-76 w-full max-w-[500px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
                     />
                   </div>
 
                   {/* Concise, easy-to-understand description footer */}
-                  <div className="relative z-10 rounded-sm border border-[var(--gold)]/30 bg-black/45 p-3 sm:p-3.5 text-xs sm:text-sm leading-relaxed text-[var(--paper)]/95 shadow-inner">
+                  <div className="relative z-10 rounded-sm border border-[var(--gold)]/30 bg-black/45 p-3 sm:p-3.5 text-xs sm:text-sm leading-relaxed text-[var(--paper)]/95 shadow-inner min-h-[3.75rem] flex items-center">
                     <p>{item.description}</p>
                   </div>
                 </div>
