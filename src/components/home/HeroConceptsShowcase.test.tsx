@@ -6,58 +6,35 @@ import { HeroConceptsShowcase } from "@/components/home/HeroConceptsShowcase";
 import { CONCEPTS_DATA } from "@/components/home/hero-concepts-data";
 
 describe("HeroConceptsShowcase", () => {
-  it("renders the 10 concepts showcase with default first concept", () => {
+  it("renders the showcase with all 10 concepts", () => {
     render(<HeroConceptsShowcase />);
 
     // Check heading of first concept in the main card
     expect(screen.getByRole("heading", { name: CONCEPTS_DATA[0].title })).toBeInTheDocument();
-    expect(screen.getByText(/10 ĐỒ HÌNH KINH ĐIỂN/i)).toBeInTheDocument();
 
-    // Check tabs in vertical rail
-    const tabs = screen.getAllByRole("tab");
-    expect(tabs).toHaveLength(10);
-    expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+    // Check 10 slides rendered
+    const slides = screen.getAllByRole("group", { name: /trên 10:/i });
+    expect(slides).toHaveLength(10);
   });
 
-  it("updates the active concept when a concept tab is clicked", async () => {
+  it("renders the left and right navigation arrow buttons", () => {
+    render(<HeroConceptsShowcase />);
+
+    const prevBtn = screen.getByRole("button", { name: /đồ hình trước/i });
+    const nextBtn = screen.getByRole("button", { name: /đồ hình tiếp theo/i });
+
+    expect(prevBtn).toBeInTheDocument();
+    expect(nextBtn).toBeInTheDocument();
+  });
+
+  it("clicking next and prev buttons can be triggered without errors", async () => {
     const user = userEvent.setup();
     render(<HeroConceptsShowcase />);
 
-    const tabs = screen.getAllByRole("tab");
-    // Click on Ngũ Hành (index 1)
-    await user.click(tabs[1]);
+    const nextBtn = screen.getByRole("button", { name: /đồ hình tiếp theo/i });
+    const prevBtn = screen.getByRole("button", { name: /đồ hình trước/i });
 
-    expect(screen.getByRole("heading", { name: CONCEPTS_DATA[1].title })).toBeInTheDocument();
-    expect(tabs[1]).toHaveAttribute("aria-selected", "true");
-    expect(tabs[0]).toHaveAttribute("aria-selected", "false");
-  });
-
-  it("toggles play/pause button state", async () => {
-    const user = userEvent.setup();
-    render(<HeroConceptsShowcase />);
-
-    const pauseBtn = screen.getByRole("button", { name: /tạm dừng tự động chuyển/i });
-    expect(pauseBtn).toBeInTheDocument();
-
-    await user.click(pauseBtn);
-
-    const playBtn = screen.getByRole("button", { name: /bật tự động chuyển/i });
-    expect(playBtn).toBeInTheDocument();
-  });
-
-  it("random button changes the active concept or can be clicked safely", async () => {
-    const user = userEvent.setup();
-    render(<HeroConceptsShowcase />);
-
-    const randomBtn = screen.getByRole("button", { name: /chọn ngẫu nhiên đồ hình khác/i });
-    expect(randomBtn).toBeInTheDocument();
-
-    await user.click(randomBtn);
-
-    // One of the tabs should be selected
-    const selectedTabs = screen
-      .getAllByRole("tab")
-      .filter((t) => t.getAttribute("aria-selected") === "true");
-    expect(selectedTabs).toHaveLength(1);
+    await user.click(nextBtn);
+    await user.click(prevBtn);
   });
 });
