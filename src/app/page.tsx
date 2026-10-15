@@ -158,26 +158,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Dải chuyển tiếp hoa văn Á Đông giữa Hero và Mục đặc điểm ── */}
-      <div
-        className="relative border-b border-[var(--line-soft)] bg-gradient-to-b from-[var(--paper-muted)]/70 via-[var(--paper-raised)]/60 to-[var(--paper)] py-3 sm:py-4 shadow-xs"
-        aria-hidden="true"
-      >
-        <div className="site-container flex items-center justify-center gap-3 text-[var(--gold)]">
-          <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-transparent via-[var(--line)] to-[var(--gold)]/60" />
-          <span className="flex items-center gap-2 font-serif text-xs tracking-[0.2em] uppercase text-[var(--ink-muted)] select-none">
-            <span className="text-[10px] text-[var(--gold)]">❖</span>
-            <span>Khám Phá Thiên Bàn</span>
-            <span className="text-[10px] text-[var(--gold)]">❖</span>
-          </span>
-          <div className="h-px flex-1 max-w-xs bg-gradient-to-l from-transparent via-[var(--line)] to-[var(--gold)]/60" />
-        </div>
-      </div>
-
       {/* ═══════════════════════════════════════════════════
           FEATURES — Ba điểm chính
           ═══════════════════════════════════════════════════ */}
-      <section className="site-container pt-8 pb-14 sm:pt-12 sm:pb-20">
+      <section className="site-container pt-8 pb-14 sm:pt-10 sm:pb-20">
         {/* Section header */}
         <div className="mb-10 text-center animate-fade-in-up sm:mb-12">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[var(--vermillion)]/30 bg-[var(--vermillion-soft)] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--vermillion)] shadow-2xs">
