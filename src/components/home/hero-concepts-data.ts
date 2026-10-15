@@ -20,7 +20,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "8 Hướng Trời Đất",
     tagColor: "var(--gold)",
     description:
-      "Tám quẻ tượng trưng cho 8 hướng và các hiện tượng tự nhiên (Trời, Đất, Sấm, Gió, Nước, Lửa, Núi, Đầm). Trong Tử Vi, Bát Quái giúp định hướng không gian và hiểu sự chuyển động của đất trời.",
+      "Tám quẻ định vị 8 hướng không gian và thời tiết đất trời, giúp xác định chuẩn xác vị thế các cung trên lá số.",
     significance: "Định vị phương hướng & không gian",
   },
   {
@@ -32,7 +32,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "5 Yếu Tố Tự Nhiên",
     tagColor: "var(--wood)",
     description:
-      "Năm yếu tố cơ bản nuôi dưỡng (sinh) và kiềm chế (khắc) lẫn nhau: Kim sinh Thủy, Thủy sinh Mộc, Mộc sinh Hỏa, Hỏa sinh Thổ, Thổ sinh Kim. Đây là gốc rễ để tính độ sáng của các sao và bản mệnh con người.",
+      "Năm yếu tố tương sinh và tương khắc lẫn nhau, là nền tảng xác định bản mệnh và độ sáng tối của các vì sao.",
     significance: "Nền tảng xem bản mệnh & tính chất sao",
   },
   {
@@ -44,7 +44,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Năm Tháng Ngày Giờ",
     tagColor: "var(--water)",
     description:
-      "Sự kết hợp giữa 10 Can trời và 12 Chi đất tạo nên chu kỳ 60 năm hoa giáp. 12 Chi cũng chính là 12 cung cố định trên bàn cờ lá số Tử Vi.",
+      "10 Can trời phối cùng 12 Chi đất tạo nên chu kỳ 60 năm hoa giáp và 12 cung cố định trên bàn cờ Tử Vi.",
     significance: "Khung giờ sinh & 60 năm hoa giáp",
   },
   {
@@ -56,7 +56,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Cội Nguồn Vạn Vật",
     tagColor: "var(--vermillion)",
     description:
-      "Vòng tròn Âm Dương thể hiện hai mặt đối lập nhưng luôn chuyển hóa, nâng đỡ nhau như ngày và đêm, sáng và tối. Trong lá số, Âm Dương quyết định chiều an sao và hướng đi của các đại vận đời người.",
+      "Hai mặt sáng tối chuyển hóa nhịp nhàng, quyết định chiều thuận nghịch khi an sao và hướng đi các đại vận đời người.",
     significance: "Quyết định chiều quay đại vận",
   },
   {
@@ -68,7 +68,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Bí Quyết Bấm Số",
     tagColor: "var(--earth)",
     description:
-      "Cổ nhân dùng 12 lóng của 4 ngón tay trái để đại diện cho 12 cung. Nhờ vậy, người xưa chỉ cần dùng ngón tay cái bấm vòng quanh là có thể an sao và tính nhanh hạn từng năm mà không cần sách vở.",
+      "12 lóng tay trái đại diện cho 12 cung, cho phép người xưa bấm ngón tay là an sao và tính hạn nhanh chóng.",
     significance: "An sao & tính hạn trên bàn tay",
   },
   {
@@ -80,7 +80,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Thế Đứng Cung Vị",
     tagColor: "var(--gold)",
     description:
-      "12 cung liên kết chặt chẽ với nhau: mỗi bộ 3 cung cách đều tạo thành thế Tam Hợp chung sức giúp đỡ nhau (như Mệnh - Tài - Quan), còn hai cung đối diện qua tâm sẽ chiếu thẳng và tác động trực tiếp lên nhau.",
+      "Thế ba cung vững như kiềng ba chân nâng đỡ nhau (Mệnh – Tài – Quan), cùng trục đối diện chiếu thẳng tác động nhau.",
     significance: "Cốt lõi xem Mệnh - Tài - Quan",
   },
   {
@@ -88,11 +88,11 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     number: "07",
     title: "Vòng Trường Sinh",
     hanzi: "長生",
-    subtitle: "12 Giai Đoạn Đời Người",
+    subtitle: "12 Giai Đoạn Chu Kỳ Đời Người",
     tag: "Nhịp Sống Lên Xuống",
     tagColor: "var(--wood)",
     description:
-      "Mô tả vòng đời của vạn vật như nhịp sóng: sinh ra, lớn lên, đạt đến lúc mạnh mẽ nhất (Đế Vượng) rồi dần suy yếu và tái sinh. Vòng này giúp nhận biết giai đoạn nào trong đời đang gặp thời hoặc cần nghỉ ngơi.",
+      "12 giai đoạn mô tả chu kỳ sinh sôi, cực thịnh rồi suy tàn, giúp nhận biết thời vận đang lên hay lúc cần nghỉ ngơi.",
     significance: "Đo độ hưng thịnh & suy tàn",
   },
   {
@@ -104,7 +104,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Nguồn Gốc Bắt Đầu",
     tagColor: "var(--water)",
     description:
-      "Hai bức tranh số học cổ xưa ghi lại quy luật vũ trụ bằng các chấm đen trắng. Từ các con số này, người xưa tìm ra Cục số (Thủy Nhị Cục, Mộc Tam Cục...) để biết thời điểm bắt đầu khởi vận của mỗi người.",
+      "Mật mã số học vũ trụ cổ xưa, là gốc rễ định ra Cục số để tính tuổi bắt đầu khởi phát vận hạn của mỗi người.",
     significance: "Định ra Cục số của lá số",
   },
   {
@@ -116,7 +116,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "4 Luồng Biến Hóa",
     tagColor: "var(--vermillion)",
     description:
-      "Bốn nguồn năng lượng thay đổi số phận: Lộc mang lại may mắn tài lộc, Quyền đem lại uy danh quyền hành, Khoa chủ về trí tuệ khoa cử, còn Kỵ báo hiệu trở ngại lo toan. Các luồng khí này bay sang cung nào sẽ kích hoạt chuyện ở cung đó.",
+      "Bốn luồng khí May Mắn, Uy Quyền, Trí Tuệ và Trở Ngại; khi bay đến cung nào sẽ kích hoạt vận hội ở cung đó.",
     significance: "Nút thắt may rủi trong đời",
   },
   {
@@ -128,7 +128,7 @@ export const CONCEPTS_DATA: ConceptItem[] = [
     tag: "Ba Tầng Lá Số",
     tagColor: "var(--gold)",
     description:
-      "Lá số Tử Vi có 3 tầng: Thiên Bàn xem số mệnh trời định sẵn, Địa Bàn soi rọi tính cách sâu kín bên trong, và Nhân Bàn thể hiện cách con người ứng xử, nỗ lực vươn lên trước hoàn cảnh.",
+      "Ba tầng lá số: Thiên Bàn xem số mệnh trời ban, Địa Bàn soi tính cách sâu kín, còn Nhân Bàn thể hiện nỗ lực tự thân.",
     significance: "Hiểu rõ mệnh trời và nỗ lực bản thân",
   },
 ];

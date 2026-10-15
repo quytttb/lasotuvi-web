@@ -8,21 +8,21 @@ interface VisualProps {
  * 01. Bát Quái Đồ (8 Trigrams Bagua)
  */
 export function BatQuaiVisual({ className }: VisualProps) {
-  const cx = 190;
+  const cx = 210;
   const cy = 140;
-  const rOuter = 100;
+  const rOuter = 102;
   const rInner = 68;
 
   // 8 trigrams: name, hanzi, symbol, angle in degrees
   const trigrams = [
-    { name: "Càn (Nam)", hanzi: "☰", a: -90, cardinal: "NAM" },
-    { name: "Tốn (TN)", hanzi: "☴", a: -45, cardinal: "T.NAM" },
-    { name: "Khảm (Tây)", hanzi: "☵", a: 0, cardinal: "TÂY" },
-    { name: "Cấn (TB)", hanzi: "☶", a: 45, cardinal: "T.BẮC" },
-    { name: "Khôn (Bắc)", hanzi: "☷", a: 90, cardinal: "BẮC" },
-    { name: "Chấn (ĐB)", hanzi: "☳", a: 135, cardinal: "Đ.BẮC" },
-    { name: "Ly (Đông)", hanzi: "☲", a: 180, cardinal: "ĐÔNG" },
-    { name: "Đoài (ĐN)", hanzi: "☱", a: 225, cardinal: "Đ.NAM" },
+    { name: "Càn", hanzi: "☰", a: -90, cardinal: "NAM" },
+    { name: "Tốn", hanzi: "☴", a: -45, cardinal: "TÂY NAM" },
+    { name: "Khảm", hanzi: "☵", a: 0, cardinal: "TÂY" },
+    { name: "Cấn", hanzi: "☶", a: 45, cardinal: "TÂY BẮC" },
+    { name: "Khôn", hanzi: "☷", a: 90, cardinal: "BẮC" },
+    { name: "Chấn", hanzi: "☳", a: 135, cardinal: "ĐÔNG BẮC" },
+    { name: "Ly", hanzi: "☲", a: 180, cardinal: "ĐÔNG" },
+    { name: "Đoài", hanzi: "☱", a: 225, cardinal: "ĐÔNG NAM" },
   ];
 
   // Helper to make octagon points
@@ -36,7 +36,7 @@ export function BatQuaiVisual({ className }: VisualProps) {
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 420 280"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -87,17 +87,17 @@ export function BatQuaiVisual({ className }: VisualProps) {
         const rad = (t.a * Math.PI) / 180;
         const x = cx + (rOuter - 18) * Math.cos(rad);
         const y = cy + (rOuter - 18) * Math.sin(rad);
-        const lblX = cx + (rOuter + 24) * Math.cos(rad);
-        const lblY = cy + (rOuter + 24) * Math.sin(rad);
+        const lblX = cx + (rOuter + 25) * Math.cos(rad);
+        const lblY = cy + (rOuter + 25) * Math.sin(rad);
 
         return (
           <g key={t.name}>
             <text
               x={x}
-              y={y + 5}
+              y={y + 6}
               textAnchor="middle"
               fill="#f5e4b7"
-              fontSize="20"
+              fontSize="22"
               fontWeight="bold"
               fontFamily="monospace"
               className="select-none"
@@ -106,13 +106,13 @@ export function BatQuaiVisual({ className }: VisualProps) {
             </text>
             <text
               x={lblX}
-              y={lblY + 3}
+              y={lblY + 3.5}
               textAnchor="middle"
               fill="#d9b975"
-              fontSize="8.5"
-              fontWeight="600"
-              letterSpacing="0.05em"
-              opacity="0.85"
+              fontSize="9"
+              fontWeight="bold"
+              letterSpacing="0.04em"
+              opacity="0.9"
             >
               {t.cardinal}
             </text>
@@ -121,14 +121,14 @@ export function BatQuaiVisual({ className }: VisualProps) {
       })}
 
       {/* Central Yin-Yang disc */}
-      <circle cx={cx} cy={cy} r="32" fill="#fffaf2" stroke="#d9b975" strokeWidth="1.5" />
+      <circle cx={cx} cy={cy} r="33" fill="#fffaf2" stroke="#d9b975" strokeWidth="1.5" />
       <path
-        d={`M ${cx} ${cy - 32} A 32 32 0 0 1 ${cx} ${cy + 32} A 16 16 0 0 1 ${cx} ${cy} A 16 16 0 0 0 ${cx} ${cy - 32} Z`}
+        d={`M ${cx} ${cy - 33} A 33 33 0 0 1 ${cx} ${cy + 33} A 16.5 16.5 0 0 1 ${cx} ${cy} A 16.5 16.5 0 0 0 ${cx} ${cy - 33} Z`}
         fill="#300f0d"
       />
-      <circle cx={cx} cy={cy - 16} r="4.5" fill="#fffaf2" />
-      <circle cx={cx} cy={cy + 16} r="4.5" fill="#300f0d" />
-      <circle cx={cx} cy={cy} r="32" fill="none" stroke="#d9b975" strokeWidth="1.5" />
+      <circle cx={cx} cy={cy - 16.5} r="4.5" fill="#fffaf2" />
+      <circle cx={cx} cy={cy + 16.5} r="4.5" fill="#300f0d" />
+      <circle cx={cx} cy={cy} r="33" fill="none" stroke="#d9b975" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -852,11 +852,11 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
   const stages = [
     { name: "Thai", val: 35 },
     { name: "Dưỡng", val: 45 },
-    { name: "Tr.Sinh", val: 65, peak: true },
-    { name: "M.Dục", val: 60 },
-    { name: "Q.Đới", val: 75 },
-    { name: "L.Quan", val: 90 },
-    { name: "Đ.VƯỢNG", val: 100, peak: true },
+    { name: "Trường Sinh", val: 65, peak: true },
+    { name: "Mộc Dục", val: 60 },
+    { name: "Quan Đới", val: 75 },
+    { name: "Lâm Quan", val: 90 },
+    { name: "Đế Vượng", val: 100, peak: true },
     { name: "Suy", val: 80 },
     { name: "Bệnh", val: 55 },
     { name: "Tử", val: 30 },
@@ -864,10 +864,10 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
     { name: "Tuyệt", val: 10, low: true },
   ];
 
-  const left = 40;
-  const top = 40;
-  const graphW = 300;
-  const graphH = 150;
+  const left = 30;
+  const top = 35;
+  const graphW = 380;
+  const graphH = 145;
   const dx = graphW / (stages.length - 1);
 
   // Compute curve points
@@ -891,7 +891,7 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 440 280"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -942,24 +942,24 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
       {/* Sinusoidal Curve */}
       <path d={pathD} stroke="#d9b975" strokeWidth="2.5" />
 
-      {/* Stage Dots & Labels */}
-      {points.map((p) => (
+      {/* Stage Dots & Labels with staggered height to prevent any crowding */}
+      {points.map((p, idx) => (
         <g key={p.name}>
           <circle
             cx={p.x}
             cy={p.y}
-            r={p.peak ? 5 : 3}
+            r={p.peak ? 5.5 : 3.5}
             fill={p.peak ? "#c0392b" : "#fffaf2"}
             stroke="#d9b975"
             strokeWidth={p.peak ? 2 : 1}
           />
           <text
             x={p.x}
-            y={top + graphH + 16}
+            y={top + graphH + (idx % 2 === 0 ? 16 : 30)}
             textAnchor="middle"
-            fill={p.peak ? "#f5e4b7" : "#cdb28b"}
-            fontSize={p.peak ? "8.5" : "7"}
-            fontWeight={p.peak ? "bold" : "500"}
+            fill={p.peak ? "#f5e4b7" : "#e0cdb1"}
+            fontSize={p.peak ? "9.5" : "8.5"}
+            fontWeight={p.peak ? "bold" : "600"}
           >
             {p.name}
           </text>
@@ -967,28 +967,28 @@ export function VongTruongSinhVisual({ className }: VisualProps) {
       ))}
 
       {/* Crown indicator at Đế Vượng */}
-      <g transform={`translate(${points[6].x}, ${points[6].y - 14})`}>
+      <g transform={`translate(${points[6].x}, ${points[6].y - 16})`}>
         <rect
-          x="-24"
-          y="-12"
-          width="48"
-          height="15"
-          rx="2"
+          x="-28"
+          y="-13"
+          width="56"
+          height="17"
+          rx="3"
           fill="#9f3028"
           stroke="#f5e4b7"
           strokeWidth="1"
         />
-        <text x="0" y="-2" textAnchor="middle" fill="#fffaf2" fontSize="7.5" fontWeight="bold">
+        <text x="0" y="-1" textAnchor="middle" fill="#fffaf2" fontSize="8.5" fontWeight="bold">
           CỰC THỊNH
         </text>
       </g>
 
       <text
-        x="190"
-        y={top + graphH + 42}
+        x="220"
+        y={top + graphH + 52}
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="9"
+        fontSize="10"
         letterSpacing="0.08em"
       >
         CHU KỲ SINH TRƯỞNG · THỊNH SUY 12 VẬN HẠN

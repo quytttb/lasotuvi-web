@@ -49,7 +49,7 @@ export default function HomePage() {
           <div className="absolute top-[30%] right-[35%] h-24 w-24 rounded-full bg-[var(--vermillion)]/15 blur-xl animate-[floatCloud_9s_ease-in-out_infinite_1s]" />
         </div>
 
-        <div className="site-container relative grid flex-1 items-center gap-10 py-10 sm:py-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-14 lg:py-16">
+        <div className="site-container relative grid flex-1 items-center gap-8 py-10 sm:py-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8 xl:gap-10 lg:py-16">
           <div className="animate-fade-in-up min-w-0">
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--gold-light)]/40 bg-[var(--lacquer-dark)]/50 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--gold-light)] shadow-[0_2px_8px_rgba(0,0,0,0.18)] backdrop-blur-xs sm:text-sm">
               <span className="text-base text-[var(--gold-light)]" aria-hidden="true">
@@ -94,7 +94,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="w-full min-w-0 max-w-full lg:max-w-xl justify-self-center lg:justify-self-end">
+          <div className="w-full min-w-0 max-w-full justify-self-center lg:justify-self-end">
             <HeroConceptsShowcase />
           </div>
         </div>
