@@ -201,14 +201,24 @@ export function NguHanhVisual({ className }: VisualProps) {
       {/* Inner overcoming star (Tương Khắc) */}
       <path d={starPath} stroke="#e53e3e" strokeWidth="1.25" strokeDasharray="5 3" opacity="0.65" />
 
-      {/* Center label seal */}
-      <circle cx={cx} cy={cy} r="27" fill="#300f0d" stroke="#d9b975" strokeWidth="1.2" />
+      {/* Center label seal - solid opaque background occludes star lines for maximum readability */}
+      <circle cx={cx} cy={cy} r="35" fill="#1b0807" stroke="#d9b975" strokeWidth="1.8" />
+      <circle
+        cx={cx}
+        cy={cy}
+        r="31"
+        fill="#3d120f"
+        stroke="#f5e4b7"
+        strokeWidth="0.75"
+        strokeDasharray="3 2"
+        opacity="0.85"
+      />
       <text
         x={cx}
         y={cy - 2}
         textAnchor="middle"
-        fill="#f5e4b7"
-        fontSize="11.5"
+        fill="#fffaf2"
+        fontSize="13"
         fontWeight="bold"
         fontFamily="serif"
       >
@@ -216,12 +226,12 @@ export function NguHanhVisual({ className }: VisualProps) {
       </text>
       <text
         x={cx}
-        y={cy + 12}
+        y={cy + 13}
         textAnchor="middle"
-        fill="#d9b975"
-        fontSize="9.5"
-        letterSpacing="0.08em"
-        fontWeight="600"
+        fill="#f5e4b7"
+        fontSize="10.5"
+        letterSpacing="0.1em"
+        fontWeight="bold"
       >
         NGŨ HÀNH
       </text>
@@ -298,16 +308,20 @@ export function CanChiVisual({ className }: VisualProps) {
     { label: "HỢI", row: 3, col: 3 },
   ];
 
-  const ox = 50;
-  const oy = 25;
-  const w = 70;
-  const h = 55;
+  const ox = 20;
+  const oy = 20;
+  const colXs = [ox, ox + 76, ox + 76 + 114, ox + 76 + 114 + 114];
+  const colWs = [76, 114, 114, 76];
+  const rowYs = [oy, oy + 56, oy + 56 + 64, oy + 56 + 64 + 64];
+  const rowHs = [56, 64, 64, 56];
 
-  const stems = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+  const totalW = 380;
+  const totalH = 240;
+  const cx = ox + totalW / 2; // 210
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 420 280"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -318,18 +332,20 @@ export function CanChiVisual({ className }: VisualProps) {
       <rect
         x={ox}
         y={oy}
-        width={w * 4}
-        height={h * 4}
+        width={totalW}
+        height={totalH}
         stroke="#d9b975"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         fill="#210a09"
-        fillOpacity="0.8"
+        fillOpacity="0.85"
       />
 
       {/* Grid cells */}
       {gridCells.map((c) => {
-        const x = ox + c.col * w;
-        const y = oy + c.row * h;
+        const x = colXs[c.col];
+        const y = rowYs[c.row];
+        const w = colWs[c.col];
+        const h = rowHs[c.row];
         return (
           <g key={c.label}>
             <rect
@@ -340,14 +356,14 @@ export function CanChiVisual({ className }: VisualProps) {
               stroke="#cdb28b"
               strokeWidth="0.85"
               fill="#300f0d"
-              fillOpacity="0.45"
+              fillOpacity="0.5"
             />
             <text
               x={x + w / 2}
               y={y + h / 2 + 5.5}
               textAnchor="middle"
               fill="#f5e4b7"
-              fontSize="14"
+              fontSize="14.5"
               fontWeight="bold"
               fontFamily="serif"
             >
@@ -357,49 +373,71 @@ export function CanChiVisual({ className }: VisualProps) {
         );
       })}
 
-      {/* Center inner courtyard (Thiên Bàn trung cung) */}
+      {/* Center inner courtyard (Thiên Bàn trung cung - spacious 228x128) */}
       <rect
-        x={ox + w}
-        y={oy + h}
-        width={w * 2}
-        height={h * 2}
-        fill="#1a0706"
+        x={colXs[1]}
+        y={rowYs[1]}
+        width={colWs[1] + colWs[2]}
+        height={rowHs[1] + rowHs[2]}
+        fill="#160505"
         stroke="#d9b975"
-        strokeWidth="1.2"
+        strokeWidth="1.5"
       />
 
-      {/* Center seal & 10 Can orbit */}
-      <circle
-        cx={ox + w * 2}
-        cy={oy + h * 2}
-        r="40"
-        stroke="#d9b975"
-        strokeWidth="1"
-        strokeDasharray="3 3"
-      />
+      {/* Inner decorative subtle frame */}
       <rect
-        x={ox + w * 2 - 32}
-        y={oy + h * 2 - 22}
-        width="64"
-        height="44"
+        x={colXs[1] + 6}
+        y={rowYs[1] + 6}
+        width={colWs[1] + colWs[2] - 12}
+        height={rowHs[1] + rowHs[2] - 12}
+        fill="none"
+        stroke="#cdb28b"
+        strokeWidth="0.6"
+        strokeDasharray="3 3"
+        opacity="0.4"
+      />
+
+      {/* Top 5 Can */}
+      <text
+        x={cx}
+        y={96}
+        textAnchor="middle"
+        fill="#d9b975"
+        fontSize="9.5"
+        fontWeight="bold"
+        letterSpacing="0.14em"
+      >
+        10 THIÊN CAN
+      </text>
+      <text
+        x={cx}
+        y={113}
+        textAnchor="middle"
+        fill="#fffaf2"
+        fontSize="11"
+        fontWeight="bold"
+        letterSpacing="0.08em"
+      >
+        GIÁP · ẤT · BÍNH · ĐINH · MẬU
+      </text>
+
+      {/* Center seal badge */}
+      <rect
+        x={cx - 42}
+        y={123}
+        width="84"
+        height="34"
         fill="#9f3028"
         rx="3"
         stroke="#f5e4b7"
         strokeWidth="1.2"
       />
-      <text
-        x={ox + w * 2}
-        y={oy + h * 2 - 4}
-        textAnchor="middle"
-        fill="#fffaf2"
-        fontSize="11.5"
-        fontWeight="bold"
-      >
+      <text x={cx} y={137} textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
         LỤC THẬP
       </text>
       <text
-        x={ox + w * 2}
-        y={oy + h * 2 + 12}
+        x={cx}
+        y={150}
         textAnchor="middle"
         fill="#f5e4b7"
         fontSize="10"
@@ -409,20 +447,32 @@ export function CanChiVisual({ className }: VisualProps) {
         HOA GIÁP
       </text>
 
-      {/* 10 Can horizontal ribbons */}
-      <g transform={`translate(${ox + w + 10}, ${oy + h + 13})`}>
-        <text fill="#d9b975" fontSize="9.5" fontWeight="bold" opacity="0.95">
-          10 THIÊN CAN:
-        </text>
-        <text y="14" fill="#f5e4b7" fontSize="9.5" fontWeight="600" letterSpacing="0.03em">
-          {stems.slice(0, 5).join(" · ")}
-        </text>
-      </g>
-      <g transform={`translate(${ox + w + 10}, ${oy + h * 2 + 25})`}>
-        <text y="14" fill="#f5e4b7" fontSize="9.5" fontWeight="600" letterSpacing="0.03em">
-          {stems.slice(5).join(" · ")}
-        </text>
-      </g>
+      {/* Bottom 5 Can */}
+      <text
+        x={cx}
+        y={176}
+        textAnchor="middle"
+        fill="#fffaf2"
+        fontSize="11"
+        fontWeight="bold"
+        letterSpacing="0.08em"
+      >
+        KỶ · CANH · TÂN · NHÂM · QUÝ
+      </text>
+
+      {/* Courtyard subtitle */}
+      <text
+        x={cx}
+        y={193}
+        textAnchor="middle"
+        fill="#d9b975"
+        fontSize="8.5"
+        fontWeight="600"
+        letterSpacing="0.08em"
+        opacity="0.9"
+      >
+        12 ĐỊA CHI PHỐI 10 THIÊN CAN
+      </text>
     </svg>
   );
 }
@@ -570,27 +620,27 @@ export function ThaiCucVisual({ className }: VisualProps) {
  * 05. Chưởng Bàn (Bàn tay bấm độn)
  */
 export function ChuongBanVisual({ className }: VisualProps) {
-  // Hand joints for 12 branches on the left hand
+  // Hand joints for 12 branches on the left hand - spacious 60px finger spacing
   const branches = [
-    { name: "TÍ", x: 246, y: 160 },
-    { name: "SỬU", x: 204, y: 160 },
-    { name: "DẦN", x: 162, y: 160 },
-    { name: "MÃO", x: 162, y: 115 },
-    { name: "THÌN", x: 162, y: 65 },
-    { name: "TỴ", x: 204, y: 40 },
-    { name: "NGỌ", x: 246, y: 50 },
-    { name: "MÙI", x: 286, y: 72 },
-    { name: "THÂN", x: 286, y: 115 },
-    { name: "DẬU", x: 286, y: 160 },
-    { name: "TUẤT", x: 246, y: 105 },
-    { name: "HỢI", x: 204, y: 100 },
+    { name: "TÍ", x: 268, y: 168 },
+    { name: "SỬU", x: 208, y: 168 },
+    { name: "DẦN", x: 148, y: 168 },
+    { name: "MÃO", x: 148, y: 115 },
+    { name: "THÌN", x: 148, y: 62 },
+    { name: "TỴ", x: 208, y: 38 },
+    { name: "NGỌ", x: 268, y: 48 },
+    { name: "MÙI", x: 328, y: 70 },
+    { name: "THÂN", x: 328, y: 115 },
+    { name: "DẬU", x: 328, y: 168 },
+    { name: "TUẤT", x: 268, y: 105 },
+    { name: "HỢI", x: 208, y: 105 },
   ];
 
   const circuitPoints = branches.map((b) => `${b.x},${b.y}`).join(" L ");
 
   return (
     <svg
-      viewBox="0 0 420 295"
+      viewBox="0 0 430 295"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -609,51 +659,51 @@ export function ChuongBanVisual({ className }: VisualProps) {
         </linearGradient>
       </defs>
 
-      <ellipse cx="215" cy="145" rx="140" ry="125" fill="url(#palmGlow)" />
+      <ellipse cx="230" cy="145" rx="155" ry="130" fill="url(#palmGlow)" />
 
-      {/* Realistic Left Palm Silhouette */}
+      {/* Realistic, Open, Wide Left Palm Silhouette */}
       <path
-        d="M 146 270
-           C 136 238, 105 215, 88 192
-           C 72 170, 60 142, 74 122
-           C 84 108, 102 110, 116 126
-           C 128 140, 134 160, 142 176
-           C 144 162, 142 118, 145 78
-           C 147 48, 150 34, 163 34
-           C 176 34, 178 48, 180 78
-           L 180 112
-           C 180 92, 182 52, 186 26
-           C 189 8, 194 4, 205 4
-           C 216 4, 221 8, 224 26
-           L 224 116
-           C 224 96, 226 60, 230 36
-           C 233 18, 238 16, 248 16
-           C 258 16, 262 22, 264 40
-           L 264 122
-           C 265 108, 268 80, 274 62
-           C 278 48, 284 46, 292 48
-           C 300 50, 304 58, 303 78
-           C 300 118, 298 152, 296 178
-           C 292 220, 280 248, 268 270
+        d="M 126 270
+           C 114 235, 82 210, 66 185
+           C 50 160, 40 135, 52 116
+           C 64 100, 82 104, 96 120
+           C 110 135, 116 155, 126 172
+           C 126 150, 124 100, 126 62
+           C 128 32, 134 18, 148 18
+           C 162 18, 168 32, 170 62
+           L 170 102
+           C 174 80, 184 40, 188 20
+           C 192 4, 198 2, 208 2
+           C 218 2, 224 4, 228 20
+           L 228 102
+           C 232 80, 244 45, 248 26
+           C 252 10, 258 8, 268 8
+           C 278 8, 284 12, 288 32
+           L 288 112
+           C 292 95, 304 70, 312 52
+           C 318 38, 324 36, 332 38
+           C 340 40, 346 48, 348 70
+           C 350 115, 348 152, 344 180
+           C 338 220, 318 248, 290 270
            Z"
         fill="url(#handGrad)"
         stroke="#d9b975"
         strokeWidth="1.8"
       />
 
-      {/* Knuckle crease lines */}
-      <line x1="147" y1="92" x2="178" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="146" y1="138" x2="178" y2="138" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="182" y1="56" x2="223" y2="56" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="182" y1="92" x2="224" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="226" y1="64" x2="263" y2="64" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="225" y1="100" x2="263" y2="100" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="268" y1="92" x2="300" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="267" y1="128" x2="298" y2="128" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      {/* Knuckle crease lines for the 4 wide fingers */}
+      <line x1="128" y1="88" x2="168" y2="88" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="127" y1="140" x2="169" y2="140" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="188" y1="65" x2="228" y2="65" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="187" y1="135" x2="229" y2="135" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="248" y1="72" x2="288" y2="72" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="247" y1="135" x2="289" y2="135" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="308" y1="92" x2="348" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
+      <line x1="308" y1="140" x2="348" y2="140" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
 
       {/* Major Palm lines */}
       <path
-        d="M 294 148 C 260 150, 215 158, 180 135"
+        d="M 344 145 C 290 148, 240 155, 180 135"
         fill="none"
         stroke="#d9b975"
         strokeWidth="1.2"
@@ -661,7 +711,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
         strokeDasharray="2 2"
       />
       <path
-        d="M 148 182 C 185 182, 230 192, 280 212"
+        d="M 130 178 C 180 180, 250 190, 320 215"
         fill="none"
         stroke="#d9b975"
         strokeWidth="1.2"
@@ -669,7 +719,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
         strokeDasharray="2 2"
       />
       <path
-        d="M 148 182 C 160 212, 170 245, 195 270"
+        d="M 130 178 C 145 210, 160 245, 195 270"
         fill="none"
         stroke="#d9b975"
         strokeWidth="1.4"
@@ -689,28 +739,28 @@ export function ChuongBanVisual({ className }: VisualProps) {
 
       {/* Center Palm Seal */}
       <rect
-        x="182"
-        y="196"
-        width="62"
-        height="24"
+        x="200"
+        y="202"
+        width="76"
+        height="26"
         rx="3"
         fill="#9f3028"
         stroke="#f5e4b7"
         strokeWidth="1"
       />
       <text
-        x="213"
-        y="212"
+        x="238"
+        y="218"
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="10.5"
+        fontSize="11"
         fontWeight="bold"
         fontFamily="serif"
       >
         CHƯỞNG QUYẾT
       </text>
 
-      {/* 12 Chi Badges - large, crisp and readable */}
+      {/* 12 Chi Badges - large, crisp and readable with 60px spacing */}
       {branches.map((b) => (
         <g key={b.name}>
           <circle cx={b.x} cy={b.y} r="13.5" fill="#1b0807" stroke="#d9b975" strokeWidth="1.5" />
@@ -730,7 +780,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
       ))}
 
       <text
-        x="215"
+        x="238"
         y="286"
         textAnchor="middle"
         fill="#d9b975"
@@ -1164,11 +1214,12 @@ export function HaDoLacThuVisual({ className }: VisualProps) {
  * 09. Tứ Hóa Phi Tinh (Lộc · Quyền · Khoa · Kỵ)
  */
 export function TuHoaPhiTinhVisual({ className }: VisualProps) {
-  const cx = 190;
+  const cx = 210;
+  const cy = 125;
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 420 280"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1190,127 +1241,157 @@ export function TuHoaPhiTinhVisual({ className }: VisualProps) {
         </marker>
       </defs>
 
-      {/* Decorative chart board outline */}
+      {/* Decorative chart board outline - spacious 320x195 */}
       <rect
-        x="70"
-        y="30"
-        width="240"
-        height="190"
+        x="50"
+        y="24"
+        width="320"
+        height="195"
         fill="#200908"
         stroke="#d9b975"
         strokeWidth="1.5"
-        rx="3"
+        rx="4"
       />
       <rect
-        x="130"
-        y="75"
-        width="120"
-        height="100"
-        fill="#300f0d"
+        x="115"
+        y="58"
+        width="190"
+        height="128"
+        fill="#2d0d0b"
         stroke="#d9b975"
-        strokeWidth="1"
+        strokeWidth="0.8"
         strokeDasharray="3 3"
+        opacity="0.6"
       />
 
-      {/* 4 Vector Flow Arcs */}
+      {/* Center courtyard seal */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r="22"
+        fill="#1b0807"
+        stroke="#d9b975"
+        strokeWidth="1"
+        strokeDasharray="2 2"
+      />
+      <text
+        x={cx}
+        y={cy + 4}
+        textAnchor="middle"
+        fill="#d9b975"
+        fontSize="10.5"
+        fontWeight="bold"
+        fontFamily="serif"
+      >
+        PHI TINH
+      </text>
+
+      {/* 4 Vector Flow Arcs connecting the 4 quadrants cleanly */}
       {/* 1. Hóa Lộc (Xanh ngọc - Cung Mệnh đến Cung Tài) */}
       <path
-        d="M 95 60 Q 150 40 265 60"
+        d="M 135 48 Q 210 32 282 48"
         stroke="#48bb78"
         strokeWidth="2.5"
         markerEnd="url(#arrowGreen)"
       />
-      {/* 2. Hóa Quyền (Đỏ thắm - Cung Quan đến Mệnh) */}
+      {/* 2. Hóa Quyền (Đỏ thắm - Cung Quan qua Mệnh) */}
       <path
-        d="M 285 100 Q 220 130 95 180"
+        d="M 315 68 Q 235 125 140 180"
         stroke="#f56565"
         strokeWidth="2.5"
         markerEnd="url(#arrowRed2)"
       />
       {/* 3. Hóa Khoa (Vàng kim - Cung Phúc đến Thiên Di) */}
       <path
-        d="M 95 100 Q 190 90 285 180"
+        d="M 135 175 Q 210 135 285 75"
         stroke="#ecc94b"
         strokeWidth="2.5"
         markerEnd="url(#arrowGold2)"
       />
       {/* 4. Hóa Kỵ (Tím - Cung Phụ Mẫu đến Tật Ách) */}
       <path
-        d="M 285 60 Q 170 180 160 205"
+        d="M 315 72 L 315 168"
         stroke="#b794f4"
         strokeWidth="2.5"
         strokeDasharray="4 2"
         markerEnd="url(#arrowPurple)"
       />
 
-      {/* 4 Badges */}
-      <g transform="translate(145, 48)">
+      {/* 4 Badges in 4 Distinct Quadrants - 248px distance between Quyền and Khoa */}
+      {/* Top Left: LỘC */}
+      <g transform="translate(105, 52)">
         <rect
-          x="-24"
-          y="-12"
-          width="48"
-          height="24"
+          x="-26"
+          y="-13"
+          width="52"
+          height="26"
           rx="3"
           fill="#2d6a40"
           stroke="#f5e4b7"
-          strokeWidth="1"
+          strokeWidth="1.2"
         />
-        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
+        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           祿 LỘC
         </text>
       </g>
-      <g transform="translate(235, 115)">
+
+      {/* Top Right: QUYỀN */}
+      <g transform="translate(315, 52)">
         <rect
-          x="-24"
-          y="-12"
-          width="48"
-          height="24"
+          x="-26"
+          y="-13"
+          width="52"
+          height="26"
           rx="3"
           fill="#9e2b1e"
           stroke="#f5e4b7"
-          strokeWidth="1"
+          strokeWidth="1.2"
         />
-        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
+        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           權 QUYỀN
         </text>
       </g>
-      <g transform="translate(190, 155)">
+
+      {/* Bottom Left: KHOA */}
+      <g transform="translate(105, 185)">
         <rect
-          x="-24"
-          y="-12"
-          width="48"
-          height="24"
+          x="-26"
+          y="-13"
+          width="52"
+          height="26"
           rx="3"
           fill="#8a6420"
           stroke="#f5e4b7"
-          strokeWidth="1"
+          strokeWidth="1.2"
         />
-        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
+        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           科 KHOA
         </text>
       </g>
-      <g transform="translate(100, 135)">
+
+      {/* Bottom Right: KỴ */}
+      <g transform="translate(315, 185)">
         <rect
-          x="-24"
-          y="-12"
-          width="48"
-          height="24"
+          x="-26"
+          y="-13"
+          width="52"
+          height="26"
           rx="3"
           fill="#553c9a"
           stroke="#f5e4b7"
-          strokeWidth="1"
+          strokeWidth="1.2"
         />
-        <text x="0" y="5" textAnchor="middle" fill="#fffaf2" fontSize="11.5" fontWeight="bold">
+        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           忌 KỴ
         </text>
       </g>
 
       <text
         x={cx}
-        y="252"
+        y="255"
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="11"
+        fontSize="11.5"
         fontWeight="600"
         letterSpacing="0.08em"
       >
@@ -1324,102 +1405,131 @@ export function TuHoaPhiTinhVisual({ className }: VisualProps) {
  * 10. Tam Tài: Thiên – Địa – Nhân
  */
 export function TamTaiVisual({ className }: VisualProps) {
-  const cx = 190;
+  const cx = 210;
   const cy = 135;
+
+  // 3 outer sacred triangle points at 120°
+  const trianglePoints = Array.from({ length: 3 })
+    .map((_, i) => {
+      const rad = ((i * 120 - 90) * Math.PI) / 180;
+      return `${cx + 106 * Math.cos(rad)},${cy + 106 * Math.sin(rad)}`;
+    })
+    .join(" ");
 
   return (
     <svg
-      viewBox="0 0 380 280"
+      viewBox="0 0 420 280"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Minh họa Tam Tài Thiên Địa Nhân"
     >
-      {/* 3 Concentric Celestial Discs */}
-      {/* Outer: THIÊN BÀN */}
+      {/* 3 Concentric Celestial Discs - wide and spacious */}
+      {/* Outer: THIÊN BÀN (r=106) */}
       <circle
         cx={cx}
         cy={cy}
-        r="95"
+        r="106"
         stroke="#d9b975"
         strokeWidth="1.5"
         fill="#240b0a"
-        fillOpacity="0.8"
+        fillOpacity="0.85"
       />
       <circle
         cx={cx}
         cy={cy}
-        r="88"
+        r="98"
         stroke="#d9b975"
-        strokeWidth="0.8"
+        strokeWidth="0.75"
         strokeDasharray="3 3"
-        opacity="0.6"
+        opacity="0.5"
       />
 
-      {/* Middle: ĐỊA BÀN */}
+      {/* Middle: ĐỊA BÀN (r=74) */}
       <circle
         cx={cx}
         cy={cy}
-        r="65"
+        r="74"
         stroke="#cdb28b"
-        strokeWidth="1.2"
+        strokeWidth="1.3"
         fill="#300f0d"
         fillOpacity="0.9"
       />
       <circle
         cx={cx}
         cy={cy}
-        r="58"
+        r="66"
         stroke="#cdb28b"
-        strokeWidth="0.8"
+        strokeWidth="0.75"
         strokeDasharray="2 3"
-        opacity="0.5"
+        opacity="0.45"
       />
 
-      {/* Inner: NHÂN BÀN */}
-      <circle cx={cx} cy={cy} r="35" stroke="#f5e4b7" strokeWidth="1.5" fill="#591816" />
+      {/* Inner: NHÂN BÀN (r=44) */}
+      <circle cx={cx} cy={cy} r="44" stroke="#f5e4b7" strokeWidth="1.5" fill="#4d1512" />
 
-      {/* Center Seal */}
+      {/* Connecting sacred triangle along outer rim - does not cut through text */}
+      <polygon
+        points={trianglePoints}
+        fill="#d9b975"
+        fillOpacity="0.04"
+        stroke="#d9b975"
+        strokeWidth="1"
+        strokeDasharray="4 3"
+        opacity="0.55"
+      />
+      {Array.from({ length: 3 }).map((_, i) => {
+        const rad = ((i * 120 - 90) * Math.PI) / 180;
+        const x = cx + 106 * Math.cos(rad);
+        const y = cy + 106 * Math.sin(rad);
+        return (
+          <circle key={i} cx={x} cy={y} r="4.5" fill="#d9b975" stroke="#1b0807" strokeWidth="1" />
+        );
+      })}
+
+      {/* Center Seal 人 */}
       <circle cx={cx} cy={cy} r="18" fill="#9f3028" stroke="#fffaf2" strokeWidth="1.2" />
       <text
         x={cx}
         y={cy + 6}
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="16"
+        fontSize="17"
         fontWeight="bold"
         fontFamily="serif"
       >
         人
       </text>
 
-      {/* Labels positioned along rings */}
+      {/* Labels positioned in the golden center of each spacious realm ring */}
       <text
         x={cx}
-        y={cy - 72}
+        y={cy - 86}
         textAnchor="middle"
-        fill="#f5e4b7"
+        fill="#fffaf2"
         fontSize="11.5"
         fontWeight="bold"
         letterSpacing="0.08em"
       >
         THIÊN BÀN · TIÊN THIÊN
       </text>
+
       <text
         x={cx}
-        y={cy - 44}
+        y={cy - 56}
         textAnchor="middle"
-        fill="#d9b975"
+        fill="#f5e4b7"
         fontSize="10.5"
         fontWeight="bold"
         letterSpacing="0.06em"
       >
         ĐỊA BÀN · CĂN CƠ
       </text>
+
       <text
         x={cx}
-        y={cy + 27}
+        y={cy + 33}
         textAnchor="middle"
         fill="#fffaf2"
         fontSize="10"
@@ -1429,25 +1539,12 @@ export function TamTaiVisual({ className }: VisualProps) {
         NHÂN BÀN
       </text>
 
-      {/* Connecting sacred triangle */}
-      {Array.from({ length: 3 }).map((_, i) => {
-        const rad = ((i * 120 - 90) * Math.PI) / 180;
-        const x = cx + 95 * Math.cos(rad);
-        const y = cy + 95 * Math.sin(rad);
-        return (
-          <g key={i}>
-            <circle cx={x} cy={y} r="4" fill="#d9b975" />
-            <line x1={cx} y1={cy} x2={x} y2={y} stroke="#d9b975" strokeWidth="0.8" opacity="0.4" />
-          </g>
-        );
-      })}
-
       <text
         x={cx}
         y="255"
         textAnchor="middle"
         fill="#d9b975"
-        fontSize="11"
+        fontSize="11.5"
         fontWeight="600"
         letterSpacing="0.08em"
       >
