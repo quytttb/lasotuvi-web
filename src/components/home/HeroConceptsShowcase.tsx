@@ -98,15 +98,15 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
       onMouseLeave={() => setIsHovered(false)}
       aria-label="Khám phá 10 khái niệm kinh điển Tử Vi Đẩu Số"
     >
-      {/* Outer container without heavy total border - border is moved to the cards */}
-      <div className="relative w-full flex items-center">
+      {/* Slider outer container strictly bounded to container width */}
+      <div className="relative w-full overflow-hidden rounded-sm flex items-center">
         {/* Left Arrow Button (cạnh trái của khung slider) */}
         <button
           type="button"
           onClick={prevSlide}
           title="Đồ hình trước"
           aria-label="Đồ hình trước"
-          className="absolute left-0 sm:left-1 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
+          className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.6)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
         >
           <svg
             className="h-4 w-4 sm:h-5 sm:w-5"
@@ -128,7 +128,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
           onClick={nextSlide}
           title="Đồ hình tiếp theo"
           aria-label="Đồ hình tiếp theo"
-          className="absolute right-0 sm:right-1 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/70 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.55)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.6)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)]"
         >
           <svg
             className="h-4 w-4 sm:h-5 sm:w-5"
@@ -144,7 +144,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
           </svg>
         </button>
 
-        {/* Horizontal Scrollable Slider Container */}
+        {/* Horizontal Scrollable Slider Container: each slide occupies full width cleanly */}
         <div
           ref={scrollerRef}
           onScroll={handleScroll}
@@ -152,7 +152,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
           role="region"
           aria-roledescription="carousel"
           aria-label="Thanh trượt 10 khái niệm Tử Vi"
-          className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth overscroll-x-contain focus:outline-hidden px-6 sm:px-8"
+          className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth overscroll-x-contain focus:outline-hidden"
           style={{ scrollbarWidth: "none" }}
         >
           {CONCEPTS_DATA.map((item, idx) => {
@@ -166,7 +166,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${item.number} trên 10: ${item.title}`}
-                className="w-full shrink-0 snap-center px-1"
+                className="w-full shrink-0 snap-center"
               >
                 {/* Each card receives the lacquer & gold border with oriental corner accents */}
                 <div className="relative flex flex-col justify-between rounded-sm border border-[var(--gold)]/60 bg-[var(--lacquer-dark)]/95 p-4 sm:p-6 shadow-[0_24px_64px_rgba(48,15,13,0.38),0_4px_16px_rgba(48,15,13,0.25)] ring-1 ring-[var(--gold-light)]/20 backdrop-blur-md transition-all duration-300">
@@ -236,12 +236,12 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
                     </div>
                   </div>
 
-                  {/* Centered Large SVG Illustration */}
-                  <div className="relative my-4 flex items-center justify-center py-2">
+                  {/* Centered Large SVG Illustration with side padding to clear arrow buttons */}
+                  <div className="relative my-3 sm:my-4 flex items-center justify-center px-8 sm:px-10 py-1">
                     <ConceptVisualRenderer
                       id={item.id}
                       className={cn(
-                        "h-60 sm:h-72 w-full max-w-[440px] drop-shadow-[0_6px_20px_rgba(0,0,0,0.55)] transition-all duration-500",
+                        "h-56 sm:h-64 w-full max-w-[400px] drop-shadow-[0_6px_20px_rgba(0,0,0,0.55)] transition-all duration-500",
                         isSlideActive ? "scale-100 opacity-100" : "scale-95 opacity-75",
                       )}
                     />
