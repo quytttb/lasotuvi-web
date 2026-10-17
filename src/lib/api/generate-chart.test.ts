@@ -74,7 +74,8 @@ describe("generateChart", () => {
     server.use(
       http.post(
         "http://localhost:8000/chart/generate",
-        () => new HttpResponse("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } }),
+        () =>
+          new HttpResponse("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } }),
       ),
     );
 

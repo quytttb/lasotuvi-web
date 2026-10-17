@@ -17,10 +17,14 @@ from the browser. No frontend backend, no auth, local IndexedDB persistence only
 pnpm install
 cp .env.example .env.local
 pnpm dev
-pnpm lint && pnpm typecheck && pnpm test && pnpm build
+pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build
 pnpm test:e2e   # requires prior pnpm build
 pnpm api:types  # refresh OpenAPI snapshot from OPENAPI_SCHEMA_URL
 ```
+
+CI (`.github/workflows/ci.yml`) runs `format:check` first and then the rest of
+the chain above, plus the mocked `e2e/mvp.spec.ts`. Run `pnpm format` before
+committing or lint-clean code will still fail CI.
 
 ## Architecture rules
 

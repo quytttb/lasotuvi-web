@@ -91,16 +91,14 @@ export function normalizeApiError(params: {
   if (cause === "cors") {
     return {
       code: "cors",
-      message:
-        "Chưa kết nối được tới máy chủ lập lá số. Bạn vui lòng thử lại sau ít phút.",
+      message: "Chưa kết nối được tới máy chủ lập lá số. Bạn vui lòng thử lại sau ít phút.",
       requestId,
     };
   }
   if (cause === "network") {
     return {
       code: "network",
-      message:
-        "Không kết nối được tới máy chủ lập lá số. Kiểm tra kết nối mạng rồi thử lại.",
+      message: "Không kết nối được tới máy chủ lập lá số. Kiểm tra kết nối mạng rồi thử lại.",
       requestId,
     };
   }
