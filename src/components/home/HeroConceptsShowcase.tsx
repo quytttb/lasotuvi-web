@@ -212,7 +212,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
                   <div className="relative my-2 sm:my-3 flex items-center justify-center py-1">
                     <ConceptVisualRenderer
                       id={item.id}
-                      className="h-56 sm:h-68 md:h-76 w-full max-w-[500px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
+                      className="h-64 sm:h-72 md:h-80 w-full max-w-[500px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
                     />
                   </div>
 

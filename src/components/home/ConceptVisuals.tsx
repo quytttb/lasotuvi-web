@@ -620,27 +620,48 @@ export function ThaiCucVisual({ className }: VisualProps) {
  * 05. Chưởng Bàn (Bàn tay bấm độn)
  */
 export function ChuongBanVisual({ className }: VisualProps) {
-  // Hand joints for 12 branches on the left hand - spacious 60px finger spacing
+  // Hand joints for 12 branches on the left hand - 60px finger spacing,
+  // laid out as the traditional bàn tay bấm cung walk: Dần→Mão→Thìn on the
+  // index finger, Tỵ→Ngọ→Mùi on the middle, Thân→Dậu→Tuất on the ring,
+  // Hợi→Tý→Sửu on the little finger.
+  // Walking order: up the index finger, down the middle, up the ring finger,
+  // down the little finger — so the dashed trail never doubles back on itself.
   const branches = [
-    { name: "TÍ", x: 268, y: 168 },
-    { name: "SỬU", x: 208, y: 168 },
     { name: "DẦN", x: 148, y: 168 },
     { name: "MÃO", x: 148, y: 115 },
     { name: "THÌN", x: 148, y: 62 },
-    { name: "TỴ", x: 208, y: 38 },
-    { name: "NGỌ", x: 268, y: 48 },
-    { name: "MÙI", x: 328, y: 70 },
-    { name: "THÂN", x: 328, y: 115 },
-    { name: "DẬU", x: 328, y: 168 },
-    { name: "TUẤT", x: 268, y: 105 },
-    { name: "HỢI", x: 208, y: 105 },
+    { name: "TỴ", x: 208, y: 46 },
+    { name: "NGỌ", x: 208, y: 107 },
+    { name: "MÙI", x: 208, y: 168 },
+    { name: "THÂN", x: 268, y: 168 },
+    { name: "DẬU", x: 268, y: 113 },
+    { name: "TUẤT", x: 268, y: 58 },
+    { name: "HỢI", x: 328, y: 80 },
+    { name: "TÍ", x: 328, y: 124 },
+    { name: "SỬU", x: 328, y: 168 },
   ];
 
-  const circuitPoints = branches.map((b) => `${b.x},${b.y}`).join(" L ");
+  const circuitPoints = [
+    ...branches.map((b) => `${b.x},${b.y}`),
+    `${branches[0].x},${branches[0].y}`,
+  ].join(" L ");
+
+  // Knuckle crease marks, one pair per finger (between tip and middle joint,
+  // and between middle joint and the base of the finger).
+  const knuckleLines = [
+    [132, 90, 170, 90],
+    [132, 141, 170, 141],
+    [190, 73, 226, 73],
+    [190, 137, 226, 137],
+    [250, 86, 286, 86],
+    [250, 141, 286, 141],
+    [308, 101, 344, 101],
+    [308, 146, 344, 146],
+  ];
 
   return (
     <svg
-      viewBox="0 0 430 295"
+      viewBox="0 0 430 300"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -659,89 +680,71 @@ export function ChuongBanVisual({ className }: VisualProps) {
         </linearGradient>
       </defs>
 
-      <ellipse cx="230" cy="145" rx="155" ry="130" fill="url(#palmGlow)" />
+      <ellipse cx="215" cy="155" rx="165" ry="140" fill="url(#palmGlow)" />
 
-      {/* Realistic, Open, Wide Left Palm Silhouette */}
+      {/* Left palm shown from the palm side: four fingers (rounded tips, webs
+          between them), thumb angled to the left, flat heel of the hand. */}
       <path
-        d="M 126 270
-           C 114 235, 82 210, 66 185
-           C 50 160, 40 135, 52 116
-           C 64 100, 82 104, 96 120
-           C 110 135, 116 155, 126 172
-           C 126 150, 124 100, 126 62
-           C 128 32, 134 18, 148 18
-           C 162 18, 168 32, 170 62
-           L 170 102
-           C 174 80, 184 40, 188 20
-           C 192 4, 198 2, 208 2
-           C 218 2, 224 4, 228 20
-           L 228 102
-           C 232 80, 244 45, 248 26
-           C 252 10, 258 8, 268 8
-           C 278 8, 284 12, 288 32
-           L 288 112
-           C 292 95, 304 70, 312 52
-           C 318 38, 324 36, 332 38
-           C 340 40, 346 48, 348 70
-           C 350 115, 348 152, 344 180
-           C 338 220, 318 248, 290 270
+        d="M 128 194
+           L 128 66
+           A 23 23 0 0 1 174 66
+           L 174 196
+           Q 180 214 186 196
+           L 186 46
+           A 22 22 0 0 1 230 46
+           L 230 194
+           Q 237 214 244 196
+           L 244 58
+           A 23 23 0 0 1 290 58
+           L 290 194
+           Q 297 214 304 196
+           L 304 80
+           A 21 21 0 0 1 348 80
+           L 348 188
+           C 356 218 352 246 340 262
+           Q 332 280 312 280
+           L 178 280
+           Q 158 280 150 262
+           C 142 250 136 240 134 232
+           C 118 226 102 214 90 202
+           C 84 196 81 191 78 186
+           A 22 22 0 0 1 112 158
+           C 118 170 125 184 128 194
            Z"
         fill="url(#handGrad)"
         stroke="#d9b975"
         strokeWidth="1.8"
       />
 
-      {/* Knuckle crease lines for the 4 wide fingers */}
-      <line x1="128" y1="88" x2="168" y2="88" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="127" y1="140" x2="169" y2="140" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="188" y1="65" x2="228" y2="65" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="187" y1="135" x2="229" y2="135" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="248" y1="72" x2="288" y2="72" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="247" y1="135" x2="289" y2="135" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="308" y1="92" x2="348" y2="92" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-      <line x1="308" y1="140" x2="348" y2="140" stroke="#b58a45" strokeWidth="1" opacity="0.45" />
-
-      {/* Major Palm lines */}
-      <path
-        d="M 344 145 C 290 148, 240 155, 180 135"
-        fill="none"
-        stroke="#d9b975"
-        strokeWidth="1.2"
-        opacity="0.4"
-        strokeDasharray="2 2"
-      />
-      <path
-        d="M 130 178 C 180 180, 250 190, 320 215"
-        fill="none"
-        stroke="#d9b975"
-        strokeWidth="1.2"
-        opacity="0.4"
-        strokeDasharray="2 2"
-      />
-      <path
-        d="M 130 178 C 145 210, 160 245, 195 270"
-        fill="none"
-        stroke="#d9b975"
-        strokeWidth="1.4"
-        opacity="0.45"
-        strokeDasharray="2 2"
-      />
+      {/* Knuckle crease lines for the four fingers */}
+      {knuckleLines.map(([x1, y1, x2, y2]) => (
+        <line
+          key={`knuckle-${x1}-${y1}`}
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
+          stroke="#b58a45"
+          strokeWidth="1"
+          opacity="0.38"
+        />
+      ))}
 
       {/* Circuit Line connecting 12 joints in sequence */}
       <path
         d={`M ${circuitPoints}`}
         fill="none"
         stroke="#d9b975"
-        strokeWidth="1.75"
+        strokeWidth="1.4"
         strokeDasharray="3 3"
-        opacity="0.8"
+        opacity="0.55"
       />
 
       {/* Center Palm Seal */}
       <rect
-        x="200"
-        y="202"
-        width="76"
+        x="196"
+        y="216"
+        width="84"
         height="26"
         rx="3"
         fill="#9f3028"
@@ -750,7 +753,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
       />
       <text
         x="238"
-        y="218"
+        y="232"
         textAnchor="middle"
         fill="#fffaf2"
         fontSize="11"
@@ -781,7 +784,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
 
       <text
         x="238"
-        y="286"
+        y="292"
         textAnchor="middle"
         fill="#d9b975"
         fontSize="11"
@@ -1252,136 +1255,157 @@ export function TuHoaPhiTinhVisual({ className }: VisualProps) {
         strokeWidth="1.5"
         rx="4"
       />
-      <rect
-        x="115"
-        y="58"
-        width="190"
-        height="128"
-        fill="#2d0d0b"
-        stroke="#d9b975"
-        strokeWidth="0.8"
-        strokeDasharray="3 3"
-        opacity="0.6"
-      />
 
-      {/* Center courtyard seal */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r="22"
-        fill="#1b0807"
-        stroke="#d9b975"
-        strokeWidth="1"
-        strokeDasharray="2 2"
-      />
-      <text
-        x={cx}
-        y={cy + 4}
-        textAnchor="middle"
-        fill="#d9b975"
-        fontSize="10.5"
-        fontWeight="bold"
-        fontFamily="serif"
-      >
-        PHI TINH
-      </text>
+      {/* Corner ticks instead of a busy inner frame */}
+      {[
+        [58, 32, 1, 1],
+        [362, 32, -1, 1],
+        [58, 211, 1, -1],
+        [362, 211, -1, -1],
+      ].map(([x, y, sx, sy]) => (
+        <path
+          key={`tick-${x}-${y}`}
+          d={`M ${x} ${y + 10 * sy} L ${x} ${y} L ${x + 10 * sx} ${y}`}
+          stroke="#d9b975"
+          strokeWidth="1.2"
+          opacity="0.6"
+        />
+      ))}
 
       {/* 4 Vector Flow Arcs connecting the 4 quadrants cleanly */}
       {/* 1. Hóa Lộc (Xanh ngọc - Cung Mệnh đến Cung Tài) */}
       <path
-        d="M 135 48 Q 210 32 282 48"
+        d="M 142 48 Q 210 30 278 48"
         stroke="#48bb78"
         strokeWidth="2.5"
         markerEnd="url(#arrowGreen)"
       />
       {/* 2. Hóa Quyền (Đỏ thắm - Cung Quan qua Mệnh) */}
       <path
-        d="M 315 68 Q 235 125 140 180"
+        d="M 314 68 Q 235 125 144 178"
         stroke="#f56565"
         strokeWidth="2.5"
         markerEnd="url(#arrowRed2)"
       />
       {/* 3. Hóa Khoa (Vàng kim - Cung Phúc đến Thiên Di) */}
       <path
-        d="M 135 175 Q 210 135 285 75"
+        d="M 138 178 Q 210 128 280 74"
         stroke="#ecc94b"
         strokeWidth="2.5"
         markerEnd="url(#arrowGold2)"
       />
       {/* 4. Hóa Kỵ (Tím - Cung Phụ Mẫu đến Tật Ách) */}
       <path
-        d="M 315 72 L 315 168"
+        d="M 314 74 L 314 168"
         stroke="#b794f4"
         strokeWidth="2.5"
         strokeDasharray="4 2"
         markerEnd="url(#arrowPurple)"
       />
 
-      {/* 4 Badges in 4 Distinct Quadrants - 248px distance between Quyền and Khoa */}
+      {/* Center courtyard seal — stamped on top of the flight lines so the
+          two characters stay readable where the arrows cross. */}
+      <circle cx={cx} cy={cy} r="27" fill="#1b0807" stroke="#d9b975" strokeWidth="1.4" />
+      <circle
+        cx={cx}
+        cy={cy}
+        r="22"
+        fill="none"
+        stroke="#d9b975"
+        strokeWidth="0.8"
+        strokeDasharray="2 2"
+        opacity="0.8"
+      />
+      <text
+        x={cx}
+        y={cy - 2}
+        textAnchor="middle"
+        fill="#f5e4b7"
+        fontSize="12"
+        fontWeight="bold"
+        fontFamily="serif"
+        letterSpacing="0.04em"
+      >
+        PHI
+      </text>
+      <text
+        x={cx}
+        y={cy + 12}
+        textAnchor="middle"
+        fill="#f5e4b7"
+        fontSize="12"
+        fontWeight="bold"
+        fontFamily="serif"
+        letterSpacing="0.04em"
+      >
+        TINH
+      </text>
+
+      {/* 4 Badges in 4 Distinct Quadrants */}
       {/* Top Left: LỘC */}
-      <g transform="translate(105, 52)">
+      <g transform="translate(108, 48)">
         <rect
-          x="-26"
-          y="-13"
-          width="52"
-          height="26"
+          x="-38"
+          y="-14"
+          width="76"
+          height="28"
           rx="3"
           fill="#2d6a40"
           stroke="#f5e4b7"
           strokeWidth="1.2"
         />
-        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
+        <text x="0" y="6" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           祿 LỘC
         </text>
       </g>
 
       {/* Top Right: QUYỀN */}
-      <g transform="translate(315, 52)">
+      <g transform="translate(314, 48)">
         <rect
-          x="-26"
-          y="-13"
-          width="52"
-          height="26"
+          x="-38"
+          y="-14"
+          width="76"
+          height="28"
           rx="3"
           fill="#9e2b1e"
           stroke="#f5e4b7"
           strokeWidth="1.2"
         />
-        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
+        <text x="0" y="6" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           權 QUYỀN
         </text>
       </g>
 
       {/* Bottom Left: KHOA */}
-      <g transform="translate(105, 185)">
+      <g transform="translate(108, 187)">
         <rect
-          x="-26"
-          y="-13"
-          width="52"
-          height="26"
+          x="-38"
+          y="-14"
+          width="76"
+          height="28"
           rx="3"
           fill="#8a6420"
           stroke="#f5e4b7"
           strokeWidth="1.2"
         />
-        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
+        <text x="0" y="6" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           科 KHOA
         </text>
       </g>
 
       {/* Bottom Right: KỴ */}
-      <g transform="translate(315, 185)">
+      <g transform="translate(314, 187)">
         <rect
-          x="-26"
-          y="-13"
-          width="52"
-          height="26"
+          x="-38"
+          y="-14"
+          width="76"
+          height="28"
           rx="3"
           fill="#553c9a"
           stroke="#f5e4b7"
           strokeWidth="1.2"
         />
-        <text x="0" y="5.5" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
+        <text x="0" y="6" textAnchor="middle" fill="#fffaf2" fontSize="12" fontWeight="bold">
           忌 KỴ
         </text>
       </g>

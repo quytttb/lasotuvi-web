@@ -694,6 +694,7 @@ body {
     min-height: 0 !important;
     max-height: none !important;
     overflow: hidden !important;
+    zoom: 1 !important;
     page-break-inside: avoid;
     break-inside: avoid;
     break-before: avoid;
@@ -705,9 +706,9 @@ body {
     background: white !important;
     border-color: #444 !important;
     color: #111 !important;
-    padding: 2.5mm !important;
-    font-size: 9.5pt !important;
-    line-height: 1.25 !important;
+    padding: 2mm !important;
+    font-size: 9pt !important;
+    line-height: 1.2 !important;
     overflow: hidden !important;
     box-shadow: none !important;
     -webkit-print-color-adjust: exact;
@@ -719,36 +720,62 @@ body {
   }
 
   .palace-cell-header {
-    margin-bottom: 1.5mm !important;
-    padding-bottom: 1.5mm !important;
+    margin-bottom: 1mm !important;
+    padding-bottom: 1mm !important;
   }
   .palace-cell-title {
-    font-size: 12pt !important;
+    font-size: 11.5pt !important;
     line-height: 1.15 !important;
   }
   .palace-cell-sub {
-    font-size: 9pt !important;
+    font-size: 8pt !important;
   }
+  /* Keep the star list inside the cell so it never collides with the footer
+     row (Đại hạn · Tiểu · Nguyệt) on busy palaces. The list flows inline and
+     is clamped, so a cut line only ever shows an ellipsis — never half a
+     glyph sitting under the cell border. */
   .palace-cell-body {
-    gap: 1.2mm !important;
+    gap: 1mm !important;
     min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  .palace-cell-body > div:last-child {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden !important;
+    padding-top: 1mm !important;
+  }
+  .palace-cell-body > div:last-child > .star-badge {
+    display: inline !important;
+    margin-right: 0.4em;
+  }
+  .palace-cell-body > div:last-child .star-badge > * + * {
+    margin-left: 0.28em;
   }
   .palace-cell-footer {
-    margin-top: 1.5mm !important;
-    padding-top: 1.5mm !important;
-    font-size: 8.5pt !important;
+    margin-top: 1mm !important;
+    padding-top: 1mm !important;
+    font-size: 8pt !important;
     flex-shrink: 0 !important;
   }
   .star-badge-major {
-    font-size: 11pt !important;
-    line-height: 1.25 !important;
+    font-size: 10pt !important;
+    line-height: 1.2 !important;
   }
   .star-badge-minor {
-    font-size: 9pt !important;
+    font-size: 8pt !important;
     line-height: 1.25 !important;
   }
   .star-badge-meta {
-    font-size: 8pt !important;
+    font-size: 7pt !important;
+  }
+  /* Mutagen chips keep their colour cue but shed padding inside print cells. */
+  .palace-cell-body .star-badge-meta {
+    border: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
 
   .chart-center {

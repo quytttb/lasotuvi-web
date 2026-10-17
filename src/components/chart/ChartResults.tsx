@@ -69,7 +69,7 @@ function StarInterpretationBlock({
         <h4 className="font-serif text-base font-semibold text-[var(--ink)]">{title}</h4>
         {isMajor ? (
           <span className="rounded-xs border border-[var(--gold)]/40 bg-[var(--gold-soft)] px-1.5 py-0.5 text-[0.68rem] font-medium text-[var(--earth)]">
-            🌟 Chính tinh chủ đạo
+            <span aria-hidden="true">✦</span> Chính tinh chủ đạo
           </span>
         ) : parsed.minor?.role ? (
           <span
@@ -88,10 +88,10 @@ function StarInterpretationBlock({
           >
             {parsed.minor.role.toLowerCase().includes("sát") ||
             parsed.minor.role.toLowerCase().includes("hung")
-              ? `⚡ ${parsed.minor.role} (Cần lưu ý)`
+              ? `⚠ ${parsed.minor.role} (Cần lưu ý)`
               : parsed.minor.role.toLowerCase().includes("cát") ||
                   parsed.minor.role.toLowerCase().includes("quý")
-                ? `🌟 ${parsed.minor.role} (Tốt)`
+                ? `✦ ${parsed.minor.role} (Tốt)`
                 : parsed.minor.role}
           </span>
         ) : null}
@@ -463,14 +463,15 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
       <div className="mx-auto max-w-7xl space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-[var(--ink-muted)] print:hidden">
           <span className="flex items-center gap-1.5">
-            <span aria-hidden="true">📱</span>
+            <span aria-hidden="true">↔</span>
             <span>Vuốt ngang để xem trọn 12 cung, hoặc dùng nút thu phóng:</span>
           </span>
           <div className="flex items-center gap-1">
             <button
               type="button"
-              onClick={() => setZoomScale((prev) => Math.max(70, prev - 15))}
-              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer"
+              onClick={() => setZoomScale((prev) => Math.max(40, prev - 15))}
+              disabled={zoomScale <= 40}
+              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer disabled:cursor-not-allowed disabled:opacity-45"
               aria-label="Thu nhỏ bàn lá số"
             >
               − Thu nhỏ
@@ -486,7 +487,8 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
             <button
               type="button"
               onClick={() => setZoomScale((prev) => Math.min(130, prev + 15))}
-              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer"
+              disabled={zoomScale >= 130}
+              className="rounded-sm border border-[var(--line)] bg-[var(--paper-raised)] px-2.5 py-1 font-medium hover:bg-[var(--paper-muted)] active:scale-95 transition-all text-[var(--ink)] cursor-pointer disabled:cursor-not-allowed disabled:opacity-45"
               aria-label="Phóng to bàn lá số"
             >
               + Phóng to
@@ -497,16 +499,12 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         <div className="chart-print-board w-full max-w-full overflow-x-auto overscroll-x-contain rounded-sm border border-[var(--line-soft)] bg-[var(--paper-muted)]/20 p-1 sm:p-2 print:overflow-visible print:border-none print:p-0">
           <ChartBoard
             chart={chart}
-            style={
-              zoomScale !== 100
-                ? {
-                    transform: `scale(${zoomScale / 100})`,
-                    transformOrigin: "top left",
-                    width: `${(100 / zoomScale) * 100}%`,
-                  }
-                : undefined
-            }
-            className="mx-auto min-w-[56rem] w-full max-w-7xl print:min-w-0 print:max-w-none lg:min-w-0 transition-transform duration-200"
+            // CSS `zoom` reflows the board (so the scroll container measures the
+            // scaled size). A transform would be ignored here: the board's
+            // fade-in animation keeps `transform` with fill-mode both, which
+            // wins over inline styles in the cascade.
+            style={zoomScale !== 100 ? { zoom: zoomScale / 100 } : undefined}
+            className="mx-auto min-w-[56rem] w-full max-w-7xl print:min-w-0 print:max-w-none lg:min-w-0"
           />
         </div>
       </div>
@@ -519,7 +517,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
         <div className="flex items-center justify-between gap-3 border-b border-[var(--line-soft)] pb-3">
           <div className="flex items-center gap-2">
             <span className="text-lg text-[var(--gold)]" aria-hidden="true">
-              📜
+              ❖
             </span>
             <h3
               id="star-guide-heading"
@@ -537,7 +535,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           {/* Cát tinh */}
           <div className="rounded-sm border border-[var(--wood)]/30 bg-[var(--wood-soft)]/50 p-3.5 space-y-1.5">
             <p className="font-serif font-semibold text-[var(--wood)] flex items-center gap-1.5">
-              <span>🌟</span> Sao Tốt (Cát tinh · Quý tinh)
+              <span aria-hidden="true">✦</span> Sao Tốt (Cát tinh · Quý tinh)
             </p>
             <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
               Đem lại may mắn, phúc đức, tài lộc hanh thông và có quý nhân tương trợ khi gặp khó
@@ -552,7 +550,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           {/* Sát tinh */}
           <div className="rounded-sm border border-[var(--fire)]/30 bg-[var(--fire-soft)]/50 p-3.5 space-y-1.5">
             <p className="font-serif font-semibold text-[var(--fire)] flex items-center gap-1.5">
-              <span>⚡</span> Sao Cần Lưu Ý (Sát tinh · Hung tinh)
+              <span aria-hidden="true">⚠</span> Sao Cần Lưu Ý (Sát tinh · Hung tinh)
             </p>
             <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
               Chủ về thử thách, biến động, rèn luyện ý chí. Khi gặp sao này nên giữ tâm bình tĩnh,
@@ -566,7 +564,7 @@ export function ChartResults({ chart, birthContext = null }: ChartResultsProps) 
           {/* Độ sáng & Tứ hóa */}
           <div className="rounded-sm border border-[var(--earth)]/30 bg-[var(--earth-soft)]/50 p-3.5 space-y-1.5 sm:col-span-2 lg:col-span-1">
             <p className="font-serif font-semibold text-[var(--earth)] flex items-center gap-1.5">
-              <span>☀️</span> Độ Sáng (Miếu · Vượng · Hãm)
+              <span aria-hidden="true">☀</span> Độ Sáng (Miếu · Vượng · Hãm)
             </p>
             <p className="text-xs leading-relaxed text-[var(--ink-soft)]">
               <strong>Miếu/Vượng:</strong> Sao sáng rực rỡ, phát huy trọn vẹn đặc tính tốt đẹp.
