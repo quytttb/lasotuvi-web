@@ -92,7 +92,7 @@ export function normalizeApiError(params: {
     return {
       code: "cors",
       message:
-        "Không thể gọi API do CORS. Frontend chưa được phép trong LASOTUVI_CORS_ORIGINS hoặc API chưa truy cập được.",
+        "Chưa kết nối được tới máy chủ lập lá số. Bạn vui lòng thử lại sau ít phút.",
       requestId,
     };
   }
@@ -100,14 +100,14 @@ export function normalizeApiError(params: {
     return {
       code: "network",
       message:
-        "Không thể kết nối tới API. Kiểm tra NEXT_PUBLIC_LASOTUVI_API_URL và cấu hình CORS backend.",
+        "Không kết nối được tới máy chủ lập lá số. Kiểm tra kết nối mạng rồi thử lại.",
       requestId,
     };
   }
   if (cause === "invalid_response") {
     return {
       code: "invalid_response",
-      message: fallbackMessage ?? "Phản hồi API không hợp lệ hoặc thiếu dữ liệu cần thiết.",
+      message: "Máy chủ lập lá số đang tạm gián đoạn. Vui lòng thử lại sau ít phút.",
       requestId,
       status,
     };
@@ -184,7 +184,8 @@ export function normalizeApiError(params: {
   return {
     status,
     code: "server_error",
-    message: fallbackMessage ?? "Đã xảy ra lỗi không xác định.",
+    message:
+      fallbackMessage ?? "Máy chủ lập lá số đang tạm gián đoạn. Vui lòng thử lại sau ít phút.",
     requestId: bodyRequestId,
   };
 }

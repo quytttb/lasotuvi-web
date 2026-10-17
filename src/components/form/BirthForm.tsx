@@ -495,7 +495,12 @@ export function BirthForm({ onSuccess, initialValues, disabledSaveHint }: BirthF
                 : "Vui lòng chờ rồi thử lại thủ công (không tự gửi lại)."}
             </p>
           ) : null}
-          {apiError.code === "engine_unavailable" ? (
+          {apiError.code === "engine_unavailable" ||
+          apiError.code === "timeout" ||
+          apiError.code === "network" ||
+          apiError.code === "cors" ||
+          apiError.code === "invalid_response" ||
+          apiError.code === "server_error" ? (
             <p className="mt-2 text-[var(--ink-soft)]">
               Bạn có thể nhấn “Lập lá số” để thử lại thủ công.
             </p>

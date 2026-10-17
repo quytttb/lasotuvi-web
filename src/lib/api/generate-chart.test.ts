@@ -70,6 +70,27 @@ describe("generateChart", () => {
     });
   });
 
+  it("keeps error copy user-facing (no env-var or parser jargon)", async () => {
+    server.use(
+      http.post(
+        "http://localhost:8000/chart/generate",
+        () => new HttpResponse("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } }),
+      ),
+    );
+
+    await expect(generateChart(birthInfo)).rejects.toMatchObject({
+      apiError: expect.objectContaining({
+        message: expect.stringMatching(/đang tạm gián đoạn/i),
+      }),
+    });
+
+    await expect(generateChart(birthInfo)).rejects.not.toMatchObject({
+      apiError: expect.objectContaining({
+        message: expect.stringMatching(/NEXT_PUBLIC_|CORS|JSON|LASOTUVI_CORS_ORIGINS|Not Found/i),
+      }),
+    });
+  });
+
   it("maps 422 validation errors", async () => {
     server.use(
       http.post("http://localhost:8000/chart/generate", () =>
