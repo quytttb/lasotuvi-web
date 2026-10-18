@@ -616,49 +616,201 @@ export function ThaiCucVisual({ className }: VisualProps) {
   );
 }
 
+/* ---------------------------------------------------------------------------
+ * 05. Chưởng Bàn — left hand built from a small numerical skeleton.
+ *
+ * The silhouette, the knuckle creases and the 12 branch badges all derive from
+ * the same numbers: four fingers that fan out with real hand proportions
+ * (middle 1.0 · ring .95 · index .93 · little .74 of the middle finger) plus a
+ * thumb about 70% as long as the middle finger, flexed at its joint. Editing a
+ * base/tip/width below reshapes the whole drawing — no path needs re-tracing.
+ * ------------------------------------------------------------------------- */
+type Pt = { x: number; y: number };
+type FingerSkeleton = { base: Pt; tip: Pt; wBase: number; wTip: number };
+
+const pt = (x: number, y: number): Pt => ({ x, y });
+const addPt = (a: Pt, b: Pt): Pt => pt(a.x + b.x, a.y + b.y);
+const subPt = (a: Pt, b: Pt): Pt => pt(a.x - b.x, a.y - b.y);
+const mulPt = (a: Pt, k: number): Pt => pt(a.x * k, a.y * k);
+const normPt = (a: Pt): Pt => {
+  const len = Math.hypot(a.x, a.y) || 1;
+  return pt(a.x / len, a.y / len);
+};
+// Perpendicular on the +x side while the finger axis points up.
+const perpPt = (a: Pt): Pt => pt(-a.y, a.x);
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
+const HAND_FINGERS: FingerSkeleton[] = [
+  { base: pt(150, 170), tip: pt(124, 60), wBase: 52, wTip: 44 }, // index
+  { base: pt(212, 166), tip: pt(208, 44), wBase: 54, wTip: 46 }, // middle
+  { base: pt(274, 170), tip: pt(296, 56), wBase: 52, wTip: 44 }, // ring
+  { base: pt(332, 180), tip: pt(352, 92), wBase: 48, wTip: 44 }, // little
+];
+// Knuckle · middle · tip joints, as fractions along each finger axis.
+const HAND_JOINTS = [0.14, 0.46, 0.78];
+const HAND_WEB_DIP = 9;
+const HAND_THUMB: FingerSkeleton = {
+  base: pt(120, 232),
+  tip: pt(50, 144),
+  wBase: 22,
+  wTip: 14,
+};
+
+function fingerGeom(finger: FingerSkeleton) {
+  const axis = normPt(subPt(finger.tip, finger.base));
+  const p = perpPt(axis);
+  const hw = (t: number) => (finger.wBase + (finger.wTip - finger.wBase) * t) / 2;
+  const at = (t: number) => addPt(finger.base, mulPt(subPt(finger.tip, finger.base), t));
+  return {
+    axis,
+    p,
+    hw,
+    at,
+    left: (t: number) => subPt(at(t), mulPt(p, hw(t))),
+    right: (t: number) => addPt(at(t), mulPt(p, hw(t))),
+  };
+}
+
+const HAND_G = HAND_FINGERS.map(fingerGeom);
+
+// The thumb takes full widths (not half) and can bend sideways at its joint.
+const HAND_THUMB_G = (() => {
+  const { base, tip, wBase, wTip } = HAND_THUMB;
+  const axis = normPt(subPt(tip, base));
+  const p = perpPt(axis);
+  const hw = (t: number) => wBase + (wTip - wBase) * t;
+  const at = (t: number, bend = 0) =>
+    addPt(addPt(base, mulPt(subPt(tip, base), t)), mulPt(p, bend));
+  return {
+    axis,
+    p,
+    at,
+    left: (t: number, bend = 0) => subPt(at(t, bend), mulPt(p, hw(t))),
+    right: (t: number, bend = 0) => addPt(at(t, bend), mulPt(p, hw(t))),
+  };
+})();
+
+function buildHandOutline(): string {
+  // Deepest point of the web between the thumb and the index finger.
+  const web = pt(HAND_G[0].left(0).x + 3, HAND_G[0].left(0).y + 24);
+  const d: string[] = [`M ${r2(web.x)} ${r2(web.y)}`];
+  const curveTo = (a: Pt, b: Pt, c: Pt) =>
+    d.push(`C ${r2(a.x)} ${r2(a.y)} ${r2(b.x)} ${r2(b.y)} ${r2(c.x)} ${r2(c.y)}`);
+  const quadTo = (a: Pt, b: Pt) => d.push(`Q ${r2(a.x)} ${r2(a.y)} ${r2(b.x)} ${r2(b.y)}`);
+
+  HAND_FINGERS.forEach((finger, i) => {
+    const g = HAND_G[i];
+    // Finger flanks bow slightly outwards like real fingers.
+    const bulge = (t: number, side: "l" | "r") => {
+      const half = g.hw(t) + 2.4;
+      const mid = g.at(t);
+      return side === "l" ? subPt(mid, mulPt(g.p, half)) : addPt(mid, mulPt(g.p, half));
+    };
+    quadTo(bulge(0.5, "l"), g.left(1));
+    // Rounded, slightly flattened fingertip.
+    curveTo(
+      addPt(g.left(1), mulPt(g.axis, 0.58 * finger.wTip)),
+      addPt(g.right(1), mulPt(g.axis, 0.58 * finger.wTip)),
+      g.right(1),
+    );
+    quadTo(bulge(0.62, "r"), g.right(0));
+    if (i < HAND_FINGERS.length - 1) {
+      const next = HAND_G[i + 1];
+      // Shallow web dipping between two neighbouring fingers.
+      const webMid = pt(
+        (g.right(0).x + next.left(0).x) / 2,
+        (g.right(0).y + next.left(0).y) / 2 + HAND_WEB_DIP,
+      );
+      quadTo(webMid, next.left(0));
+    }
+  });
+
+  // Ulnar edge → wrist cut → thenar → thumb → purlicue back to the index base.
+  const ulnar = HAND_G[3].right(0);
+  curveTo(
+    pt(ulnar.x + 10, ulnar.y + 22),
+    pt(ulnar.x + 12, ulnar.y + 48),
+    pt(ulnar.x - 6, ulnar.y + 74),
+  );
+  curveTo(pt(340, 272), pt(252, 278), pt(190, 272));
+  curveTo(pt(166, 269), pt(152, 266), pt(150, 256));
+  const thumb = HAND_THUMB_G;
+  curveTo(pt(150, 262), pt(118, 266), thumb.left(0)); // thenar eminence
+  quadTo(
+    addPt(mulPt(addPt(thumb.left(0), thumb.left(0.62)), 0.5), mulPt(thumb.p, -2)),
+    thumb.left(0.62, 2.5),
+  );
+  quadTo(
+    addPt(mulPt(addPt(thumb.left(0.62), thumb.left(1)), 0.5), mulPt(thumb.p, -1.5)),
+    thumb.left(1),
+  );
+  curveTo(
+    addPt(thumb.left(1), mulPt(thumb.axis, 0.58 * 34)),
+    addPt(thumb.right(1), mulPt(thumb.axis, 0.58 * 34)),
+    thumb.right(1),
+  );
+  quadTo(
+    addPt(mulPt(addPt(thumb.right(0.62), thumb.right(1)), 0.5), mulPt(thumb.p, -1.5)),
+    thumb.right(0.62, 2.5),
+  );
+  curveTo(pt(110, 186), pt(126, 204), HAND_G[0].left(0)); // purlicue
+  d.push("Z");
+  return d.join(" ");
+}
+
+function buildHandCreases(): string[] {
+  const out: string[] = [];
+  HAND_FINGERS.forEach((_, i) => {
+    const g = HAND_G[i];
+    HAND_JOINTS.forEach((t) => {
+      const a = addPt(g.at(t), mulPt(g.p, -g.hw(t) * 0.86));
+      const b = addPt(g.at(t), mulPt(g.p, g.hw(t) * 0.86));
+      const mid = subPt(g.at(t), mulPt(g.axis, 3.4));
+      out.push(`M ${r2(a.x)} ${r2(a.y)} Q ${r2(mid.x)} ${r2(mid.y)} ${r2(b.x)} ${r2(b.y)}`);
+    });
+  });
+  const thumb = HAND_THUMB_G;
+  const a = thumb.left(0.62);
+  const b = thumb.right(0.62);
+  const mid = subPt(thumb.at(0.62), mulPt(thumb.axis, 3));
+  out.push(`M ${r2(a.x)} ${r2(a.y)} Q ${r2(mid.x)} ${r2(mid.y)} ${r2(b.x)} ${r2(b.y)}`);
+  return out;
+}
+
+// Bàn tay bấm cung walk: up the index finger, down the middle, up the ring,
+// down the little finger, so the dashed trail never doubles back on itself.
+const HAND_BRANCH_LAYOUT = [
+  { name: "DẦN", finger: 0, joint: 0 },
+  { name: "MÃO", finger: 0, joint: 1 },
+  { name: "THÌN", finger: 0, joint: 2 },
+  { name: "TỴ", finger: 1, joint: 2 },
+  { name: "NGỌ", finger: 1, joint: 1 },
+  { name: "MÙI", finger: 1, joint: 0 },
+  { name: "THÂN", finger: 2, joint: 0 },
+  { name: "DẬU", finger: 2, joint: 1 },
+  { name: "TUẤT", finger: 2, joint: 2 },
+  { name: "HỢI", finger: 3, joint: 2 },
+  { name: "TÝ", finger: 3, joint: 1 },
+  { name: "SỬU", finger: 3, joint: 0 },
+];
+
+const HAND_OUTLINE = buildHandOutline();
+const HAND_CREASES = buildHandCreases();
+
+// Badge centres sit on the joint fractions of each finger axis.
+const HAND_BRANCHES = HAND_BRANCH_LAYOUT.map(({ name, finger, joint }) => ({
+  name,
+  ...HAND_G[finger].at(HAND_JOINTS[joint]),
+}));
+
+const HAND_CIRCUIT = `M ${[...HAND_BRANCHES, HAND_BRANCHES[0]]
+  .map((b) => `${r2(b.x)} ${r2(b.y)}`)
+  .join(" L ")}`;
+
 /**
  * 05. Chưởng Bàn (Bàn tay bấm độn)
  */
 export function ChuongBanVisual({ className }: VisualProps) {
-  // Hand joints for 12 branches on the left hand - 60px finger spacing,
-  // laid out as the traditional bàn tay bấm cung walk: Dần→Mão→Thìn on the
-  // index finger, Tỵ→Ngọ→Mùi on the middle, Thân→Dậu→Tuất on the ring,
-  // Hợi→Tý→Sửu on the little finger.
-  // Walking order: up the index finger, down the middle, up the ring finger,
-  // down the little finger — so the dashed trail never doubles back on itself.
-  const branches = [
-    { name: "DẦN", x: 148, y: 168 },
-    { name: "MÃO", x: 148, y: 115 },
-    { name: "THÌN", x: 148, y: 62 },
-    { name: "TỴ", x: 208, y: 46 },
-    { name: "NGỌ", x: 208, y: 107 },
-    { name: "MÙI", x: 208, y: 168 },
-    { name: "THÂN", x: 268, y: 168 },
-    { name: "DẬU", x: 268, y: 113 },
-    { name: "TUẤT", x: 268, y: 58 },
-    { name: "HỢI", x: 328, y: 80 },
-    { name: "TÍ", x: 328, y: 124 },
-    { name: "SỬU", x: 328, y: 168 },
-  ];
-
-  const circuitPoints = [
-    ...branches.map((b) => `${b.x},${b.y}`),
-    `${branches[0].x},${branches[0].y}`,
-  ].join(" L ");
-
-  // Knuckle crease marks, one pair per finger (between tip and middle joint,
-  // and between middle joint and the base of the finger).
-  const knuckleLines = [
-    [132, 90, 170, 90],
-    [132, 141, 170, 141],
-    [190, 73, 226, 73],
-    [190, 137, 226, 137],
-    [250, 86, 286, 86],
-    [250, 141, 286, 141],
-    [308, 101, 344, 101],
-    [308, 146, 344, 146],
-  ];
-
   return (
     <svg
       viewBox="0 0 430 300"
@@ -670,112 +822,104 @@ export function ChuongBanVisual({ className }: VisualProps) {
     >
       <defs>
         <radialGradient id="palmGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#d9b975" stopOpacity="0.22" />
+          <stop offset="0%" stopColor="#d9b975" stopOpacity="0.2" />
           <stop offset="100%" stopColor="#d9b975" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="handGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#4a1815" />
-          <stop offset="50%" stopColor="#38110e" />
-          <stop offset="100%" stopColor="#240a08" />
+          <stop offset="52%" stopColor="#360f0d" />
+          <stop offset="100%" stopColor="#220907" />
         </linearGradient>
+        <linearGradient id="handEdge" x1="0" y1="0" x2="0.6" y2="1">
+          <stop offset="0%" stopColor="#f2dcaa" stopOpacity="0.55" />
+          <stop offset="55%" stopColor="#d9b975" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#d9b975" stopOpacity="0.4" />
+        </linearGradient>
+        <radialGradient id="thenarGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#d9b975" stopOpacity="0.13" />
+          <stop offset="100%" stopColor="#d9b975" stopOpacity="0" />
+        </radialGradient>
+        <clipPath id="handClip">
+          <path d={HAND_OUTLINE} />
+        </clipPath>
       </defs>
 
-      <ellipse cx="215" cy="155" rx="165" ry="140" fill="url(#palmGlow)" />
+      <ellipse cx="220" cy="160" rx="172" ry="148" fill="url(#palmGlow)" />
 
-      {/* Left palm shown from the palm side: four fingers (rounded tips, webs
-          between them), thumb angled to the left, flat heel of the hand. */}
       <path
-        d="M 128 194
-           L 128 66
-           A 23 23 0 0 1 174 66
-           L 174 196
-           Q 180 214 186 196
-           L 186 46
-           A 22 22 0 0 1 230 46
-           L 230 194
-           Q 237 214 244 196
-           L 244 58
-           A 23 23 0 0 1 290 58
-           L 290 194
-           Q 297 214 304 196
-           L 304 80
-           A 21 21 0 0 1 348 80
-           L 348 188
-           C 356 218 352 246 340 262
-           Q 332 280 312 280
-           L 178 280
-           Q 158 280 150 262
-           C 142 250 136 240 134 232
-           C 118 226 102 214 90 202
-           C 84 196 81 191 78 186
-           A 22 22 0 0 1 112 158
-           C 118 170 125 184 128 194
-           Z"
+        d={HAND_OUTLINE}
         fill="url(#handGrad)"
-        stroke="#d9b975"
-        strokeWidth="1.8"
+        stroke="url(#handEdge)"
+        strokeWidth="1.9"
+        strokeLinejoin="round"
       />
 
-      {/* Knuckle crease lines for the four fingers */}
-      {knuckleLines.map(([x1, y1, x2, y2]) => (
-        <line
-          key={`knuckle-${x1}-${y1}`}
-          x1={x1}
-          y1={y1}
-          x2={x2}
-          y2={y2}
+      {/* Creases and the thenar highlight stay inside the palm silhouette. */}
+      <g clipPath="url(#handClip)">
+        <ellipse cx="156" cy="234" rx="42" ry="44" fill="url(#thenarGlow)" />
+        {HAND_CREASES.map((d) => (
+          <path
+            key={d}
+            d={d}
+            stroke="#b58a45"
+            strokeWidth="0.9"
+            opacity="0.26"
+            strokeLinecap="round"
+          />
+        ))}
+        <path
+          d="M 176 252 Q 258 260 344 250"
           stroke="#b58a45"
-          strokeWidth="1"
-          opacity="0.38"
+          strokeWidth="0.9"
+          opacity="0.18"
+          strokeLinecap="round"
         />
-      ))}
+      </g>
 
-      {/* Circuit Line connecting 12 joints in sequence */}
+      {/* Dashed trail of the 12 joints in walk order, closed on the first one. */}
       <path
-        d={`M ${circuitPoints}`}
-        fill="none"
+        d={HAND_CIRCUIT}
         stroke="#d9b975"
         strokeWidth="1.4"
         strokeDasharray="3 3"
-        opacity="0.55"
+        opacity="0.5"
       />
 
       {/* Center Palm Seal */}
       <rect
-        x="196"
-        y="216"
-        width="84"
-        height="26"
+        x="186"
+        y="228"
+        width="116"
+        height="27"
         rx="3"
         fill="#9f3028"
         stroke="#f5e4b7"
         strokeWidth="1"
       />
       <text
-        x="238"
-        y="232"
+        x="244"
+        y="246"
         textAnchor="middle"
         fill="#fffaf2"
-        fontSize="11"
+        fontSize="11.5"
         fontWeight="bold"
         fontFamily="serif"
       >
         CHƯỞNG QUYẾT
       </text>
 
-      {/* 12 Chi Badges - large, crisp and readable with 60px spacing */}
-      {branches.map((b) => (
+      {HAND_BRANCHES.map((b) => (
         <g key={b.name}>
-          <circle cx={b.x} cy={b.y} r="13.5" fill="#1b0807" stroke="#d9b975" strokeWidth="1.5" />
-          <circle cx={b.x} cy={b.y} r="11" fill="#9f3028" opacity="0.4" />
+          <circle cx={b.x} cy={b.y} r="12" fill="#1b0807" stroke="#d9b975" strokeWidth="1.4" />
           <text
             x={b.x}
-            y={b.y + 4.5}
+            y={b.y + 4.1}
             textAnchor="middle"
             fill="#fffaf2"
-            fontSize="11"
+            fontSize={b.name.length >= 4 ? 9.4 : 10.2}
             fontWeight="bold"
             fontFamily="serif"
+            letterSpacing="-0.2"
           >
             {b.name}
           </text>
