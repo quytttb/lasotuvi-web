@@ -648,11 +648,13 @@ const HAND_FINGERS: FingerSkeleton[] = [
   { base: pt(150, 132), tip: pt(126, 34), wBase: 40, wTip: 32 }, // index
   { base: pt(208, 124), tip: pt(198, 20), wBase: 42, wTip: 33 }, // middle
   { base: pt(266, 128), tip: pt(284, 30), wBase: 40, wTip: 32 }, // ring
-  { base: pt(318, 142), tip: pt(336, 74), wBase: 34, wTip: 27 }, // little
+  { base: pt(318, 142), tip: pt(338, 66), wBase: 34, wTip: 27 }, // little
 ];
 // Knuckle · middle · tip joints, as fractions along each finger axis.
 const HAND_JOINTS = [0.14, 0.44, 0.74];
-const HAND_WEB_DIP = 13;
+// Webs are drawn per gap: the little finger sits lower, so its web is shallower
+// and its three badges would otherwise collide.
+const HAND_WEB_DIP = [13, 13, 9];
 // How far the fingertip cap reaches down the finger (0 = flat, 1 = round).
 const HAND_CAP = 0.34;
 const HAND_THUMB: FingerSkeleton = {
@@ -729,7 +731,8 @@ function buildHandOutline(): string {
       // finger axes, so no sharp notch is drawn between them.
       const a = g.right(0.06);
       const b = next.left(0.06);
-      curveTo(subPt(a, mulPt(g.axis, HAND_WEB_DIP)), subPt(b, mulPt(next.axis, HAND_WEB_DIP)), b);
+      const dip = HAND_WEB_DIP[i];
+      curveTo(subPt(a, mulPt(g.axis, dip)), subPt(b, mulPt(next.axis, dip)), b);
     }
   });
 
@@ -919,7 +922,7 @@ export function ChuongBanVisual({ className }: VisualProps) {
             <circle
               cx={b.x}
               cy={b.y}
-              r="11"
+              r="10.8"
               fill="#1b0807"
               fillOpacity="0.78"
               stroke="#d9b975"
@@ -927,10 +930,10 @@ export function ChuongBanVisual({ className }: VisualProps) {
             />
             <text
               x={b.x}
-              y={b.y + 4}
+              y={b.y + 3.9}
               textAnchor="middle"
               fill="#fffaf2"
-              fontSize={b.name.length >= 4 ? 8.9 : 9.8}
+              fontSize={b.name.length >= 4 ? 8.7 : 9.6}
               fontWeight="bold"
               fontFamily="serif"
               letterSpacing="-0.2"
