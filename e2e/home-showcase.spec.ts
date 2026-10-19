@@ -14,6 +14,11 @@ test.describe("Home concept showcase", () => {
         "aria-label",
         new RegExp(`^${String(index).padStart(2, "0")} trên 10:`),
       );
+      await active.evaluate((el) =>
+        Promise.allSettled(
+          el.getAnimations({ subtree: true }).map((animation) => animation.finished),
+        ),
+      );
       await expect(figure.getByRole("group", { name: /trên 10:/ })).toHaveCount(1);
       const svg = active.getByRole("img");
       await expect(svg).toBeVisible();
