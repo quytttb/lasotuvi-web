@@ -122,6 +122,32 @@ export default function GioiThieuPage() {
           </div>
         </section>
 
+        <section id="nguon-minh-hoa" className="mt-10 border-t border-[var(--line-faint)] pt-8">
+          <h2 className="font-serif text-xl text-[var(--ink)] mb-3">Nguồn minh họa</h2>
+          <p className="text-sm text-[var(--ink-soft)] leading-relaxed">
+            Minh họa bàn tay bấm cung được chỉnh sửa từ{" "}
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Hand.svg"
+              className="underline underline-offset-4"
+            >
+              Hand.svg
+            </a>{" "}
+            của LucasVB (Kieff), dựa trên phiên bản trước của Kenny sh, theo giấy phép{" "}
+            <a
+              href="https://creativecommons.org/licenses/by-sa/3.0/"
+              className="underline underline-offset-4"
+            >
+              CC BY-SA 3.0
+            </a>
+            . LasoTuVi đã lật sang tay trái, thu phóng đồng đều, làm mượt đường bao và thêm nếp tay.
+            Bản minh họa chỉnh sửa được phân phối theo cùng giấy phép; xem{" "}
+            <a href="/illustrations/left-palm.LICENSE.txt" className="underline underline-offset-4">
+              ghi công và chi tiết giấy phép
+            </a>
+            .
+          </p>
+        </section>
+
         {/* ── CTA ── */}
         <div className="mt-12 border-t border-[var(--line-faint)] pt-8 flex items-center justify-between gap-4 flex-wrap">
           <p className="text-sm text-[var(--ink-muted)]">Sẵn sàng xem lá số của bạn?</p>

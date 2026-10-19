@@ -34,19 +34,29 @@ describe("ChuongBanVisual", () => {
         ),
       ).toEqual(branches);
     }
-    // Only tiny annotation dots: the old bead-like badges and trail are gone.
+    // Keep the small annotation dots without bringing back the oversized badges.
     expect(container.querySelectorAll("circle")).toHaveLength(7);
     for (const circle of container.querySelectorAll("circle")) {
       expect(Number(circle.getAttribute("r"))).toBeLessThan(2);
     }
-    expect(container.querySelector("[stroke-dasharray]")).toBeNull();
   });
 
-  it("provides accessible artwork attribution and license details", () => {
-    render(<ChuongBanVisual />);
-    expect(screen.getByRole("link", { name: /LucasVB/ })).toHaveAttribute(
-      "href",
-      "/illustrations/left-palm.LICENSE.txt",
-    );
+  it("restores the closed twelve-position circuit and the palm seal", () => {
+    const { container } = render(<ChuongBanVisual />);
+    const circuit = screen.getByTestId("branch-circuit");
+    expect(circuit).toHaveAttribute("stroke-dasharray", "3 3");
+    const points = circuit.getAttribute("points")!.split(" ");
+    expect(points).toHaveLength(13);
+    expect(new Set(points).size).toBe(12);
+    expect(points[0]).toBe(points[12]);
+    expect(points[0]).toBe("245,121"); // Dần on the finger, not its offset label.
+    expect(screen.getByText("CHƯỞNG QUYẾT")).toBeInTheDocument();
+    expect(container.querySelector('[aria-label="Chưởng quyết"] rect')).toBeInTheDocument();
+  });
+
+  it("keeps the source credit off the drawing and points to the about page", () => {
+    const { container } = render(<ChuongBanVisual />);
+    expect(screen.queryByText(/Dáng tay:/)).not.toBeInTheDocument();
+    expect(container.querySelector("desc")).toHaveTextContent("trang Giới thiệu");
   });
 });

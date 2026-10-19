@@ -18,6 +18,9 @@ const BRANCHES = [
   { name: "Sửu", finger: "little", x: 152, y: 145, labelX: 112 },
 ];
 
+// Connect the positions on the fingers, not their offset text labels.
+const BRANCH_CIRCUIT = [...BRANCHES, BRANCHES[0]].map(({ x, y }) => `${x},${y}`).join(" ");
+
 export function ChuongBanVisual({ className }: { className?: string }) {
   return (
     <svg
@@ -30,9 +33,21 @@ export function ChuongBanVisual({ className }: { className?: string }) {
     >
       <desc>
         Lòng bàn tay trái hướng về người xem, ngón cái bên phải. Mười hai địa chi trên bốn ngón: trỏ
-        Dần, Mão, Thìn; giữa Mùi, Ngọ, Tỵ; áp út Thân, Dậu, Tuất; út Sửu, Tý, Hợi, từ gốc lên.
+        Dần, Mão, Thìn; giữa Mùi, Ngọ, Tỵ; áp út Thân, Dậu, Tuất; út Sửu, Tý, Hợi, từ gốc lên. Nguồn
+        minh họa và giấy phép được ghi tại trang Giới thiệu, mục Nguồn minh họa.
       </desc>
       <image href="/illustrations/left-palm.svg" width="430" height="320" />
+
+      <polyline
+        data-testid="branch-circuit"
+        points={BRANCH_CIRCUIT}
+        stroke="#d9b975"
+        strokeWidth="1"
+        strokeDasharray="3 3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.5"
+      />
 
       {BRANCHES.map((branch) => (
         <g key={branch.name} data-branch={branch.name} data-finger={branch.finger}>
@@ -69,6 +84,30 @@ export function ChuongBanVisual({ className }: { className?: string }) {
         </g>
       ))}
 
+      <g aria-label="Chưởng quyết">
+        <rect
+          x="173"
+          y="204"
+          width="98"
+          height="22"
+          rx="3"
+          fill="#9f3028"
+          stroke="#edd39b"
+          strokeWidth="1"
+        />
+        <text
+          x="222"
+          y="218.5"
+          textAnchor="middle"
+          fill="#fff3d8"
+          fontSize="10"
+          fontWeight="bold"
+          fontFamily="serif"
+        >
+          CHƯỞNG QUYẾT
+        </text>
+      </g>
+
       <text
         x="215"
         y="295"
@@ -80,11 +119,6 @@ export function ChuongBanVisual({ className }: { className?: string }) {
       >
         12 ĐỊA CHI · LÒNG BÀN TAY TRÁI
       </text>
-      <a href="/illustrations/left-palm.LICENSE.txt" target="_blank" rel="noreferrer">
-        <text x="215" y="313" textAnchor="middle" fill="#d9b975" fontSize="7.5" opacity="0.8">
-          Dáng tay: LucasVB / Kenny sh · CC BY-SA 3.0 · đã chỉnh sửa
-        </text>
-      </a>
     </svg>
   );
 }
