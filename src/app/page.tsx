@@ -59,7 +59,7 @@ export default function HomePage() {
             </p>
             <h1 className="max-w-xl font-serif text-4xl leading-[1.25] tracking-tight text-[var(--paper-raised)] sm:text-5xl">
               Lập lá số Tử Vi theo bố cục{" "}
-              <span className="text-[var(--gold-light)]">truyền thống</span>
+              <span className="whitespace-nowrap text-[var(--gold-light)]">truyền thống</span>
             </h1>
             <div
               className="mt-6 h-[2px] w-24 bg-gradient-to-r from-[var(--gold-light)] to-transparent"
@@ -233,18 +233,18 @@ export default function HomePage() {
           DISCLAIMER
           ═══════════════════════════════════════════════════ */}
       <section className="border-t border-[var(--line-faint)] bg-[var(--paper-muted)]/50">
-        <div className="site-container py-8 text-sm text-[var(--ink-muted)] sm:py-10">
+        <div className="site-container py-8 text-sm text-[var(--ink-soft)] sm:py-10 sm:text-base">
           <div className="flex items-start gap-3">
-            <span className="text-[var(--earth)] opacity-60 text-base mt-0.5" aria-hidden="true">
+            <span className="mt-1 text-lg text-[var(--earth)] opacity-70" aria-hidden="true">
               ☯
             </span>
-            <div>
-              <h2 className="font-serif text-base text-[var(--ink)] mb-1.5">
+            <div className="min-w-0">
+              <h2 className="mb-1.5 font-serif text-lg text-[var(--ink)] sm:text-xl">
                 Miễn trừ trách nhiệm
               </h2>
-              <p className="max-w-3xl leading-relaxed">
-                Nội dung mang tính tham khảo văn hóa và nghiên cứu. Không thay thế tư vấn y tế, tài
-                chính hoặc pháp lý. Hãy tự cân nhắc khi diễn giải kết quả.
+              <p className="max-w-3xl text-pretty leading-relaxed">
+                Nội dung chỉ mang tính tham khảo về văn hóa và nghiên cứu, không nhằm thay thế tư
+                vấn y tế, tài chính hoặc pháp lý. Hãy tự cân nhắc khi diễn giải kết quả.
               </p>
             </div>
           </div>

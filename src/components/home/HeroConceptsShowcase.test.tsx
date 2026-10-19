@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -28,6 +28,8 @@ describe("HeroConceptsShowcase", () => {
 
     expect(prevBtn).toBeInTheDocument();
     expect(nextBtn).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /xem lớn/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("clicking next and prev buttons can be triggered without errors", async () => {
@@ -55,20 +57,6 @@ describe("HeroConceptsShowcase", () => {
         }),
       ).toBeInTheDocument();
     }
-  });
-
-  it("moves the current artwork into the large viewer and restores it on close", async () => {
-    const user = userEvent.setup();
-    render(<HeroConceptsShowcase />);
-    await user.click(screen.getByRole("button", { name: "Xem lớn" }));
-    const dialog = screen.getByRole("dialog", { name: CONCEPTS_DATA[0].title });
-    expect(within(dialog).getByRole("img")).toBeInTheDocument();
-    expect(screen.getAllByRole("img")).toHaveLength(1);
-    expect(document.body.style.overflow).toBe("hidden");
-    await user.click(within(dialog).getByRole("button", { name: "Đóng xem lớn" }));
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getByRole("img")).toBeInTheDocument();
-    expect(document.body.style.overflow).not.toBe("hidden");
   });
 
   it("pauses automatic changes while keyboard focus is inside the showcase", () => {

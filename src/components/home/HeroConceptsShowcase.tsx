@@ -13,9 +13,6 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const zoomScrollRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const currentConcept = CONCEPTS_DATA[currentIndex];
 
@@ -56,9 +53,9 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
     goToSlide(next, "next");
   }, [currentIndex, goToSlide]);
 
-  // Pause while reading with a pointer/keyboard or using the large viewer.
+  // Pause while reading with a pointer or keyboard.
   useEffect(() => {
-    if (isHovered || isFocused || isExpanded) {
+    if (isHovered || isFocused) {
       return;
     }
 
@@ -67,29 +64,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
     }, SLIDE_DURATION_MS);
 
     return () => clearInterval(timer);
-  }, [isHovered, isFocused, isExpanded, pickRandomIndex]);
-
-  useEffect(() => {
-    if (!isExpanded) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isExpanded]);
-
-  // On narrow screens the enlarged artwork is wider than the viewport. Start
-  // centred on the diagram instead of showing only its left edge.
-  useEffect(() => {
-    if (!isExpanded) return;
-    const raf = requestAnimationFrame(() => {
-      const scroller = zoomScrollRef.current;
-      if (!scroller) return;
-      scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2;
-      scroller.scrollTop = 0;
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [isExpanded, currentIndex]);
+  }, [isHovered, isFocused, pickRandomIndex]);
 
   // Touch swipe support on mobile (does not shift browser window)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -220,16 +195,10 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
                 </div>
 
                 <div className="relative flex h-[350px] items-center justify-center sm:h-[440px] lg:h-[460px]">
-                  {isExpanded && isCurrent ? (
-                    <p className="text-sm text-[var(--gold-light)]">
-                      Đang mở đồ hình ở chế độ xem lớn
-                    </p>
-                  ) : (
-                    <ConceptVisualRenderer
-                      id={item.id}
-                      className="h-full w-full drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
-                    />
-                  )}
+                  <ConceptVisualRenderer
+                    id={item.id}
+                    className="h-full w-full drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+                  />
                 </div>
 
                 {/* Concise, easy-to-understand description footer */}
@@ -242,112 +211,44 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={prevSlide}
-            aria-label="Đồ hình trước"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
-          >
-            <span aria-hidden="true" className="text-2xl">
-              ‹
-            </span>
-          </button>
-          <span
-            className="text-sm font-medium tabular-nums text-[var(--gold-light)]"
-            aria-label={`Đồ hình ${currentIndex + 1} trên ${CONCEPTS_DATA.length}`}
-          >
-            {currentConcept.number} / {CONCEPTS_DATA.length}
-          </span>
-          <button
-            type="button"
-            onClick={nextSlide}
-            title="Đồ hình tiếp theo"
-            aria-label="Đồ hình tiếp theo"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
-          >
-            <svg
-              className="h-4 w-4 sm:h-5 sm:w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </div>
+      <div className="mt-3 flex items-center justify-center gap-3">
         <button
           type="button"
-          onClick={() => {
-            setIsExpanded(true);
-            dialogRef.current?.showModal();
-          }}
-          aria-haspopup="dialog"
-          className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-[var(--gold-light)]/60 bg-[var(--lacquer-dark)] px-3 text-sm font-medium text-[var(--paper-raised)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+          onClick={prevSlide}
+          aria-label="Đồ hình trước"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+        >
+          <span aria-hidden="true" className="text-2xl">
+            ‹
+          </span>
+        </button>
+        <span
+          className="text-sm font-medium tabular-nums text-[var(--gold-light)]"
+          aria-label={`Đồ hình ${currentIndex + 1} trên ${CONCEPTS_DATA.length}`}
+        >
+          {currentConcept.number} / {CONCEPTS_DATA.length}
+        </span>
+        <button
+          type="button"
+          onClick={nextSlide}
+          title="Đồ hình tiếp theo"
+          aria-label="Đồ hình tiếp theo"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
         >
           <svg
-            className="h-4 w-4"
+            className="h-4 w-4 sm:h-5 sm:w-5"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" />
+            <polyline points="9 18 15 12 9 6" />
           </svg>
-          Xem lớn
         </button>
       </div>
-
-      <dialog
-        ref={dialogRef}
-        aria-labelledby="concept-zoom-title"
-        onClose={() => setIsExpanded(false)}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) dialogRef.current?.close();
-        }}
-        className="m-auto max-h-[calc(100dvh-1rem)] w-[calc(100%-1rem)] max-w-[1100px] overflow-hidden rounded-lg border border-[var(--gold)]/70 bg-[var(--lacquer-dark)] p-0 text-[var(--paper-raised)] shadow-2xl backdrop:bg-black/80"
-      >
-        <div className="flex items-start justify-between gap-4 border-b border-[var(--gold)]/30 px-4 py-3 sm:px-6">
-          <div>
-            <h3 id="concept-zoom-title" className="font-serif text-xl font-bold sm:text-2xl">
-              {currentConcept.title}
-            </h3>
-            <p className="mt-1 text-sm text-[var(--gold-light)]">
-              Kéo ngang hoặc dọc để xem toàn bộ đồ hình.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => dialogRef.current?.close()}
-            aria-label="Đóng xem lớn"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold)]/60 text-2xl hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div
-          ref={zoomScrollRef}
-          className="max-h-[70dvh] overflow-auto overscroll-contain p-3 sm:p-6"
-          role="region"
-          tabIndex={0}
-          aria-label="Đồ hình phóng lớn, có thể cuộn"
-        >
-          {isExpanded ? (
-            <ConceptVisualRenderer
-              id={currentConcept.id}
-              className="h-[min(70dvh,720px)] min-h-[480px] w-full min-w-[720px]"
-            />
-          ) : null}
-        </div>
-      </dialog>
     </figure>
   );
 }

@@ -222,8 +222,8 @@ export function SiteFooter() {
         <div className="site-container flex flex-wrap items-center justify-between gap-3 py-5 text-xs leading-relaxed text-[var(--paper)]/65">
           <p>
             © {year} LasoTuVi <span className="mx-1.5 opacity-40">·</span>
-            Nội dung mang tính tham khảo văn hóa và nghiên cứu, không thay thế tư vấn y tế, tài
-            chính hoặc pháp lý.
+            Nội dung chỉ mang tính tham khảo về văn hóa và nghiên cứu, không thay thế tư vấn y tế,
+            tài chính hoặc pháp lý.
           </p>
           <p className="flex items-center gap-1.5 opacity-70">
             <span>☯</span>
