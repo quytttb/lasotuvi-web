@@ -1,0 +1,13 @@
+Left palm illustration — CC BY-SA 3.0
+
+Source: Hand.svg, Wikimedia Commons
+https://commons.wikimedia.org/wiki/File:Hand.svg
+Original SVG: https://upload.wikimedia.org/wikipedia/commons/f/fa/Hand.svg
+
+Authors: LucasVB (Kieff), 2009; earlier version by Kenny sh, 2004.
+License: Creative Commons Attribution-ShareAlike 3.0 Unported
+https://creativecommons.org/licenses/by-sa/3.0/
+
+Changes by LasoTuVi: mirrored to show the left palm, uniformly scaled,
+simplified and rounded the polyline outline, restyled and added palm creases.
+This derivative illustration is distributed under CC BY-SA 3.0.
