@@ -15,6 +15,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
   const [isFocused, setIsFocused] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const zoomScrollRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const currentConcept = CONCEPTS_DATA[currentIndex];
 
@@ -76,6 +77,19 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
       document.body.style.overflow = previousOverflow;
     };
   }, [isExpanded]);
+
+  // On narrow screens the enlarged artwork is wider than the viewport. Start
+  // centred on the diagram instead of showing only its left edge.
+  useEffect(() => {
+    if (!isExpanded) return;
+    const raf = requestAnimationFrame(() => {
+      const scroller = zoomScrollRef.current;
+      if (!scroller) return;
+      scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2;
+      scroller.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [isExpanded, currentIndex]);
 
   // Touch swipe support on mobile (does not shift browser window)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -276,7 +290,18 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
           aria-haspopup="dialog"
           className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-[var(--gold-light)]/60 bg-[var(--lacquer-dark)] px-3 text-sm font-medium text-[var(--paper-raised)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
         >
-          <span aria-hidden="true">⛶</span>
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6" />
+          </svg>
           Xem lớn
         </button>
       </div>
@@ -309,6 +334,7 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
           </button>
         </div>
         <div
+          ref={zoomScrollRef}
           className="max-h-[70dvh] overflow-auto overscroll-contain p-3 sm:p-6"
           role="region"
           tabIndex={0}

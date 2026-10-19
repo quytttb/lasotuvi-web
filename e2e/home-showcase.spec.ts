@@ -60,6 +60,15 @@ test.describe("Home concept showcase", () => {
 
     // The large canvas can overflow its own viewport, never the page itself.
     const canvas = dialog.getByRole("region", { name: "Đồ hình phóng lớn, có thể cuộn" });
+    await expect
+      .poll(() =>
+        canvas.evaluate((el) =>
+          el.scrollWidth > el.clientWidth + 1
+            ? Math.abs(el.scrollLeft - (el.scrollWidth - el.clientWidth) / 2) < 2
+            : true,
+        ),
+      )
+      .toBe(true);
     await canvas.evaluate((el) => {
       el.scrollLeft = el.scrollWidth;
       el.scrollTop = el.scrollHeight;
@@ -67,7 +76,7 @@ test.describe("Home concept showcase", () => {
     await page.keyboard.press("Escape");
     await expect(dialog).not.toBeVisible();
     await expect(open).toBeFocused();
-    expect(await page.evaluate(() => document.body.style.overflow)).not.toBe("hidden");
+    await expect.poll(() => page.evaluate(() => document.body.style.overflow)).not.toBe("hidden");
     await expect(figure.getByRole("img")).toBeVisible();
 
     await open.click();
