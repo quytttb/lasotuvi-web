@@ -49,8 +49,8 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: E2E (mocked API)
-        run: pnpm test:e2e e2e/mvp.spec.ts --project=chromium --project=mobile
+      - name: E2E (mocked API & home showcase)
+        run: pnpm test:e2e e2e/mvp.spec.ts e2e/home-showcase.spec.ts --project=chromium --project=mobile
         env:
           NEXT_PUBLIC_LASOTUVI_API_URL: https://lasotuvi-api.onrender.com
           NEXT_PUBLIC_SITE_URL: https://lasotuvi-web.vercel.app

@@ -12,7 +12,11 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const touchStartX = useRef<number | null>(null);
+  const currentConcept = CONCEPTS_DATA[currentIndex];
 
   const goToSlide = useCallback(
     (nextIdx: number, dir: "next" | "prev") => {
@@ -51,9 +55,9 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
     goToSlide(next, "next");
   }, [currentIndex, goToSlide]);
 
-  // 10-Second Auto-Advance Timer (silent random pick in background, paused on hover)
+  // Pause while reading with a pointer/keyboard or using the large viewer.
   useEffect(() => {
-    if (isHovered) {
+    if (isHovered || isFocused || isExpanded) {
       return;
     }
 
@@ -62,7 +66,16 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
     }, SLIDE_DURATION_MS);
 
     return () => clearInterval(timer);
-  }, [isHovered, pickRandomIndex]);
+  }, [isHovered, isFocused, isExpanded, pickRandomIndex]);
+
+  useEffect(() => {
+    if (!isExpanded) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isExpanded]);
 
   // Touch swipe support on mobile (does not shift browser window)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -87,167 +100,228 @@ export function HeroConceptsShowcase({ className }: { className?: string }) {
       className={cn("group/showcase relative min-w-0 w-full animate-fade-in-scale", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onFocusCapture={() => setIsFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsFocused(false);
+      }}
       aria-label="Khám phá 10 khái niệm kinh điển Tử Vi Đẩu Số"
     >
-      {/* 2 Arrow buttons flank the slider frame on the outside */}
-      <div className="relative w-full flex items-center gap-2 sm:gap-3 lg:gap-4">
-        {/* Left Arrow Button OUTSIDE */}
-        <button
-          type="button"
-          onClick={prevSlide}
-          title="Đồ hình trước"
-          aria-label="Đồ hình trước"
-          className="shrink-0 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+      {/* Give the artwork the full card width; controls live below, not beside it. */}
+      <div
+        className="relative w-full min-w-0 overflow-hidden rounded-sm border border-[var(--gold)]/60 bg-[var(--lacquer-dark)]/95 shadow-[0_24px_64px_rgba(48,15,13,0.42),0_4px_16px_rgba(48,15,13,0.25)] ring-1 ring-[var(--gold-light)]/20 backdrop-blur-md"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => {
+          touchStartX.current = null;
+        }}
+      >
+        {/* Oriental corner gold accents on the fixed card frame */}
+        <span
+          className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
+          aria-hidden="true"
         >
-          <svg
-            className="h-4 w-4 sm:h-5 sm:w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
+        <span
+          className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
+          aria-hidden="true"
+        >
+          ❖
+        </span>
 
-        {/* Fixed Slider Frame: The border, corner ❖ accents, and background remain completely fixed */}
+        {/* Subtle background radial glow */}
         <div
-          className="relative flex-1 min-w-0 overflow-hidden rounded-sm border border-[var(--gold)]/60 bg-[var(--lacquer-dark)]/95 shadow-[0_24px_64px_rgba(48,15,13,0.42),0_4px_16px_rgba(48,15,13,0.25)] ring-1 ring-[var(--gold-light)]/20 backdrop-blur-md"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(217,185,117,0.11)_0%,transparent_75%)]"
+          aria-hidden="true"
+        />
+
+        {/* Sliding Track: Only active and transitioning slides animate with GPU-accelerated directional cross-slide */}
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Thanh trượt 10 khái niệm Tử Vi"
+          className="relative w-full"
         >
-          {/* Oriental corner gold accents on the fixed card frame */}
-          <span
-            className="pointer-events-none absolute -top-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
-            aria-hidden="true"
-          >
-            ❖
-          </span>
-          <span
-            className="pointer-events-none absolute -top-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
-            aria-hidden="true"
-          >
-            ❖
-          </span>
-          <span
-            className="pointer-events-none absolute -bottom-1.5 -left-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
-            aria-hidden="true"
-          >
-            ❖
-          </span>
-          <span
-            className="pointer-events-none absolute -bottom-1.5 -right-1.5 text-xs text-[var(--gold-light)] opacity-85 select-none z-20"
-            aria-hidden="true"
-          >
-            ❖
-          </span>
+          {CONCEPTS_DATA.map((item, idx) => {
+            const isCurrent = idx === currentIndex;
+            const isPrev = idx === prevIndex;
+            // Hidden slides must not size the card or remain in the tab order.
+            if (!isCurrent && !isPrev) return null;
 
-          {/* Subtle background radial glow */}
-          <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(217,185,117,0.11)_0%,transparent_75%)]"
-            aria-hidden="true"
-          />
+            let motionClass = "";
+            if (isCurrent) {
+              motionClass =
+                "opacity-100 translate-x-0 scale-100 z-10 pointer-events-auto motion-safe:animate-[fadeInScale_350ms_ease-out]";
+            } else if (isPrev) {
+              motionClass = cn(
+                "opacity-0 z-0 pointer-events-none scale-[0.98]",
+                direction === "next" ? "-translate-x-8" : "translate-x-8",
+              );
+            }
 
-          {/* Sliding Track: Only active and transitioning slides animate with GPU-accelerated directional cross-slide */}
-          <div
-            role="region"
-            aria-roledescription="carousel"
-            aria-label="Thanh trượt 10 khái niệm Tử Vi"
-            className="relative grid grid-cols-1 grid-rows-1 w-full"
-          >
-            {CONCEPTS_DATA.map((item, idx) => {
-              const isCurrent = idx === currentIndex;
-              const isPrev = idx === prevIndex;
-
-              let motionClass = "";
-              if (isCurrent) {
-                motionClass = "opacity-100 translate-x-0 scale-100 z-10 pointer-events-auto";
-              } else if (isPrev) {
-                motionClass = cn(
-                  "opacity-0 z-0 pointer-events-none scale-[0.98]",
-                  direction === "next" ? "-translate-x-8" : "translate-x-8",
-                );
-              } else {
-                motionClass = cn(
-                  "opacity-0 z-0 pointer-events-none scale-[0.98]",
-                  direction === "next" ? "translate-x-8" : "-translate-x-8",
-                );
-              }
-
-              return (
-                <div
-                  key={item.id}
-                  role="group"
-                  aria-roledescription="slide"
-                  aria-label={`${item.number} trên 10: ${item.title}`}
-                  className={cn(
-                    "col-start-1 row-start-1 w-full flex flex-col justify-between p-4 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[transform,opacity]",
-                    motionClass,
-                  )}
-                >
-                  {/* Clean Header: Removed 5 Yếu Tố, 02/10, etc. Kept Title, Subtitle & Hanzi Stamp */}
-                  <div className="relative z-10 flex items-start justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[var(--paper-raised)]">
-                        {item.title}
-                      </h3>
-                      <p className="mt-0.5 text-xs sm:text-sm text-[var(--gold-light)] font-medium">
-                        {item.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Traditional Hanzi Stamp */}
-                    <div
-                      className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xs border border-[var(--gold-light)]/60 bg-[var(--vermillion)]/90 text-center font-serif text-xl sm:text-2xl font-bold text-white shadow-md select-none"
-                      title={item.hanzi}
-                    >
-                      {item.hanzi}
-                    </div>
+            return (
+              <div
+                key={item.id}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${item.number} trên 10: ${item.title}`}
+                aria-hidden={!isCurrent}
+                inert={!isCurrent}
+                className={cn(
+                  "w-full flex flex-col gap-3 p-3 sm:gap-4 sm:p-5 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[transform,opacity]",
+                  isCurrent ? "relative" : "absolute inset-0",
+                  motionClass,
+                )}
+              >
+                {/* Clean Header: Removed 5 Yếu Tố, 02/10, etc. Kept Title, Subtitle & Hanzi Stamp */}
+                <div className="relative z-10 flex min-h-22 items-start justify-between gap-3 sm:min-h-20">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[var(--paper-raised)]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm sm:text-base text-[var(--gold-light)] font-medium">
+                      {item.subtitle}
+                    </p>
                   </div>
 
-                  {/* Centered Large SVG Illustration (Enlarged) */}
-                  <div className="relative my-2 sm:my-3 flex items-center justify-center py-1">
-                    <ConceptVisualRenderer
-                      id={item.id}
-                      className="h-64 sm:h-72 md:h-80 w-full max-w-[500px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
-                    />
-                  </div>
-
-                  {/* Concise, easy-to-understand description footer */}
-                  <div className="relative z-10 rounded-sm border border-[var(--gold)]/30 bg-black/45 p-3 sm:p-3.5 text-xs sm:text-sm leading-relaxed text-[var(--paper)]/95 shadow-inner min-h-[3.75rem] flex items-center">
-                    <p>{item.description}</p>
+                  {/* Traditional Hanzi Stamp */}
+                  <div
+                    className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center whitespace-nowrap rounded-xs border border-[var(--gold-light)]/60 bg-[var(--vermillion)]/90 text-center font-serif text-lg sm:text-xl font-bold text-white shadow-md select-none"
+                    title={item.hanzi}
+                  >
+                    {item.hanzi}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* Right Arrow Button OUTSIDE */}
+                <div className="relative flex h-[350px] items-center justify-center sm:h-[440px] lg:h-[460px]">
+                  {isExpanded && isCurrent ? (
+                    <p className="text-sm text-[var(--gold-light)]">
+                      Đang mở đồ hình ở chế độ xem lớn
+                    </p>
+                  ) : (
+                    <ConceptVisualRenderer
+                      id={item.id}
+                      className="h-full w-full drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+                    />
+                  )}
+                </div>
+
+                {/* Concise, easy-to-understand description footer */}
+                <div className="relative z-10 flex min-h-24 items-center rounded-sm border border-[var(--gold)]/30 bg-black/45 p-3 text-sm leading-relaxed text-[var(--paper)]/95 shadow-inner sm:min-h-20 sm:p-3.5 sm:text-base">
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={prevSlide}
+            aria-label="Đồ hình trước"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+          >
+            <span aria-hidden="true" className="text-2xl">
+              ‹
+            </span>
+          </button>
+          <span
+            className="text-sm font-medium tabular-nums text-[var(--gold-light)]"
+            aria-label={`Đồ hình ${currentIndex + 1} trên ${CONCEPTS_DATA.length}`}
+          >
+            {currentConcept.number} / {CONCEPTS_DATA.length}
+          </span>
+          <button
+            type="button"
+            onClick={nextSlide}
+            title="Đồ hình tiếp theo"
+            aria-label="Đồ hình tiếp theo"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)] text-[var(--gold-light)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+          >
+            <svg
+              className="h-4 w-4 sm:h-5 sm:w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
         <button
           type="button"
-          onClick={nextSlide}
-          title="Đồ hình tiếp theo"
-          aria-label="Đồ hình tiếp theo"
-          className="shrink-0 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-[var(--gold)]/80 bg-[var(--lacquer-dark)]/90 text-[var(--gold-light)] shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur-xs transition-all duration-200 hover:scale-110 hover:border-[var(--gold-light)] hover:bg-[var(--lacquer-deep)] active:scale-95 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+          onClick={() => {
+            setIsExpanded(true);
+            dialogRef.current?.showModal();
+          }}
+          aria-haspopup="dialog"
+          className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-[var(--gold-light)]/60 bg-[var(--lacquer-dark)] px-3 text-sm font-medium text-[var(--paper-raised)] transition-colors hover:bg-[var(--lacquer-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
         >
-          <svg
-            className="h-4 w-4 sm:h-5 sm:w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+          <span aria-hidden="true">⛶</span>
+          Xem lớn
         </button>
       </div>
+
+      <dialog
+        ref={dialogRef}
+        aria-labelledby="concept-zoom-title"
+        onClose={() => setIsExpanded(false)}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) dialogRef.current?.close();
+        }}
+        className="m-auto max-h-[calc(100dvh-1rem)] w-[calc(100%-1rem)] max-w-[1100px] overflow-hidden rounded-lg border border-[var(--gold)]/70 bg-[var(--lacquer-dark)] p-0 text-[var(--paper-raised)] shadow-2xl backdrop:bg-black/80"
+      >
+        <div className="flex items-start justify-between gap-4 border-b border-[var(--gold)]/30 px-4 py-3 sm:px-6">
+          <div>
+            <h3 id="concept-zoom-title" className="font-serif text-xl font-bold sm:text-2xl">
+              {currentConcept.title}
+            </h3>
+            <p className="mt-1 text-sm text-[var(--gold-light)]">
+              Kéo ngang hoặc dọc để xem toàn bộ đồ hình.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => dialogRef.current?.close()}
+            aria-label="Đóng xem lớn"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--gold)]/60 text-2xl hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-[var(--gold-light)] cursor-pointer"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div
+          className="max-h-[70dvh] overflow-auto overscroll-contain p-3 sm:p-6"
+          role="region"
+          tabIndex={0}
+          aria-label="Đồ hình phóng lớn, có thể cuộn"
+        >
+          {isExpanded ? (
+            <ConceptVisualRenderer
+              id={currentConcept.id}
+              className="h-[min(70dvh,720px)] min-h-[480px] w-full min-w-[720px]"
+            />
+          ) : null}
+        </div>
+      </dialog>
     </figure>
   );
 }
